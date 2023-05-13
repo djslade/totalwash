@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .bg-landing {
+        background-image: url('/bathroom.jpg');
+        background-color: #474141;
+        background-blend-mode: multiply;
+    }
+}
