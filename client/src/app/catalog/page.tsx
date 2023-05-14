@@ -29,7 +29,7 @@ const Catalog = () => {
         </div>
         <div className="flex h-20 items-center">
           <div className="flex-[2] flex sm:flex-1 sm:gap-6">
-            <button className="md:hidden w-12 flex justify-center items-center aspect-square rounded-full">
+            <button className="md:hidden w-12 flex justify-center items-center aspect-square rounded-full" onClick={() => state.showNavSidebar = true}>
               <RxHamburgerMenu />
             </button>
             <Link className="w-min hidden md:inline text-xl"  href="/catalog">
