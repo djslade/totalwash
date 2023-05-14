@@ -30,18 +30,18 @@
 
 @layer components {
     .header-search-input {
-        @apply py-3 px-6 w-full outline-none bg-input-light hidden sm:block text-base
+        @apply py-3 pl-6 w-full outline-none bg-input-light hidden xxs:block text-base
     }
 
     .header-search-input-dark {
-        @apply py-3 px-6 w-full outline-none hidden sm:block bg-input-dark text-[#F5F5F5] text-base
+        @apply py-3 pl-6 w-full outline-none hidden xxs:block bg-input-dark text-[#F5F5F5] text-base
     }
 
     .header-search-btn {
-        @apply w-12 aspect-square sm:bg-[#FFFFFF] flex justify-center items-center hover:bg-[#F5F5F5] rounded-full sm:rounded-none
+        @apply w-12 aspect-square xxs:bg-[#FFFFFF] flex justify-center items-center hover:bg-[#F5F5F5] rounded-full xxs:rounded-none
     }
 
     .header-search-btn-dark {
-        @apply w-12 aspect-square sm:bg-[#666666] flex justify-center items-center hover:bg-[#333333] rounded-full sm:rounded-none
+        @apply w-12 aspect-square xxs:bg-[#666666] flex justify-center items-center hover:bg-[#333333] rounded-full xxs:rounded-none
     }
 }

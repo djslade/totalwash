@@ -37,7 +37,7 @@ const Catalog = () => {
               <span className="text-blue-400">Wash</span>
             </Link>
           </div>
-          <div className="flex flex-[2] sm:border-2 justify-end  border-black rounded-sm sm:h-9 sm:focus-within:border-blue-500">
+          <div className="flex xxs:flex-[3] sm:flex-[2] xxs:border-2 justify-end  border-black rounded-sm xxs:h-9 xxs:focus-within:border-blue-500">
             <input type="text" className={snap.darkTheme ? 'header-search-input-dark' : 'header-search-input'} placeholder="Search" />
             <button className={snap.darkTheme ? 'header-search-btn-dark' : 'header-search-btn'}>
               <AiOutlineSearch />
