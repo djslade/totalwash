@@ -1,3 +1,4 @@
+"use client"
 import { useOutsideClick } from "@/hooks"
 import { state } from "@/store"
 import { useSnapshot } from "valtio"
