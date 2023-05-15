@@ -6,7 +6,7 @@ import { MdDarkMode, MdLightMode } from 'react-icons/md'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { RiShoppingCartLine } from 'react-icons/ri'
 import { useSnapshot } from "valtio"
-import { NavSidebar } from "@/components"
+import { NavSidebar, CartSidebar } from "@/components"
 
 const Catalog = () => {
   const snap = useSnapshot(state)
@@ -22,9 +22,10 @@ const Catalog = () => {
   return (
     <>
       <NavSidebar />
-      <header className={`sticky top-0 px-12 border-b-2 ${snap.darkTheme ? 'header-dark' : 'header-light'}`}>
-        <div className="flex h-20 items-center">
-          <div className="flex-[2] flex md:flex-1 sm:gap-6 justify-between">
+      <CartSidebar />
+      <header className={`sticky top-0 border-b-2 px-6 ${snap.darkTheme ? 'header-dark' : 'header-light'}`}>
+        <div className="flex h-20 items-center max-w-screen-lg mx-auto">
+          <div className="flex-[2] flex md:flex-1 sm:gap-6 justify-between items-center h-full">
             <button className="md:hidden flex justify-center items-center aspect-square rounded-full" onClick={() => state.showNavSidebar = true}>
               <RxHamburgerMenu />
             </button>
@@ -42,7 +43,7 @@ const Catalog = () => {
               <AiOutlineSearch />
             </button>
           </div>
-          <div className="flex-1 flex justify-evenly gap-3 pl-3">
+          <div className="flex-1 justify-evenly gap-3 pl-3 hidden xxs:flex">
             <div className="flex flex-1 justify-end">
               {snap.darkTheme ?            
               <button
@@ -62,6 +63,7 @@ const Catalog = () => {
             </div>
             <div className="flex flex-1 justify-end">
               <button
+              onClick={() => state.showCartSidebar = true}
               className="flex items-center text-base gap-3 md:rounded-xl md:w-auto aspect-square md:aspect-auto rounded-full justify-center hover:underline underline-offset-4">
                 <RiShoppingCartLine />
                 <span className="hidden md:inline">Cart</span>
@@ -69,7 +71,7 @@ const Catalog = () => {
             </div>
           </div>
         </div>
-        <nav className="hidden w-full justify-between md:flex text-base flex-nowrap py-3">
+        <nav className="hidden w-full justify-between md:flex text-base flex-nowrap py-3 max-w-screen-lg mx-auto">
           <div className="hover:underline underline-offset-4">
             <Link href="/catalog/furniture">
               <span>Bathroom Furniture</span>

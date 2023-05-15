@@ -30,11 +30,11 @@
 
 @layer components {
     .header-search-input {
-        @apply py-3 pl-6 w-full outline-none bg-input-light hidden xxs:block text-base
+        @apply py-3 pl-5 w-full outline-none bg-input-light hidden xxs:block text-base
     }
 
     .header-search-input-dark {
-        @apply py-3 pl-6 w-full outline-none hidden xxs:block bg-input-dark text-[#F5F5F5] text-base
+        @apply py-3 pl-5 w-full outline-none hidden xxs:block bg-input-dark text-[#F5F5F5] text-base
     }
 
     .header-search-btn {
