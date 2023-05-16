@@ -43,11 +43,6 @@ export const NavSidebar = () => {
                         <span>Bathroom Accessories</span>
                     </Link>
                 </div>
-                <div className="hover:underline underline-offset-4">
-                    <Link href="/catalog/other">
-                        <span>Other</span>
-                    </Link>
-                </div>
             </nav>
         </div>
         </>

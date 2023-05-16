@@ -1,4 +1,5 @@
 "use client"
+import { useRouter } from "next/router"
 import { state } from "@/store"
 import Link from "next/link"
 import { AiOutlineSearch } from "react-icons/ai"
@@ -96,11 +97,6 @@ export const Header = () => {
                 <div className="hover:underline underline-offset-4"> 
                     <Link href="/catalog/accessories">
                         <span>Bathroom Accessories</span>
-                    </Link>
-                </div>
-                <div className="hover:underline underline-offset-4">
-                    <Link href="/catalog/other">
-                        <span>Other</span>
                     </Link>
                 </div>
             </nav>

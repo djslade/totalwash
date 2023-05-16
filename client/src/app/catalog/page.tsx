@@ -1,8 +1,14 @@
 "use client"
+import { useStateReset } from "@/hooks"
+
 const Catalog = () => {
+  useStateReset()
+
   return (
-    <main>
-      <h1>It worked</h1>
+    <main className="max-w-screen-lg mx-auto bg-red-500 aspect-video">
+      <section>
+
+      </section>
     </main>
   )
 }
