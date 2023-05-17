@@ -12,7 +12,7 @@ const getBrand = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-const getAllCategories = async (req: Request, res: Response, next: NextFunction) => {
+const getAllBrands = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const brands = await Brand.find().exec()
         return res.status(200).send({ brands })
@@ -78,7 +78,7 @@ const deleteBrand = async (req: Request, res: Response, next: NextFunction) => {
 
 export const brandsController = {
     getBrand,
-    getAllCategories,
+    getAllBrands,
     postBrand,
     updateBrand,
     deleteBrand,

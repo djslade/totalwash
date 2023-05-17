@@ -22,7 +22,7 @@ const getBrand = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         return next(err);
     }
 });
-const getAllCategories = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllBrands = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const brands = yield models_1.Brand.find().exec();
         return res.status(200).send({ brands });
@@ -85,7 +85,7 @@ const deleteBrand = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.brandsController = {
     getBrand,
-    getAllCategories,
+    getAllBrands,
     postBrand,
     updateBrand,
     deleteBrand,
