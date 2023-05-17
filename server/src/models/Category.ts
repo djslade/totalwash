@@ -6,4 +6,4 @@ const CategorySchema = new Schema({
     slug: { type: String, slug: 'name', unique: true },
 })
 
-export const CategoryModel = model('CategoryModel', CategorySchema) 
+export const Category = model('Category', CategorySchema)

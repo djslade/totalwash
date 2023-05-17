@@ -7,4 +7,4 @@ const SubcategorySchema = new Schema({
     slug: { type: String, slug: 'name', unique: true },
 })
 
-export const SubcategoryModel = model('CategoryModel', SubcategorySchema) 
+export const Subcategory = model('Subcategory', SubcategorySchema) 

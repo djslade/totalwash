@@ -1,5 +1,11 @@
-import { CategoryModel } from "./Category"
+import { Category } from "./Category"
+import { Subcategory } from "./Subcategory"
+import { Brand } from "./Brand"
+import { Product } from "./Product"
 
 export {
-    CategoryModel,
+    Category,
+    Subcategory,
+    Brand,
+    Product,
 }
