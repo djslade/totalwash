@@ -30,7 +30,7 @@ const getAllSubcategories = (req, res, next) => __awaiter(void 0, void 0, void 0
         if (category) {
             query.categories = category;
         }
-        const subcategories = yield models_1.Subcategory.find({ query }).populate('categories').exec();
+        const subcategories = yield models_1.Subcategory.find(query).populate('categories').exec();
         return res.status(200).send({ subcategories });
     }
     catch (err) {

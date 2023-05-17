@@ -4,7 +4,7 @@ import { subcategoriesController } from "../controllers"
 const subCategoriesRouter = PromiseRouter()
 
 subCategoriesRouter.get('/:subcategoryId', subcategoriesController.getSubcategory)
-subCategoriesRouter.get('/all', subcategoriesController.getAllSubcategories)
+subCategoriesRouter.get('/', subcategoriesController.getAllSubcategories)
 
 subCategoriesRouter.post('/', subcategoriesController.postSubcategory)
 

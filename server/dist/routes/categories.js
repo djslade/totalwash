@@ -9,7 +9,7 @@ const controllers_1 = require("../controllers");
 const categoriesRouter = (0, express_promise_router_1.default)();
 exports.categoriesRouter = categoriesRouter;
 categoriesRouter.get('/:categoryId', controllers_1.categoriesController.getCategory);
-categoriesRouter.get('/all', controllers_1.categoriesController.getAllCategories);
+categoriesRouter.get('/', controllers_1.categoriesController.getAllCategories);
 categoriesRouter.post('/', controllers_1.categoriesController.postCategory);
 categoriesRouter.put('/:categoryId', controllers_1.categoriesController.updateCategory);
 categoriesRouter.delete('/:categoryId', controllers_1.categoriesController.deleteCategory);

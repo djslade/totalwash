@@ -13,7 +13,6 @@ exports.productsController = void 0;
 const models_1 = require("../models");
 const express_validator_1 = require("express-validator");
 const utilities_1 = require("../utilities");
-const mongoose_1 = require("mongoose");
 const getProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { productId } = req.params;
@@ -26,14 +25,13 @@ const getProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { category, subcategory, brand } = req.query;
+        const { category, subcategory } = req.query;
         const query = {};
         if (category) {
             query.categories = category;
             query.subcategories = subcategory;
-            query.brand = brand;
         }
-        const products = yield models_1.Product.find({ query }).populate('categories', 'subcategories', 'brand').exec();
+        const products = yield models_1.Product.find(query).populate('categories', 'subcategories').exec();
         return res.status(200).send({ products });
     }
     catch (err) {
@@ -44,7 +42,6 @@ const postProduct = [
     (0, express_validator_1.body)('name').isString().notEmpty().trim(),
     (0, express_validator_1.body)('categories').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
     (0, express_validator_1.body)('subcategories').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
-    (0, express_validator_1.body)('brand').custom((value) => (0, mongoose_1.isValidObjectId)(value)),
     (0, express_validator_1.body)('fullPrice').isNumeric(),
     (0, express_validator_1.body)('currentPrice').isNumeric(),
     (0, express_validator_1.body)('description').isString().notEmpty().trim(),
@@ -59,7 +56,7 @@ const postProduct = [
             if (!errors.isEmpty()) {
                 throw new Error('Validation error');
             }
-            const { name, categories, subcategories, brand, fullPrice, currentPrice, description, features, whatsIncluded, isFeatured, isOnSale, photos, } = req.body;
+            const { name, categories, subcategories, fullPrice, currentPrice, description, features, whatsIncluded, isFeatured, isOnSale, photos, } = req.body;
             categories.forEach((category) => __awaiter(void 0, void 0, void 0, function* () {
                 const categoryInDatabase = yield models_1.Category.findById(category);
                 if (!categoryInDatabase) {
@@ -76,7 +73,6 @@ const postProduct = [
                 name,
                 categories,
                 subcategories,
-                brand,
                 fullPrice,
                 currentPrice,
                 description,
@@ -98,7 +94,6 @@ const updateProduct = [
     (0, express_validator_1.body)('name').isString().notEmpty().trim(),
     (0, express_validator_1.body)('categories').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
     (0, express_validator_1.body)('subcategories').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
-    (0, express_validator_1.body)('brand').custom((value) => (0, mongoose_1.isValidObjectId)(value)),
     (0, express_validator_1.body)('fullPrice').isNumeric(),
     (0, express_validator_1.body)('currentPrice').isNumeric(),
     (0, express_validator_1.body)('description').isString().notEmpty().trim(),
@@ -113,7 +108,7 @@ const updateProduct = [
             if (!errors.isEmpty()) {
                 throw new Error('Validation error');
             }
-            const { name, categories, subcategories, brand, fullPrice, currentPrice, description, features, whatsIncluded, isFeatured, isOnSale, photos, } = req.body;
+            const { name, categories, subcategories, fullPrice, currentPrice, description, features, whatsIncluded, isFeatured, isOnSale, photos, } = req.body;
             categories.forEach((category) => __awaiter(void 0, void 0, void 0, function* () {
                 const categoryInDatabase = yield models_1.Category.findById(category);
                 if (!categoryInDatabase) {
@@ -126,10 +121,6 @@ const updateProduct = [
                     throw new Error('Specified subcategory was not in database');
                 }
             }));
-            const brandInDatabase = yield models_1.Brand.findById(brand);
-            if (!brandInDatabase) {
-                throw new Error('Specified brand was not in database');
-            }
             const { productId } = req.params;
             yield models_1.Product.findOneAndUpdate({
                 slug: productId,
@@ -137,7 +128,6 @@ const updateProduct = [
                 name,
                 categories,
                 subcategories,
-                brand,
                 fullPrice,
                 currentPrice,
                 description,

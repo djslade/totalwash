@@ -21,7 +21,7 @@ const getAllSubcategories = async (req: Request, res: Response, next: NextFuncti
         if (category) {
             query.categories = category
         }
-        const subcategories = await Subcategory.find({query}).populate('categories').exec()
+        const subcategories = await Subcategory.find(query).populate('categories').exec()
         return res.status(200).send({ subcategories })
     } catch (err) {
         return next(err)

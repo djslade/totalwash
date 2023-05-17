@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express"
-import { Category, Subcategory, Brand, Product } from "../models"
+import { Category, Subcategory, Product } from "../models"
 import { body, validationResult } from "express-validator"
 import { ProductBody, ProductQuery } from "../types"
 import { validateArrayOfObjectIds } from "../utilities"
-import { isValidObjectId } from "mongoose"
 
 const getProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -17,14 +16,13 @@ const getProduct = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { category, subcategory, brand } = req.query
+        const { category, subcategory } = req.query
         const query:ProductQuery = {}
         if (category) {
             query.categories = category
             query.subcategories = subcategory
-            query.brand = brand
         }
-        const products = await Product.find({query}).populate('categories', 'subcategories', 'brand').exec()
+        const products = await Product.find(query).populate('categories', 'subcategories').exec()
         return res.status(200).send({ products })
     } catch (err) {
         return next(err)
@@ -35,7 +33,6 @@ const postProduct = [
     body('name').isString().notEmpty().trim(),
     body('categories').isArray().custom((value) => validateArrayOfObjectIds(value)),
     body('subcategories').isArray().custom((value) => validateArrayOfObjectIds(value)),
-    body('brand').custom((value) => isValidObjectId(value)),
     body('fullPrice').isNumeric(),
     body('currentPrice').isNumeric(),
     body('description').isString().notEmpty().trim(),
@@ -54,7 +51,6 @@ const postProduct = [
                 name,
                 categories,
                 subcategories,
-                brand,
                 fullPrice,
                 currentPrice,
                 description,
@@ -80,7 +76,6 @@ const postProduct = [
                 name,
                 categories,
                 subcategories,
-                brand,
                 fullPrice,
                 currentPrice,
                 description,
@@ -102,7 +97,6 @@ const updateProduct = [
     body('name').isString().notEmpty().trim(),
     body('categories').isArray().custom((value) => validateArrayOfObjectIds(value)),
     body('subcategories').isArray().custom((value) => validateArrayOfObjectIds(value)),
-    body('brand').custom((value) => isValidObjectId(value)),
     body('fullPrice').isNumeric(),
     body('currentPrice').isNumeric(),
     body('description').isString().notEmpty().trim(),
@@ -121,7 +115,6 @@ const updateProduct = [
                 name,
                 categories,
                 subcategories,
-                brand,
                 fullPrice,
                 currentPrice,
                 description,
@@ -143,10 +136,6 @@ const updateProduct = [
                     throw new Error('Specified subcategory was not in database')
                 }
             })
-            const brandInDatabase = await Brand.findById(brand)
-            if (!brandInDatabase) {
-                throw new Error('Specified brand was not in database')
-            }
             const { productId } = req.params
             await Product.findOneAndUpdate(
                 {
@@ -156,7 +145,6 @@ const updateProduct = [
                     name,
                     categories,
                     subcategories,
-                    brand,
                     fullPrice,
                     currentPrice,
                     description,

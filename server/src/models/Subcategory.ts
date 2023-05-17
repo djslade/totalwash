@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose"
+import { getUrlString } from "../utilities"
 
 const SubcategorySchema = new Schema({
     name: { type: String, unique: true },
@@ -6,5 +7,13 @@ const SubcategorySchema = new Schema({
     categories: [{ type: Schema.Types.ObjectId, ref: 'Category'}],
     slug: { type: String, slug: 'name', unique: true },
 })
+
+SubcategorySchema
+.pre('validate', function(next) {
+    if (this.name) {
+      this.slug = getUrlString(this.name)
+    }
+    next()
+  })
 
 export const Subcategory = model('Subcategory', SubcategorySchema) 

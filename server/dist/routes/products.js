@@ -9,7 +9,7 @@ const controllers_1 = require("../controllers");
 const productsRouter = (0, express_promise_router_1.default)();
 exports.productsRouter = productsRouter;
 productsRouter.get('/:productId', controllers_1.productsController.getProduct);
-productsRouter.get('/all', controllers_1.productsController.getAllProducts);
+productsRouter.get('/', controllers_1.productsController.getAllProducts);
 productsRouter.post('/', controllers_1.productsController.postProduct);
 productsRouter.put('/:productId', controllers_1.productsController.updateProduct);
 productsRouter.delete('/:productId', controllers_1.productsController.deleteProduct);

@@ -4,7 +4,7 @@ import { productsController } from "../controllers"
 const productsRouter = PromiseRouter()
 
 productsRouter.get('/:productId', productsController.getProduct)
-productsRouter.get('/all', productsController.getAllProducts)
+productsRouter.get('/', productsController.getAllProducts)
 
 productsRouter.post('/', productsController.postProduct)
 

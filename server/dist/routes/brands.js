@@ -9,7 +9,7 @@ const controllers_1 = require("../controllers");
 const brandsRouter = (0, express_promise_router_1.default)();
 exports.brandsRouter = brandsRouter;
 brandsRouter.get('/:brandId', controllers_1.brandsController.getBrand);
-brandsRouter.get('/all', controllers_1.brandsController.getAllBrands);
+brandsRouter.get('/', controllers_1.brandsController.getAllBrands);
 brandsRouter.post('/', controllers_1.brandsController.postBrand);
 brandsRouter.put('/:brandId', controllers_1.brandsController.updateBrand);
 brandsRouter.delete('/:brandId', controllers_1.brandsController.deleteBrand);
