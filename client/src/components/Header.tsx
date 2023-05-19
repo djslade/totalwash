@@ -1,14 +1,19 @@
 "use client"
-import { useRouter } from "next/router"
 import { state } from "@/store"
-import Link from "next/link"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdLightMode, MdDarkMode } from "react-icons/md"
 import { RiShoppingCartLine } from "react-icons/ri"
 import { RxHamburgerMenu } from "react-icons/rx"
 import { useSnapshot } from "valtio"
+import { useRouter } from "next/navigation"
 
-export const Header = () => {
+export const Header = ({
+    categories,
+    subcategories
+}: {
+    categories: any[],
+    subcategories: any[],
+}) => {
     const snap = useSnapshot(state)
 
     const setDarkTheme = () => {
@@ -17,6 +22,16 @@ export const Header = () => {
   
     const setLightTheme = () => {
       state.darkTheme = false
+    }
+
+    const router = useRouter()
+
+    const navigate = (path:string) => {
+        if (router) {
+            router.push(path)
+            state.showCartSidebar = false
+            state.showNavSidebar = false
+        }
     }
 
     return (
@@ -29,10 +44,10 @@ export const Header = () => {
                     <button className="md:hidden flex justify-center items-center aspect-square rounded-full">
                         <AiOutlineSearch />
                     </button>
-                    <Link className="w-min text-xl"  href="/catalog">
+                    <button className="w-min text-xl" role="link" onClick={() => navigate("/catalog")}>
                         <span>Total</span>
                         <span className="text-blue-400">Wash</span>
-                    </Link>
+                    </button>
                 </div>
                 <div className="hidden md:flex flex-[2] border-2 justify-end  border-black rounded-sm h-9 focus-within:border-blue-500">
                     <input type="text" className={snap.darkTheme ? 'header-search-input-dark' : 'header-search-input'} placeholder="Search" />
@@ -69,36 +84,22 @@ export const Header = () => {
                 </div>
             </div>
             <nav className="hidden w-full justify-between md:flex text-base flex-nowrap py-3 max-w-screen-lg mx-auto">
-                <div className="hover:underline underline-offset-4">
-                    <Link href="/catalog/furniture">
-                        <span>Bathroom Furniture</span>
-                    </Link>
+            {categories.map((category) =>
+                <div className="hover:underline underline-offset-4 relative group" key={category._id}>
+                    <button className="hover:underline underline-offset-4" role="link" onClick={() => navigate(`/catalog/${category.slug}`)}>
+                        <span>{category.name}</span>
+                    </button>
+                    <div className="absolute flex-col hidden group-hover:flex bg-gray-50 px-5 py-10 gap-6 w-48">
+                        {subcategories.map((subcategory) => subcategory.categories[0]._id === category._id &&
+                        <div key={subcategory._id}>
+                            <button className="hover:underline underline-offset-4" role="link" onClick={() => navigate(`/catalog/${subcategory.slug}`)}>
+                                <span>{subcategory.name}</span>
+                            </button>
+                        </div>
+                        )}
+                    </div>
                 </div>
-                <div className="hover:underline underline-offset-4">
-                    <Link href="/catalog/baths">
-                        <span>Baths</span>
-                    </Link>
-                </div>
-                <div className="hover:underline underline-offset-4">
-                    <Link href="/catalog/showers">
-                        <span>Showers</span>
-                    </Link>
-                </div>
-                <div className="hover:underline underline-offset-4">  
-                    <Link href="/catalog/toilets">
-                        <span>Toilets</span>
-                    </Link>
-                </div>
-                <div className="hover:underline underline-offset-4">
-                    <Link href="/catalog/basins">
-                        <span>Basins</span>
-                    </Link>
-                </div>
-                <div className="hover:underline underline-offset-4"> 
-                    <Link href="/catalog/accessories">
-                        <span>Bathroom Accessories</span>
-                    </Link>
-                </div>
+                )}
             </nav>
         </header>
     )
