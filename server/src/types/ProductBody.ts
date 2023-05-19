@@ -5,7 +5,7 @@ export interface ProductBody {
     brand: string,
     fullPrice: number,
     currentPrice: number,
-    description: string,
+    description: string[],
     features: string[],
     whatsIncluded: string[],
     isFeatured: boolean,

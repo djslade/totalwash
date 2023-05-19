@@ -16,11 +16,22 @@ const getProduct = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { category, subcategory } = req.query
+        const { category, subcategory, sale, featured, minprice, maxprice } = req.query
         const query:ProductQuery = {}
         if (category) {
             query.categories = category
+        }
+        if (subcategory) {
             query.subcategories = subcategory
+        }
+        if (sale === 'true' ) {
+            query.isOnSale = true
+        }
+        if (featured === 'true' ) {
+            query.isFeatured = true
+        }
+        if (minprice || maxprice) {
+            query.currentPrice =  { $lte: maxprice || 1000000000, $gte: minprice || 0 }
         }
         const products = await Product.find(query).populate('categories', 'subcategories').exec()
         return res.status(200).send({ products })
@@ -35,7 +46,7 @@ const postProduct = [
     body('subcategories').isArray().custom((value) => validateArrayOfObjectIds(value)),
     body('fullPrice').isNumeric(),
     body('currentPrice').isNumeric(),
-    body('description').isString().notEmpty().trim(),
+    body('description').isArray(),
     body('features').isArray(),
     body('whatsIncluded').isArray(),
     body('isFeatured').isBoolean(),
@@ -99,7 +110,7 @@ const updateProduct = [
     body('subcategories').isArray().custom((value) => validateArrayOfObjectIds(value)),
     body('fullPrice').isNumeric(),
     body('currentPrice').isNumeric(),
-    body('description').isString().notEmpty().trim(),
+    body('description').isArray(),
     body('features').isArray(),
     body('whatsIncluded').isArray(),
     body('isFeatured').isBoolean(),

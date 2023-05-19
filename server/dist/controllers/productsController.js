@@ -25,11 +25,22 @@ const getProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { category, subcategory } = req.query;
+        const { category, subcategory, sale, featured, minprice, maxprice } = req.query;
         const query = {};
         if (category) {
             query.categories = category;
+        }
+        if (subcategory) {
             query.subcategories = subcategory;
+        }
+        if (sale === 'true') {
+            query.isOnSale = true;
+        }
+        if (featured === 'true') {
+            query.isFeatured = true;
+        }
+        if (minprice || maxprice) {
+            query.currentPrice = { $lte: maxprice || 1000000000, $gte: minprice || 0 };
         }
         const products = yield models_1.Product.find(query).populate('categories', 'subcategories').exec();
         return res.status(200).send({ products });
@@ -44,7 +55,7 @@ const postProduct = [
     (0, express_validator_1.body)('subcategories').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
     (0, express_validator_1.body)('fullPrice').isNumeric(),
     (0, express_validator_1.body)('currentPrice').isNumeric(),
-    (0, express_validator_1.body)('description').isString().notEmpty().trim(),
+    (0, express_validator_1.body)('description').isArray(),
     (0, express_validator_1.body)('features').isArray(),
     (0, express_validator_1.body)('whatsIncluded').isArray(),
     (0, express_validator_1.body)('isFeatured').isBoolean(),
@@ -96,7 +107,7 @@ const updateProduct = [
     (0, express_validator_1.body)('subcategories').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
     (0, express_validator_1.body)('fullPrice').isNumeric(),
     (0, express_validator_1.body)('currentPrice').isNumeric(),
-    (0, express_validator_1.body)('description').isString().notEmpty().trim(),
+    (0, express_validator_1.body)('description').isArray(),
     (0, express_validator_1.body)('features').isArray(),
     (0, express_validator_1.body)('whatsIncluded').isArray(),
     (0, express_validator_1.body)('isFeatured').isBoolean(),

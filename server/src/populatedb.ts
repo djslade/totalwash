@@ -1,171 +1,42 @@
-import mongoose from "mongoose"
+import mongoose, { ObjectId } from "mongoose"
 import { Product, Category, Subcategory } from "./models"
 import dotenv from 'dotenv'
 
 dotenv.config()
 
 mongoose.set('strictQuery', false)
-mongoose.connect(process.env.MONGO_URI || '')
+mongoose.connect(process.env.MONGO_URI || "")
 
-const categories = [
-    {
-        name: 'Furniture',
-        description: 'Good bathroom storage is essential to the style and functionality of any bathroom. At TotalWash, we understand how finding the perfect bathroom furniture is key to enhancing the look of your bathroom and making the most of your space. We offer a diverse collection of modern and traditional bathroom furniture - and a range of practical bathroom storage solutions - to help create a bathroom that suits your needs and fits your style.'
-    },
-    {
-        name: 'Accessories',
-        description: "Whether you’re after a toilet seat, toilet roll holder or a classy robe hook to complement your room, we have a selection of high-quality accessories to help add the finishing touches to your bathroom. Our matching bathroom accessories come in both modern and traditional styles to suit any décor, and feature a range of finishes to help you complete the look of your bathroom space.",
-    },
-    {
-        name: 'Basins',
-        description: "Bathroom basins are available in a huge variety of styles and sizes to suit every bathroom design scheme. Whether you want to create a contemporary look or would prefer something more traditional, you can be sure to discover exactly what you're looking for. As well as modern and traditional styles, you can also choose between basins with full or semi pedestals, countertop basins and cloakroom basins. Each basin has been made from quality ceramic, with finishes"
-    },
-    {
-        name: 'Baths',
-        description: "At TotalWash we understand that being able to include a striking designer bath in your bathroom suite is something of a luxury. Thankfully, we have a large range of designer-inspired baths in a variety of sizes and styles, at prices to suit a range of budgets, tastes and bathroom sizes."
-    },
-    {
-        name: 'Showers',
-        description: "At TotalWash we are passionate about showers and understand that your shower is often the defining feature of your bathroom space. Whether it’s a part of a refreshing morning routine or simply to relax, your shower is a key component in creating a bathroom you love to look at and enjoy spending time in."
-    },
-    {
-        name: 'Toilets',
-        description: "In the TotalWash toilets category you'll find the perfect solution for your bathroom, cloakroom or en-suite toilet needs. From the sleek and contemporary to the elegant and traditional, our selection of toilets is designed to provide you with the utmost comfort and convenience, while also ensuring you of exceptional performance, quality and durability."
-    },
-]
-
-const subcategories = [
-    {
-        name: "Bathroom Accessories",
-        description: "We offer a full collection of bathroom accessories, including toilet roll holders, glass bathroom shelves, bathroom towel holders and much more. Discover accessories in modern and traditional styles to enhance any bathroom, all featuring premium quality finishes that are built to last.",
-        categories: [
-            '646513dd16a35b39083ace01',
-        ],
-    },
-    {
-        name: "Shower Accessories",
-        description: "From shower seats to flexible hoses and shower arms, we have all the shower accessories you need to suit your showering requirements. Our shower hoses are ideal for replacing an old hose, while our shower seats ensure a comfortable showering experience for those who are less mobile. All our shower accessories feature a quality construction and are made to stand the test of time.",
-        categories: [
-            '646513dd16a35b39083ace01'
-        ],
-    },
-    {
-        name: "Toilet Accessories",
-        description: "Whether you need waste pipes or a floor fixing kit for your new close coupled toilet or handles and connectors to finish the job, in style, we have all the accessories you need to complete your toilet installation.",
-        categories: [
-            '646513dd16a35b39083ace01'
-        ],
-    },
-    {
-        name: "Counter Top Basins",
-        description: "Bring a chic, designer touch to your bathroom with our stunning range of countertop basins. Available in a wide choice of sizes and shapes to suit any requirement, countertop basins have been designed to be fitted to a worktop or a vanity unit. All our countertop basins feature a quality ceramic construction and are available in a range of colours to suit your space too. We have bathroom countertop basins that can be used with wall mounted taps and high-rise taps,",
-        categories: [
-            '646513dd16a35b39083ace02'
-        ],
-    },
-    {
-        name: "Pedestal Basins",
-        description: "Discover a huge range of bathroom sinks and create a stylish new look. Our bathroom basins come in an array of designs including modern and traditional to complement any home, as well as sizes to suit any bathroom, en-suite or cloakroom. Each bathroom sink is supplied with a pedestal, which conceals unsightly pipework from view. Our traditional basins are perfect for creating a classic and elegant look that will stand the test of time, while our modern basins are great for adding a touch of designer style at a price that won't break the bank. Semi pedestal basins are ideal for small bathrooms, as they maximise floor space and create a cleaner look. Sinks with full pedestals are easier to install and are perfect for family bathrooms.",
-        categories: [
-            "646513dd16a35b39083ace02"
-        ],
-    },
-    {
-        name: "Washstands",
-        description: "Bathroom washstands are a practical and stylish addition to both modern and traditional bathrooms. Exuding sophistication, a washstand offers a functional place to store towels and their sleek and stylish design adds a touch of authenticity to the space too.",
-        categories: [
-            "646513dd16a35b39083ace02"
-        ],
-    },
-    {
-        name: "Corner Baths",
-        description: "Corner baths aren’t just a stylish option, they’re also ideal for saving space in smaller bathrooms. A great way to achieve an interesting bathroom layout, a corner bath’s luxury design fits perfectly into bathroom corners to create a unique space to relax.",
-        categories: [
-            "646513dd16a35b39083ace03"
-        ],
-    },
-    {
-        name: "Freestanding Baths",
-        description: "There’s nothing that says luxury quite like a freestanding bath. Not only do they bring a touch of hotel elegance to your home, they’re also a great investment.",
-        categories: [
-            "646513dd16a35b39083ace03"
-        ],
-    },
-    {
-        name: "Shower Baths",
-        description: "Shower baths are a great option if your bathroom lacks the space for a separate bath and shower enclosure. With a shower bath you get the best of both bathing and showering, which means you don’t have to compromise on style or design. Available in a range of sizes and shapes, a shower bath widens out at one end to form a spacious showering area.",
-        categories: [
-            "646513dd16a35b39083ace03",
-            "646513dd16a35b39083ace04"
-        ],
-    },
-    {
-        name: "Small Baths",
-        description: "Browse our range of luxury small baths, designed for small bathrooms and ensuites. Our sizes start from as short as 1200mm in length and as low as 700mm in width so you’ll have no trouble finding a compact bath perfect for your small bathroom or ensuite.",
-        categories: [
-            "646513dd16a35b39083ace03"
-        ],
-    },
-    {
-        name: "Standard Baths",
-        description: "Don’t let the title of this page fool you – there is nothing basic about our standard bath collection. Though keeping things simple and elegant, our standard bath collection features a variety of bath sizes with single and double-ended options available to help you create a relaxing and stylish bathing experience.",
-        categories: [
-            "646513dd16a35b39083ace03"
-        ],
-    },
-    {
-        name: "Mirrors",
-        description: "No bathroom is complete without a stylish mirror on the wall that helps to brighten the space and create a feeling of openness. The perfect finishing touch for every bathroom, cloakroom or ensuite, each of our mirrors has been specially selected for their durable qualities and watertight designs – so that way, they never lose their sparkle.",
-        categories: [
-            "646513dd16a35b39083ace00"
-        ],
-    },
-    {
-        name: "Cabinets and Storage",
-        description: "Are you tired of a cluttered and disorganised bathroom? With our bathroom cabinet and storage collection you can wave goodbye to the bathroom mess and welcome a stylish bathroom space with a clean and crisp aesthetic.",
-        categories: [
-            "646513dd16a35b39083ace00"
-        ],
-    },
-    {
-        name: "Vanity Units",
-        description: "Discover our extensive collection of bathroom vanity units. With stylish and practical solutions designed to provide those little extra storage solutions your bathroom needs, our vanity units feature a range of styles and finishes to suit any style of bathroom, cloakroom or en-suite.",
-        categories: [
-            "646513dd16a35b39083ace00"
-        ],
-    },
-    {
-        name: "Mixer Showers and Sets",
-        description: "Make showering the best part of your day with our luxury range of mixer showers. Practical, stylish – they’re the luxury answer to your showering needs. Our shower mixer collection has been designed to offer you complete control over your showering experience.",
-        categories: [
-            "646513dd16a35b39083ace04"
-        ],
-    },
-    {
-        name: "Bidets",
-        description: "Bidets are available in a variety of styles and designs including wall-hung and floor-standing versions to suit every type of bathroom. Wall-hung bidets are ideal for creating more floor space as well as a cleaner, more modern look too. Our wall-hung bidets are available in a range of stunning, contemporary designs to enhance the overall look and feel of your bathroom. Floor standing bidets are also available in a range of designs including more classic styles to complement a traditional bathroom.",
-        categories: [
-            "646513dd16a35b39083ace05"
-        ],
-    },
-    {
-        name: "Standard Toilets",
-        description: "In the TotalWash toilets category you'll find the perfect solution for your bathroom, cloakroom or en-suite toilet needs. From the sleek and contemporary to the elegant and traditional, our selection of toilets is designed to provide you with the utmost comfort and convenience, while also ensuring you of exceptional performance, quality and durability.",
-        categories: [
-            "646513dd16a35b39083ace05"
-        ],
-    },
-]
-
-const products = [
-    {
-
-    }
-]
-
-const addCategory = async () => {
+const populateDatabase = async () => {
     try {
-        categories.forEach(async (category) => {
+        const categories = [
+            {
+                name: 'Furniture',
+                description: 'Good bathroom storage is essential to the style and functionality of any bathroom. At TotalWash, we understand how finding the perfect bathroom furniture is key to enhancing the look of your bathroom and making the most of your space. We offer a diverse collection of modern and traditional bathroom furniture - and a range of practical bathroom storage solutions - to help create a bathroom that suits your needs and fits your style.'
+            },
+            {
+                name: 'Accessories',
+                description: "Whether you’re after a toilet seat, toilet roll holder or a classy robe hook to complement your room, we have a selection of high-quality accessories to help add the finishing touches to your bathroom. Our matching bathroom accessories come in both modern and traditional styles to suit any décor, and feature a range of finishes to help you complete the look of your bathroom space.",
+            },
+            {
+                name: 'Basins',
+                description: "Bathroom basins are available in a huge variety of styles and sizes to suit every bathroom design scheme. Whether you want to create a contemporary look or would prefer something more traditional, you can be sure to discover exactly what you're looking for. As well as modern and traditional styles, you can also choose between basins with full or semi pedestals, countertop basins and cloakroom basins. Each basin has been made from quality ceramic, with finishes"
+            },
+            {
+                name: 'Baths',
+                description: "At TotalWash we understand that being able to include a striking designer bath in your bathroom suite is something of a luxury. Thankfully, we have a large range of designer-inspired baths in a variety of sizes and styles, at prices to suit a range of budgets, tastes and bathroom sizes."
+            },
+            {
+                name: 'Showers',
+                description: "At TotalWash we are passionate about showers and understand that your shower is often the defining feature of your bathroom space. Whether it’s a part of a refreshing morning routine or simply to relax, your shower is a key component in creating a bathroom you love to look at and enjoy spending time in."
+            },
+            {
+                name: 'Toilets',
+                description: "In the TotalWash toilets category you'll find the perfect solution for your bathroom, cloakroom or en-suite toilet needs. From the sleek and contemporary to the elegant and traditional, our selection of toilets is designed to provide you with the utmost comfort and convenience, while also ensuring you of exceptional performance, quality and durability."
+            },
+        ]
+        
+        const categoryPromises:any = categories.map(async (category) => {
             const { name, description } = category
             const newCategory = new Category({
                 name,
@@ -175,14 +46,136 @@ const addCategory = async () => {
             console.log(savedCategory)
             return savedCategory._id
         })
-    } catch (err) {
-        console.log(err)
-    }
-}
 
-const addSubcategory = async () => {
-    try {
-        subcategories.forEach(async (subcategory) => {
+        const categoryIds = await Promise.all(categoryPromises)
+
+        const [furniture, accessories, basins, baths, showers, toilets] = categoryIds
+
+        console.log({ furniture, accessories, basins, baths, showers, toilets })
+        const subcategories = [
+            {
+                name: "Bathroom Accessories",
+                description: "We offer a full collection of bathroom accessories, including toilet roll holders, glass bathroom shelves, bathroom towel holders and much more. Discover accessories in modern and traditional styles to enhance any bathroom, all featuring premium quality finishes that are built to last.",
+                categories: [
+                    accessories,
+                ],
+            },
+            {
+                name: "Shower Accessories",
+                description: "From shower seats to flexible hoses and shower arms, we have all the shower accessories you need to suit your showering requirements. Our shower hoses are ideal for replacing an old hose, while our shower seats ensure a comfortable showering experience for those who are less mobile. All our shower accessories feature a quality construction and are made to stand the test of time.",
+                categories: [
+                    accessories,
+                ],
+            },
+            {
+                name: "Toilet Accessories",
+                description: "Whether you need waste pipes or a floor fixing kit for your new close coupled toilet or handles and connectors to finish the job, in style, we have all the accessories you need to complete your toilet installation.",
+                categories: [
+                    accessories,
+                ],
+            },
+            {
+                name: "Counter Top Basins",
+                description: "Bring a chic, designer touch to your bathroom with our stunning range of countertop basins. Available in a wide choice of sizes and shapes to suit any requirement, countertop basins have been designed to be fitted to a worktop or a vanity unit. All our countertop basins feature a quality ceramic construction and are available in a range of colours to suit your space too. We have bathroom countertop basins that can be used with wall mounted taps and high-rise taps,",
+                categories: [
+                    basins
+                ],
+            },
+            {
+                name: "Pedestal Basins",
+                description: "Discover a huge range of bathroom sinks and create a stylish new look. Our bathroom basins come in an array of designs including modern and traditional to complement any home, as well as sizes to suit any bathroom, en-suite or cloakroom. Each bathroom sink is supplied with a pedestal, which conceals unsightly pipework from view. Our traditional basins are perfect for creating a classic and elegant look that will stand the test of time, while our modern basins are great for adding a touch of designer style at a price that won't break the bank. Semi pedestal basins are ideal for small bathrooms, as they maximise floor space and create a cleaner look. Sinks with full pedestals are easier to install and are perfect for family bathrooms.",
+                categories: [
+                    basins
+                ],
+            },
+            {
+                name: "Washstands",
+                description: "Bathroom washstands are a practical and stylish addition to both modern and traditional bathrooms. Exuding sophistication, a washstand offers a functional place to store towels and their sleek and stylish design adds a touch of authenticity to the space too.",
+                categories: [
+                    basins
+                ],
+            },
+            {
+                name: "Corner Baths",
+                description: "Corner baths aren’t just a stylish option, they’re also ideal for saving space in smaller bathrooms. A great way to achieve an interesting bathroom layout, a corner bath’s luxury design fits perfectly into bathroom corners to create a unique space to relax.",
+                categories: [
+                    baths
+                ],
+            },
+            {
+                name: "Freestanding Baths",
+                description: "There’s nothing that says luxury quite like a freestanding bath. Not only do they bring a touch of hotel elegance to your home, they’re also a great investment.",
+                categories: [
+                    baths
+                ],
+            },
+            {
+                name: "Shower Baths",
+                description: "Shower baths are a great option if your bathroom lacks the space for a separate bath and shower enclosure. With a shower bath you get the best of both bathing and showering, which means you don’t have to compromise on style or design. Available in a range of sizes and shapes, a shower bath widens out at one end to form a spacious showering area.",
+                categories: [
+                    baths,
+                    showers,
+                ],
+            },
+            {
+                name: "Small Baths",
+                description: "Browse our range of luxury small baths, designed for small bathrooms and ensuites. Our sizes start from as short as 1200mm in length and as low as 700mm in width so you’ll have no trouble finding a compact bath perfect for your small bathroom or ensuite.",
+                categories: [
+                    baths
+                ],
+            },
+            {
+                name: "Standard Baths",
+                description: "Don’t let the title of this page fool you – there is nothing basic about our standard bath collection. Though keeping things simple and elegant, our standard bath collection features a variety of bath sizes with single and double-ended options available to help you create a relaxing and stylish bathing experience.",
+                categories: [
+                    baths
+                ],
+            },
+            {
+                name: "Mirrors",
+                description: "No bathroom is complete without a stylish mirror on the wall that helps to brighten the space and create a feeling of openness. The perfect finishing touch for every bathroom, cloakroom or ensuite, each of our mirrors has been specially selected for their durable qualities and watertight designs – so that way, they never lose their sparkle.",
+                categories: [
+                    furniture,
+                ],
+            },
+            {
+                name: "Cabinets and Storage",
+                description: "Are you tired of a cluttered and disorganised bathroom? With our bathroom cabinet and storage collection you can wave goodbye to the bathroom mess and welcome a stylish bathroom space with a clean and crisp aesthetic.",
+                categories: [
+                    furniture,
+                ],
+            },
+            {
+                name: "Vanity Units",
+                description: "Discover our extensive collection of bathroom vanity units. With stylish and practical solutions designed to provide those little extra storage solutions your bathroom needs, our vanity units feature a range of styles and finishes to suit any style of bathroom, cloakroom or en-suite.",
+                categories: [
+                    furniture,
+                ],
+            },
+            {
+                name: "Mixer Showers and Sets",
+                description: "Make showering the best part of your day with our luxury range of mixer showers. Practical, stylish – they’re the luxury answer to your showering needs. Our shower mixer collection has been designed to offer you complete control over your showering experience.",
+                categories: [
+                    showers,
+                ],
+            },
+            {
+                name: "Bidets",
+                description: "Bidets are available in a variety of styles and designs including wall-hung and floor-standing versions to suit every type of bathroom. Wall-hung bidets are ideal for creating more floor space as well as a cleaner, more modern look too. Our wall-hung bidets are available in a range of stunning, contemporary designs to enhance the overall look and feel of your bathroom. Floor standing bidets are also available in a range of designs including more classic styles to complement a traditional bathroom.",
+                categories: [
+                    toilets,
+                ],
+            },
+            {
+                name: "Standard Toilets",
+                description: "In the TotalWash toilets category you'll find the perfect solution for your bathroom, cloakroom or en-suite toilet needs. From the sleek and contemporary to the elegant and traditional, our selection of toilets is designed to provide you with the utmost comfort and convenience, while also ensuring you of exceptional performance, quality and durability.",
+                categories: [
+                    toilets,
+                ],
+            },
+        ]
+        
+        const subcategoryPromises:any = subcategories.map(async (subcategory) => {
             const { name, description, categories } = subcategory
             const newSubcategory = new Subcategory({
                 name,
@@ -190,12 +183,2500 @@ const addSubcategory = async () => {
                 categories,
             })
             const savedSubcategory = await newSubcategory.save()
-            console.log(savedSubcategory)
             return savedSubcategory._id
         })
+
+        const subcategoryIds = await Promise.all(subcategoryPromises)
+        
+        const [
+            bathroomAccessories,
+            showerAccessories,
+            toiletAccessories,
+            counterTopBasin,
+            pedestalBasins,
+            washstands,
+            cornerBaths,
+            freestandingBaths,
+            showerBaths,
+            smallBaths,
+            standardBaths,
+            mirrors,
+            cabinetsAndStorage,
+            vanityUnits,
+            mixerShowersAndSets,
+            bidets,
+            standardToilets,
+        ] = subcategoryIds
+        
+        const products = [
+            {
+                name: "Milano Elizabeth - Luxury Toilet Roll Holder - Chrome",
+                categories: [
+                    accessories,
+                ],
+                subcategories: [
+                    bathroomAccessories,
+                    toiletAccessories,
+                ],
+                fullPrice: 44.99,
+                currentPrice: 44.99,
+                description: [
+                    "The beautifully designed Milano Elizabeth toilet roll holder will add those perfect finishing touches to your traditional bathroom, cloakroom or en-suite.",
+                    "Featuring a timeless and elegant design, this toilet roll holder has been crafted from solid brass for guaranteed durability. The hard-wearing chrome finish complements any bathroom decor.",
+                    "Team with other items from the Milano Elizabeth collection for a stunning traditional bathroom that's perfectly coordinated.",
+                ],
+                features: [
+                    "Dimensions: W 192mm x D 76mm x H 45mm",
+                    "Classic and elegant design - perfect for traditional bathrooms",
+                    "Wall-mounted installation for ease of use",
+                    "Solid brass construction with a hard-wearing chrome finish",
+                    "Easy installation using wall-mounted fixings",
+                ],
+                whatsIncluded: [
+                    "Fixing Kit",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "accessories/bathroom-accessories/luxury-toilet-roll-holder/lh301_1.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/luxury-toilet-roll-holder/lh301_2.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/luxury-toilet-roll-holder/lh301_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Mirage - Modern Chrome Glass Bathroom Shelf",
+                categories: [
+                    accessories,
+                ],
+                subcategories: [
+                    bathroomAccessories,
+                ],
+                fullPrice: 49.99,
+                currentPrice: 49.99,
+                description: [
+                    "Add the finishing touches to your bathroom and enhance a modern look with the eye-catching Milano Mirage glass shelf.",
+                    "The contemporary clear design features toughened glass to enable you to store your toiletries, candles or other decorative items. The shelf is supported by a pair of sleek chrome finished solid brass brackets to ensure both strength and durability.",
+                    "Team with other items from the Milano Mirage collection for a stylish and perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 500mm x D 143mm x H 58mm",
+                    "Contemporary design - perfect for modern bathrooms",
+                    "Provides storage space for toiletries or decorative objects",
+                    "Solid brass brackets with chrome finish for guaranteed durability",
+                    "Toughened glass shelf for extra strength",
+                    "Concealed fixings for a neat finish",
+                ],
+                whatsIncluded: [
+                    "Fixing Kit",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-glass-bathroom-shelf/bbs_87003_1.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-glass-bathroom-shelf/bbs_87003_2.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-glass-bathroom-shelf/bbs_87003_3.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-glass-bathroom-shelf/bbs_87003_4.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-glass-bathroom-shelf/bbs_87003_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Arvo - Modern Soap Dish - Chrome",
+                categories: [
+                    accessories,
+                ],
+                subcategories: [
+                    bathroomAccessories,
+                ],
+                fullPrice: 29.99,
+                currentPrice: 29.99,
+                description: [
+                    "Complete your bathroom, en-suite or cloakroom with the stylish Milano Arvo wall-mounted soap dish.",
+                    "Featuring a contemporary design, this wall-mounted soap dish will keep your basin area free from clutter, as well as soap residue. The soap dish has been made from shatterproof frosted glass, while the holder has been crafted from solid brass with a hard-wearing chrome finish.",
+                    "Team with other items from the Milano Arvo collection for a stunning modern look and a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 114mm x D 103mm x H 41mm",
+                    "Contemporary design - perfect for modern bathrooms",
+                    "Wall-mounted installation frees up surface space around your basin",
+                    "Shatterproof frosted glass soap dish",
+                    "Durable solid brass holder with a hard-wearing chrome finish",
+                    "Concealed fixings for a neat finish",
+                ],
+                whatsIncluded: [
+                    "Fixing Kit"
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-soap-dIsh/ba1008ch_ls_1.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-soap-dIsh/ba1008ch_ls_2.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-soap-dIsh/ba1008ch_ls_3.jpg",
+                ],
+            },
+            {
+                name: "Name: Milano Clarus - Modern Towel Ring - Brushed Gold",
+                categories: [
+                    accessories,
+                ],
+                subcategories: [
+                    bathroomAccessories,
+                ],
+                fullPrice: 44.99,
+                currentPrice: 44.99,
+                description: [
+                    "Further elevate the look of your modern bathroom and add those stylish final details with the Milano Clarus brushed gold towel ring.",
+                    "Sure to add a touch of opulence to your bathroom, this towel ring features a brushed gold finish and a contemporary design. The solid brass construction ensures long-lasting durability, while the concealed fixings create a neat and tidy look.",
+                    "Team with other items in the Milano Clarus collection for a bathroom that’s stylish and coordinated.",
+                ],
+                features: [
+                    "Dimensions: Dia. 185mm x D 52mm",
+                    "Contemporary design - perfect for modern bathrooms",
+                    "Wall-mounted installation to keep your towel handy",
+                    "Solid brass construction with a brushed gold finish",
+                    "Concealed fixings for a neat finish",
+                ],
+                whatsIncluded: [
+                    "Fixing Kit",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-towel-ring/ba3007ab_ls_1.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-towel-ring/ba3007ab_ls_2.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-towel-ring/ba3007ab_ls_3.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-towel-ring/ba3007ab_ls_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Oxley - Golden Oak Modern Wall Hung Mirror - 700mm x 500mm",
+                categories: [
+                    accessories,
+                    furniture,
+                ],
+                subcategories: [
+                    bathroomAccessories,
+                    mirrors,
+                ],
+                fullPrice: 129.99,
+                currentPrice: 99.99,
+                description: [
+                    "Add the finishing touches to your bathroom with the Milano Oxley golden oak 500mm x 700mm mirror.",
+                    "This bathroom mirror features a golden oak finish and a minimal design for a modern look.",
+                    "Team with other items from the Milano Oxley Golden Oak furniture collection for a bathroom that’s sleek, stylish and coordinated.",
+                ],
+                features: [
+                    "Dimensions: W 500mm x H 700mm",
+                    "Minimal and contemporary framed design - perfect for any modern bathroom",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with golden oak finish",
+                    "EN1036-2 certified for guaranteed quality assurance",
+                ],
+                whatsIncluded: [],
+                isFeatured: true,
+                isOnSale: true,
+                photos: [
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-wall-hung-mirror/bfm1004go-uv_1.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-wall-hung-mirror/bfm1004go-uv_2.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-wall-hung-mirror/bfm1004go-uv_3.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/modern-wall-hung-mirror/bfm1004go-uv_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Elizabeth - Traditional Glass Bathroom Shelf with Chrome Frame",
+                categories: [
+                    accessories,
+                ],
+                subcategories: [
+                    bathroomAccessories,
+                ],
+                fullPrice: 49.99,
+                currentPrice: 49.99,
+                description: [
+                    "Add a stylish finishing touch to your bathroom with the Milano Elizabeth wall-mounted glass bathroom shelf.",
+                    "With a solid brass frame accentuated by a chrome finish and a toughened glass shelf, strength and durability are guaranteed. Whether it is to hold your luxurious toiletries or to display decorative objects, the classic design of the Elizabeth bathroom shelf will make it a real focal point in your bathroom and will complement any décor.",
+                    "Team with other items from the Milano Elizabeth collection for the perfect traditional bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 465mm x D 143mm x H 60mm",
+                    "Classic and elegant design - perfect for traditional bathrooms",
+                    "Provides storage space for toiletries or decorative objects",
+                    "Solid brass frame with chrome finish for guaranteed durability",
+                    "Toughened glass shelf for extra strength",
+                    "Easy installation using wall-mounted fixings",
+                ],
+                whatsIncluded: [
+                    "Fixing Kit"
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "accessories/bathroom-accessories/traditional-bathroom-shelf/lh305_ls_1_1000_1.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/traditional-bathroom-shelf/lh305_ls_1_1000_2.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/traditional-bathroom-shelf/lh305_ls_1_1000_3.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/traditional-bathroom-shelf/lh305_ls_1_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Elizabeth - Traditional Wall Hung Shower Tidy",
+                categories: [
+                    accessories,
+                ],
+                subcategories: [
+                    showerAccessories,
+                ],
+                fullPrice: 69.99,
+                currentPrice: 69.99,
+                description: [
+                    "Bring a touch of class and elegance to your bathroom with the Milano Elizabeth traditional shower tidy.",
+                    "A must-have bathroom accessory, this shower tidy provides a stylish and practical way to keep your showering essentials neat and organised. Featuring a highly durable chrome finish that complements any decor and a timeless design, the shower tidy has been crafted from solid brass, so you can be assured of quality and durability.",
+                    "Team with other items from the Milano Elizabeth collection for a beautiful traditional look and a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 152mm x D 116mm x H 411mm",
+                    "Classic and elegant design - perfect for traditional bathrooms",
+                    "Stylish and practical storage solution for your showering essentials",
+                    "Solid brass construction with a hard-wearing chrome finish",
+                ],
+                whatsIncluded: [
+                    "Fixing Kit",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "accessories/bathroom-accessories/traditional-wall-hung-shower-tidy/lh316_ls_1_1000_1.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/traditional-wall-hung-shower-tidy/lh316_ls_1_1000_2.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/traditional-wall-hung-shower-tidy/lh316_ls_1_1000_3.jpg",
+                    process.env.CDN_URL + "accessories/bathroom-accessories/traditional-wall-hung-shower-tidy/lh316_ls_1_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Arvo - Modern Stainless Steel Shower Head with Waterblade - Chrome",
+                categories: [
+                    accessories,
+                ],
+                subcategories: [
+                    showerAccessories,
+                ],
+                fullPrice: 189.99,
+                currentPrice: 189.99,
+                description: [
+                    "Create a stunning new look in your bathroom or en-suite with the wall-mounted 200mm x 500mm Milano Arvo shower head.",
+                    "Featuring an ultra-thin design made from anti-corrosive stainless steel with a stylish chrome finish for durability, the shower head offers two relaxing functions to enhance your showering experience: a soothing rainfall effect and refreshing waterblade coverage.",
+                    "Cleaning is made easy thanks to the use of silicone nozzles that help to simply remove limescale deposits. The shower head is suitable for use with a twin shower valve with diverter or a triple shower valve.",
+                    "Enhance the theme in your bathroom with matching items from the Milano Arvo range to create a truly designer look.",
+                ],
+                features: [
+                    "Dimensions: W 200mm x D 500mm x H 25mm",
+                    "Anti-corrosive stainless steel construction with chrome finish",
+                    "Contemporary wall-mounted shower head design",
+                    "Silicone nozzles for easy removal of limescale deposits",
+                    "Luxurious rainfall effect and waterblade coverage",
+                    "Suitable for domestic and commercial plumbing systems",
+                    "Recommended operating pressure: 1.0 bar",
+                    "1/2” inlet connection",
+                    "Long life 10 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "accessories/shower-accessories/shower-head-with-waterblade/sbshwmsq500_ls_1000_1.jpg",
+                    process.env.CDN_URL + "accessories/shower-accessories/shower-head-with-waterblade/sbshwmsq500_ls_1000_2.jpg",
+                    process.env.CDN_URL + "accessories/shower-accessories/shower-head-with-waterblade/sbshwmsq500_ls_1000_3.jpg",
+                    process.env.CDN_URL + "accessories/shower-accessories/shower-head-with-waterblade/sbshwmsq500_ls_1000_4.jpg",
+                    process.env.CDN_URL + "accessories/shower-accessories/shower-head-with-waterblade/sbshwmsq500_ls_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Elizabeth - Traditional Ceramic Flush Lever - Brushed Gold",
+                categories: [
+                    accessories,
+                ],
+                subcategories: [
+                    toiletAccessories,
+                ],
+                fullPrice: 27.99,
+                currentPrice: 27.99,
+                description: [
+                    "Featuring an ergonomic shape for ease of use, the Milano Elizbeth brushed gold ceramic flush lever will add a touch of authentic traditional style to your bathroom.",
+                    "Designed for use with traditional style flush lever cistern toilets with a siphonic mechanism, this beautifully crafted flush lever features a hard-wearing brushed gold finish and a white ceramic handle with detailed indice.",
+                    "The flush lever complements other brushed gold items from the Milano Elizabeth collection, so you can create a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Classic and elegant design - perfect for traditional bathrooms",
+                    "Suitable for toilets that use a flush lever with a siphonic mechanism",
+                    "Made from solid brass with a hard-wearing brushed gold finish",
+                    "Ergonomic ceramic handle with detailed indice",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "accessories/toilet-accessories/flush-lever/bctfl001ab_ls_1000_1.jpg",
+                    process.env.CDN_URL + "accessories/toilet-accessories/flush-lever/bctfl001ab_ls_1000_2.jpg",
+                    process.env.CDN_URL + "accessories/toilet-accessories/flush-lever/bctfl001ab_ls_1000_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Sandringham - Traditional Soft Close Toilet Seat",
+                categories: [
+                    accessories,
+                ],
+                subcategories: [
+                    toiletAccessories,
+                ],
+                fullPrice: 59.99,
+                currentPrice: 44.99,
+                description: [
+                    "This durable soft close seat has been designed for use with the Milano Sandringham traditional close coupled toilet.",
+                    "Made from durable polypropylene, the toilet seat has an easy to clean white finish and soft close hinges to minimise unwanted noise and to reduce wear and tear. The quick release mechanism makes the toilet seat easy to remove for cleaning.",
+                ],
+                features: [
+                    "Dimensions: W 352mm x L 438mm",
+                    "Soft close hinges - minimise noise and reduce wear and tear",
+                    "Quick release mechanism for easy removal and cleaning",
+                    "Top fixing - installs easily from the top of the toilet pan",
+                    "Easy to clean white finish",
+                    "Made from polypropylene for long-lasting durability",
+                    "Suitable for use with the Milano Sandringham close coupled toilet",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: true,
+                photos: [
+                    process.env.CDN_URL + "accessories/toilet-accessories/soft-close-toilet-seat/bcts010_lifestyle_1000_1.jpg",
+                    process.env.CDN_URL + "accessories/toilet-accessories/soft-close-toilet-seat/bcts010_lifestyle_1000_2.jpg",
+                    process.env.CDN_URL + "accessories/toilet-accessories/soft-close-toilet-seat/bcts010_lifestyle_1000_3.jpg",
+                    process.env.CDN_URL + "accessories/toilet-accessories/soft-close-toilet-seat/bcts010_lifestyle_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano - Chrome Square Flush Plate - 150mm x 230mm",
+                categories: [
+                    accessories,
+                ],
+                subcategories: [
+                    toiletAccessories,
+                ],
+                fullPrice: 99.99,
+                currentPrice: 99.99,
+                description: [
+                    "Create a stylish tone in your bathroom with the Milano Novus Dot chrome finish dual flush plate, designed for use with wall hung and back to wall toilet installations. Featuring an attractive modern design, the Novus Dot flush plate fits in seamlessly with any contemporary bathroom layout.",
+                    "Manufactured using hard-wearing ABS plastic to stand up to the challenges of day to day life, you can be assured that durability is as important as looks.",
+                ],
+                features: [
+                    "Dimensions: W 230mm x D 6.5mm x H 150mm",
+                    "Modern, stylish design – ideal for contemporary bathrooms",
+                    "For use with wall hung or back to wall toilet installations",
+                    "Features a dual flush function for choice of flush used",
+                    "Durable ABS plastic construction with quality chrome finish",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "accessories/toilet-accessories/square-flush-plate/bctfp001ch_ls_1000_1.jpg",
+                    process.env.CDN_URL + "accessories/toilet-accessories/square-flush-plate/bctfp001ch_ls_1000_2.jpg",
+                    process.env.CDN_URL + "accessories/toilet-accessories/square-flush-plate/bctfp001ch_ls_1000_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Overton - White Modern Oval Countertop Basin - 480mm x 350mm",
+                categories: [
+                    basins,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                ],
+                fullPrice: 84.99,
+                currentPrice: 69.99,
+                description: [
+                    "The chic and contemporary design of the Milano Overton 480mm x 350mm countertop basin is sure to create a stand-out feature in your bathroom.",
+                    "A great option for modern bathrooms, the Overton basin features eye-catching curved lines and a hard-wearing white glaze that's easy to clean. It has been crafted from premium quality ceramic, giving you a basin that will look like new for years to come.",
+                    "Designed for installation on a workop or vanity unit, the Overton countertop basin does not have any tap-holes, making it perfect for use with one of our wall-mounted or high-rise basin taps.",
+                    "Team with other items from the Milano Overton collection for a bathroom that's stylish and perfectly coordinated.",
+                ],
+                features: [
+                    "Dimensions: W 480mm x D 350mm x H 130mm",
+                    "Modern design - perfect for any contemporary bathroom",
+                    "For installation on a worktop or vanity unit",
+                    "No tap-holes - compatible with wall-mounted or high-rise tap",
+                    "Hard-wearing ceramic with easy to clean white glazed enamel finish",
+                    "No overflow - you will require an unslotted waste or universal waste",
+                    "EN14688 certified for guaranteed quality assurance",
+                    "Long life 20 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: true,
+                isOnSale: true,
+                photos: [
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-oval/bfb2013_hr_a_1000_1.jpg",
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-oval/bfb2013_hr_a_1000_2.jpg",
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-oval/bfb2013_hr_a_1000_3.jpg",
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-oval/bfb2013_hr_a_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Westby - White Modern Rectangular Countertop Basin - 490mm x 390mm",
+                categories: [
+                    basins,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                ],
+                fullPrice: 119.99,
+                currentPrice: 119.99,
+                description: [
+                    "Bring chic designer style to your bathroom with the Milano Westby 490mm x 390mm rectangular countertop basin.",
+                    "Made from premium quality ceramic, this countertop basin features a hard-wearing easy to clean white glaze finish and a sleek, minimal design for a contemporary look.",
+                    "The basin is designed for installation on a worktop or vanity unit and does not have any tap-holes, so why not choose from one of our wall-mounted or high-rise basin taps to complete the look?",
+                    "Team with other items from the Milano Westby collection for a stylish and perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 490mm x D 390mm x H 145mm",
+                    "Modern minimalist design - perfect for any contemporary bathroom",
+                    "For installation on a worktop or vanity unit",
+                    "No tap-holes - compatible with wall-mounted or high-rise tap",
+                    "Hard-wearing ceramic with an easy to clean white glazed enamel finish",
+                    "No overflow - you will require an unslotted waste or universal waste",
+                    "EN14688 certified for guaranteed quality assurance",
+                    "Long life 20 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: true,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-rectangular/bfb2001_hr_1.jpg",
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-rectangular/bfb2001_hr_2.jpg",
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-rectangular/bfb2001_hr_3.jpg",
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-rectangular/bfb2001_hr_4.jpg",
+                ],
+            },
+            {
+                name: "RAK Feeling - Matt Black Modern Round Countertop Basin - 420mm",
+                categories: [
+                    basins,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                ],
+                fullPrice: 229.99,
+                currentPrice: 229.99,
+                description: [
+                    "Give your bathroom a revamp and create a bold and sophisticated look with the RAK Feeling matt black 420mm round countertop basin.",
+                    "Sure to bring a chic spa-style feel to your space, this basin features a matt black finish and clean simple lines. Designed for installation on a worktop or vanity unit, it has been crafted to the highest standards from premium quality Vitreous China, ensuring long-lasting durability.",
+                    "This basin does not have any tap-holes, so why not complete the look with one of our wall-mounted or high-rise basin taps.",
+                    "Team with other items in the RAK Feeling collection for a bathroom that’s stylish and perfectly coordinated.",
+                ],
+                features: [
+                    "Dimensions: W 420mm x D 420mm x H 130mm",
+                    "Contemporary design - perfect for any modern bathroom",
+                    "For installation on a worktop or vanity unit",
+                    "No tap-holes - compatible with wall-mounted or high rise tap",
+                    "Hard-wearing Vitreous China with matt black finish",
+                    "No overflow - you will require an unslotted waste or universal waste",
+                    "Long life 25 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-round/feect4200504asc_co_1000_1.jpg",
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-round/feect4200504asc_co_1000_2.jpg",
+                    process.env.CDN_URL + "basins/counter-top-basins/modern-round/feect4200504asc_co_1000_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Ballam - White Modern Basin with Full Pedestal - 398mm x 498mm",
+                categories: [
+                    basins,
+                ],
+                subcategories: [
+                    pedestalBasins,
+                ],
+                fullPrice: 489.99,
+                currentPrice: 399.99,
+                description: [
+                    "Boasting stunning contemporary looks, the Milano Ballam freestanding basin will create a stand-out feature in your bathroom.",
+                    "Made from durable polymarble, this basin features a seamless one-piece design and smooth curved lines. It has ample wash space and an easy to clean finish.",
+                    "The Ballam basin has a single tap-hole, so you can choose from any of our mono basin taps to complete the look.",
+                ],
+                features: [
+                    "Dimensions: W 398mm x D 498mm x H 850mm",
+                    "Contemporary freestanding one-piece design",
+                    "One tap-hole - for use with mono basin taps",
+                    "Durable polymarble resin with an easy to clean finish",
+                    "Requires a free-running waste",
+                    "No overflow",
+                    "Long life 20 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: true,
+                photos: [
+                    process.env.CDN_URL + "basins/pedestal-basins/modern-with-full-pedestal/bfb1009_hr_ls_1000_a.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/modern-with-full-pedestal/bfb1009_hr_ls_1000_b.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/modern-with-full-pedestal/bfb1009_hr_ls_1000_c.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/modern-with-full-pedestal/bfb1009_co_1000_4.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/modern-with-full-pedestal/bbs_88860_image.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/modern-with-full-pedestal/bfb1009-uv_milano.jpg",
+                ],
+            },
+            {
+                name: "Milano Ballam - Modern Close Coupled Toilet and Pedestal Basin Set",
+                categories: [
+                    basins,
+                    toilets,
+                    furniture,
+                ],
+                subcategories: [
+                    pedestalBasins,
+                    standardToilets,
+                    vanityUnits
+                ],
+                fullPrice: 339.99,
+                currentPrice: 339.99,
+                description: [
+                    "The Milano Ballam modern close coupled toilet and pedestal basin set will give your bathroom, en-suite or cloakroom a revamp and a stylish new look.",
+                    "Supplied with the full pedestal, which conceals unsightly pipework from view, the Ballam basin features curved lines and ample wash space. It has been made from premium quality ceramic with a hard-wearing white glaze that’s easy to clean. The basin has a single tap-hole, making it perfect for use with any of our mono basin taps.",
+                    "The matching close coupled toilet comes with the water-saving dual flush cistern and seat. The seat uses soft close hinges to minimise noise and to reduce wear and tear.",
+                ],
+                features: [
+                    "Toilet Dimensions: W 370mm x D 650mm x H 820mm",
+                    "Basin Dimensions: W 500mm x D 416mm x H 823mm",
+                    "Contemporary curved design - perfect for modern bathrooms",
+                    "Water-saving dual flush cistern - better for the environment and your bills",
+                    "Soft close seat - minimises noise and reduces wear and tear",
+                    "Hard-wearing ceramic with an easy to clean white glazed enamel finish",
+                    "Full pedestal conceals pipework for a neat and tidy finish",
+                    "One tap-hole - compatible with mono basin taps",
+                    "With overflow - you will require a slotted waste or universal waste",
+                    "Basin is EN14688 certified for guaranteed quality assurance",
+                    "Long life 20 year guarantee",
+                ],
+                whatsIncluded: [
+                    "Milano Ballam - Pedestal Basin",
+                    "Milano Ballam - Close Coupled Toilet with Soft Close Seat"
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "basins/pedestal-basins/toilet-and-basin-set/1_ccptbsb008_ls_1000_1.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/toilet-and-basin-set/1_ccptbsb008_ls_1000_2.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/toilet-and-basin-set/1_ccptbsb008_ls_1000_3.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/toilet-and-basin-set/1_ccptbsb008_ls_1000_4.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/toilet-and-basin-set/1_ccptbsb008_ls_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Windsor - Traditional 2 Tap-Hole Basin with Full Pedestal - 590mm",
+                categories: [
+                    basins,
+                ],
+                subcategories: [
+                    pedestalBasins,
+                ],
+                fullPrice: 99.99,
+                currentPrice: 99.99,
+                description: [
+                    "Create a timeless and elegant bathroom with the floor-standing Milano Windsor 590mm basin. Incorporating plenty of wash space, the basin features an authentic traditional design, making it a great statement piece for your bathroom.",
+                    "The basin has two tap holes and comes complete with the full pedestal, which conceals unsightly pipework. It has an easy to clean white glazed finish that will look like new for years to come.",
+                    "Team with any of our traditional basin pillar taps to complete the look.",
+                    "Combine with other items from the Milano Windsor collection for a stunning traditional bathroom.",
+                ],
+                features: [
+                    "Dimensions: W: 590mm x D 495mm x H 920mm",
+                    "Traditional design for a timeless and elegant look",
+                    "Full pedestal conceals unsightly pipework for a neat and tidy finish",
+                    "Two tap-holes - compatible with basin pillar taps",
+                    "Hard-wearing ceramic with an easy to clean white glazed enamel finish",
+                    "With overflow - you will require a slotted waste or universal waste",
+                    "With chain hole",
+                    "EN14688 certified for guaranteed quality assurance",
+                    "Long life 20 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "basins/pedestal-basins/traditional-with-full-pedestal/hlc02931_ls_new_1000_1.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/traditional-with-full-pedestal/hlc02931_ls_new_1000_2.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/traditional-with-full-pedestal/hlc02931_ls_new_1000_3.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/traditional-with-full-pedestal/hlc02931_ls_new_1000_4.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/traditional-with-full-pedestal/hlc02931_ls_new_1000_5.jpg",
+                    process.env.CDN_URL + "basins/pedestal-basins/traditional-with-full-pedestal/hlc02931_ls_new_1000_6.jpg",
+                ],
+            },
+            {
+                name: "Milano Dalton - 820mm Double Basin with Chrome Washstand",
+                categories: [
+                    basins,
+                    furniture,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                    washstands,
+                    vanityUnits,
+                ],
+                fullPrice: 379.99,
+                currentPrice: 259.99,
+                description: [
+                    "Create a his-and-hers look and bring stunning contemporary style to your bathroom with the Milano Dalton 820mm double basin and chrome washstand.",
+                    "The attractive washstand has been made from durable stainless steel with a brilliant chrome finish that complements any bathroom décor. It features clean lines and a minimal design, and has an integral towel rail, so you can keep your towels close to hand.",
+                    "Crafted from premium quality ceramic, the stylish double basin has a hard-wearing white glaze finish that’s easy to clean. There’s ample wash space and each basin has a single tap-hole that’s perfect for use with any of our mono basin taps.",
+                    "Team with other items from the Milano Dalton collection for a stunning modern bathroom and a perfectly coordinated look.",
+                ],
+                features: [
+                    "Dimensions: W 820mm x D 420mm H 900mm",
+                    "Modern design - perfect for contemporary bathrooms",
+                    "Integral towel rail",
+                    "Single tap-hole in each basin - for use with mono basin taps",
+                    "Washstand made from stainless steel with a high quality chrome finish (requires assembly)",
+                    "Hard-wearing ceramic with easy to clean white glazed enamel finish",
+                    "With overflow - you will require a slotted waste or universal waste",
+                    "EN14688 certification to guarantee quality assurance",
+                    "Long life guarantees for basin (20 years) and washstand (10 years)",
+                    "Washstand may require shortening – please see our Guides section for more information",
+                ],
+                whatsIncluded: [
+                    "Fixing Kit",
+                ],
+                isFeatured: false,
+                isOnSale: true,
+                photos: [
+                    process.env.CDN_URL + "basins/washstands/double/bcws820c_ls_1000_1.jpg",
+                    process.env.CDN_URL + "basins/washstands/double/bcws820c_ls_1000_2.jpg",
+                    process.env.CDN_URL + "basins/washstands/double/bcws820c_ls_1000_3.jpg",
+                    process.env.CDN_URL + "basins/washstands/double/bcws820c_ls_1000_4.jpg",
+                    process.env.CDN_URL + "basins/washstands/double/bcws820c_ls_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Irwell - White Modern Left Hand Corner Bath with Panel - 1500mm x 1000mm",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    cornerBaths,
+                    smallBaths,
+                ],
+                fullPrice: 349.99,
+                currentPrice: 349.99,
+                description: [
+                    "Featuring a space saving corner design, the Milano Irwell 1500mm x 1000mm left hand corner bath is a great option for small bathrooms. The bath combines the luxury of a large bathing space with the practicality of a showering area.",
+                    "Supplied with the panel, this corner bath features stylish curves, allowing you to relax and bathe in comfort. It has been crafted from premium quality Lucite acrylic, which is highly durable and resistant to stains and scratches.",
+                ],
+                features: [
+                    "Dimensions: L 1500mm x W 1000mm x H 565mm",
+                    "Space-saving corner design - ideal for small bathrooms",
+                    "Premium quality Lucite acrylic construction for long-lasting durability",
+                    "Reinforced with resin and fibreglass - makes the bath resistant to everyday wear and tear, stains and superficial scratches",
+                    "Hard-wearing white gloss finish makes your bath easier to clean",
+                    "Fully encapsulated baseboard covers the full base of the bath - adds extra strength and rigidity",
+                    "220 litre capacity for a luxurious bathing experience",
+                    "No pre-drilled tap holes giving you the option of deck-mounted or wall-mounted bath taps",
+                    "Includes panel - conceals unsightly pipework",
+                    "Height adjustable feet allows for easier levelling on uneven floors",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                    "Long life 10 year guarantee",
+                ],
+                whatsIncluded: [
+                    "Panel",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/corner-baths/modern-left-hand-with-panel/wbywhnu771l-1_ls_2_1000_1.jpg",
+                    process.env.CDN_URL + "baths/corner-baths/modern-left-hand-with-panel/wbywhnu771l-1_ls_2_1000_2.jpg",
+                    process.env.CDN_URL + "baths/corner-baths/modern-left-hand-with-panel/wbywhnu771l-1_ls_2_1000_3.jpg",
+                    process.env.CDN_URL + "baths/corner-baths/modern-left-hand-with-panel/wbywhnu771l-1_ls_2_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Newby - White Modern Reversible Corner Bath with Panel - 1350mm x 1350mm",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    cornerBaths,
+                    smallBaths,
+                ],
+                fullPrice: 599.99,
+                currentPrice: 499.99,
+                description: [
+                    "The Milano Newby 1350mm x 1350mm corner bath, complete with panel, provides a relaxing and indulgent bathing experience.",
+                    "Featuring a space-saving corner design and an easy to clean white gloss finish, this bath is a great option for smaller bathrooms. It has been crafted from premium quality Lucite acrylic, which is highly durable, warm to the touch and scratch resistant, giving you a bath that will last for years to come.",
+                ],
+                features: [
+                    "Dimensions: L 1350mm x W 1350mm x H 560mm",
+                    "Space-saving corner design - ideal for small bathrooms",
+                    "Premium quality Lucite acrylic construction for long-lasting durability",
+                    "Reinforced with resin and fibreglass - makes the bath resistant to everyday wear and tear, stains and superficial scratches",
+                    "Hard-wearing white gloss finish makes your bath easier to clean",
+                    "Fully encapsulated baseboard covers the full base of the bath - adds extra strength and rigidity",
+                    "220 litre capacity for a luxurious bathing experience",
+                    "No pre-drilled tap holes giving you the option of deck-mounted or wall-mounted bath taps",
+                    "Includes panel - conceals unsightly pipework",
+                    "Height adjustable feet allows for easier levelling on uneven floors",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                    "Long life 10 year guarantee",
+                ],
+                whatsIncluded: [
+                    "Panel",
+                ],
+                isFeatured: false,
+                isOnSale: true,
+                photos: [
+                    process.env.CDN_URL + "baths/corner-baths/modern-reversible-with-panel/bdl0941_1000_1.jpg",
+                    process.env.CDN_URL + "baths/corner-baths/modern-reversible-with-panel/bdl0941_1000_2.jpg",
+                    process.env.CDN_URL + "baths/corner-baths/modern-reversible-with-panel/bdl0941_1000_3.jpg",
+                    process.env.CDN_URL + "baths/corner-baths/modern-reversible-with-panel/bdl0941_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Newby - Whirlpool Corner Spa Bath with Panel - 1200mm x 1200mm",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    cornerBaths,
+                    standardBaths,
+                ],
+                fullPrice: 1699.99,
+                currentPrice: 1699.99,
+                description: [
+                    "Soak in style and comfort and bring a touch of luxury to your bathroom with the Milano Newby 1200mm x 1200mm corner whirlpool bath",
+                    "This robust and sturdy whirlpool spa bath features a space-saving corner design and has a 218 litre capacity for a luxurious and indulgent bathing experience. It is resistant to everyday wear and tear, giving you a bath that will look like new for many years.",
+                    "Choose from a great range of Milano baths taps to complete the look of the Newby corner bath.",
+                ],
+                features: [
+                    "6 whirlpool jets for the ultimate in relaxation and a spa-like experience",
+                    "Dimensions: L 1200mm x W 1200mm x H 560mm",
+                    "Space-saving corner design",
+                    "Includes bath waste",
+                    "Premium quality Lucite acrylic construction - makes the bath resistant to everyday wear and tear, stains and superficial scratches",
+                    "Reinforced with resin and fibreglass for strength and durability",
+                    "Hard-wearing white gloss finish makes your bath easier to clean",
+                    "Fully encapsulated baseboard covers the full base of the bath - adds extra strength and rigidity",
+                    "218 litre capacity for a luxurious bathing experience",
+                    "No pre-drilled tap holes giving you the option of deck-mounted or wall-mounted bath taps",
+                    "Includes panel - conceals unsightly pipework",
+                    "Height adjustable feet allows for easier levelling on uneven floors",
+                    "Features a self-draining system and child safety suction",
+                    "Whirlpool pump - 240v, 650W 3/4HP",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                    "Long life 10 year guarantee",
+                ],
+                whatsIncluded: [
+                    "Panel",
+                    "Bath Waste",
+                ],
+                isFeatured: true,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/corner-baths/whirlpool-spa-with-panel/tr-lamvl_ls_new_1000_1.jpg",
+                    process.env.CDN_URL + "baths/corner-baths/whirlpool-spa-with-panel/tr-lamvl_ls_new_1000_2.jpg",
+                    process.env.CDN_URL + "baths/corner-baths/whirlpool-spa-with-panel/tr-lamvl_ls_new_1000_3.jpg",
+                    process.env.CDN_URL + "baths/corner-baths/whirlpool-spa-with-panel/tr-lamvl_ls_new_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Towneley - 1750mm x 730mm Double Ended Freestanding Bath with Base",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    freestandingBaths,
+                ],
+                fullPrice: 824.99,
+                currentPrice: 824.99,
+                description: [
+                    "If there’s one bath that’s going to add stunning traditional style to your bathroom, then the Milano Towneley double ended freestanding slipper bath could be just what you’re looking for.",
+                    "Featuring elegant looks and a double ended slipper style design, this bath provides an indulgent and relaxing bathing experience. The high ends support the neck and shoulders ensuring total comfort.",
+                    "The bath has been crafted from double-skinned scratch-resistant acrylic - the two sheets of acrylic are strengthened with fibreglass, insulated with foil and bonded together with resin. The bath is then hand finished. Thanks to the thermal sheets, the water stays warmer for 60% longer than a standard bath.",
+                    "Add the finishing touches with a Milano freestanding or wall-mounted bath tap and team with other items from the Towneley collection for a beautiful traditional bathroom and a perfectly coordinated look.",
+                ],
+                features: [
+                    "Dimensions: L 1750mm x W 730mm x H 740mm",
+                    "Double ended slipper design for a classic and elegant look",
+                    "Beautiful centrepiece for your bathroom",
+                    "Crafted from twin-skinned Lucite acrylic - makes the bath highly durable",
+                    "Bath thickness: 14mm",
+                    "Exceptionally rigid and resistant to stains and scuffs",
+                    "Volume: 195 litres",
+                    "Pre-drilled waste holes",
+                    "Includes base",
+                    "Concealed adjustable legs for easier levelling on uneven floors",
+                    "Hidden metal frame for additional strength - fully encapsulated baseboard",
+                    "No tap-holes - suitable for use with wall mounted or freestanding bath taps",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/freestanding-baths/double-ended-with-base/fsb036_ls_1000_1.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/double-ended-with-base/fsb036_ls_1000_2.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/double-ended-with-base/fsb036_ls_1000_3.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/double-ended-with-base/fsb036_ls_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Altcar - Stone Grey Modern Freestanding Bath - 1670mm x 730mm",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    freestandingBaths,
+                ],
+                fullPrice: 924.99,
+                currentPrice: 924.99,
+                description: [
+                    "With the Milano Altcar 1670mm x 730mm stone grey freestanding bath you get eye-catching designer style and a luxurious bathing experience.",
+                    "A gorgeous centrepiece for your bathroom, the Altcar freestanding bath features a stone grey finish and a desirable oval shape. The spacious bathing area and curved lines means you can enjoy a totally relaxing and comfortable soak.",
+                    "The premium quality Lucite acrylic construction is highly durable and resistant to stains and scuffs, giving you a bath that will look like new for years to come. What’s more, the bath includes a push button waste and chrome trim overflow for those all-important finishing touches.",
+                    "Combine with a Milano freestanding or wall-mounted bath tap and other items in the Altcar collection for a stunning contemporary look.",
+                ],
+                features: [
+                    "Dimensions: L 1670mm x W 730mm x H 580mm",
+                    "Contemporary and desirable oval shape - a stunning centrepiece for your bathroom",
+                    "Stone grey exterior finish (RAL 7024)",
+                    "Crafted from premium quality Lucite acrylic - for long-lasting durability",
+                    "Exceptionally rigid and resistant to stains and scuffs",
+                    "Includes push button waste for your convenience and to ensure a perfect fit",
+                    "185 litre capacity for a luxurious bathing experience",
+                    "Hidden metal frame and fully encapsulated baseboard provides additional strength",
+                    "Concealed adjustable legs for easier levelling on uneven floors",
+                    "No tap-holes - suitable for wall mounted or freestanding taps",
+                    "With chrome trim overflow",
+                    "Long life 10 year guarantee",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                ],
+                whatsIncluded: [
+                    "White Push Button Waste",
+                    "Chrome Trim Overflow",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/freestanding-baths/modern-freestanding/fsb038sg_ls_1000_1.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/modern-freestanding/fsb038sg_ls_1000_2.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/modern-freestanding/fsb038sg_ls_1000_3.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/modern-freestanding/fsb038sg_ls_1000_4.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/modern-freestanding/fsb038sg_ls_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Overton - White Modern Oval Double-Ended Freestanding Bath - 1800mm x 750mm",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    freestandingBaths,
+                ],
+                fullPrice: 1099.99,
+                currentPrice: 1099.99,
+                description: [
+                    "Featuring a contemporary and desirable oval shape, the Milano Overton 1800mm freestanding bath is a stunning centrepiece for your bathroom.",
+                    "Incorporating a spacious bathing area, this bath is perfect if you’re serious about relaxation and indulgence.",
+                    "The Overton bath has been crafted from premium quality Lucite double skinned acrylic, which is exceptionally rigid and resistant to stains and scuffs.",
+                    "Team with one of our freestanding or wall-mounted bath taps and other items from the Milano Overton collection for a stunning contemporary look and a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: L 1800mm x W 750mm x H 580mm",
+                    "Contemporary and desirable oval shape - a stunning centrepiece for your bathroom",
+                    "Modern double ended design for total comfort",
+                    "Crafted from premium quality Lucite acrylic - for long-lasting durability",
+                    "225 litre capacity for a luxurious bathing experience",
+                    "Exceptionally rigid and resistant to stains and scuffs",
+                    "Hidden metal frame and fully encapsulated baseboard provides additional strength",
+                    "Includes waste for your convenience and to ensure a perfect fit",
+                    "No tap-holes - suitable for use with wall mounted or freestanding bath taps only",
+                    "Built-in overflow provides a neat finish",
+                    "Concealed adjustable legs for easier levelling on uneven floors",
+                    "Long life 10 year guarantee",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                ],
+                whatsIncluded: [
+                    "White Push Button Waste",
+                    "Chrome Trim Overflow with Overflow Pipe",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/freestanding-baths/modern-oval-double-ended/fsb017_ls_1_1000_1.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/modern-oval-double-ended/fsb017_ls_1_1000_2.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/modern-oval-double-ended/fsb017_ls_1_1000_3.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/modern-oval-double-ended/fsb017_ls_1_1000_4.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/modern-oval-double-ended/fsb017_ls_1_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Elswick - White Modern Square Double-Ended Freestanding Bath - 1615mm x 720mm",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    freestandingBaths,
+                ],
+                fullPrice: 924.99,
+                currentPrice: 924.99,
+                description: [
+                    "Bring a striking feature to your bathroom and enjoy an indulgent bathing experience with the Milano Elswick 1615mm x 720mm double-ended freestanding bath.",
+                    "The Elswick freestanding bath comes with a choice of overflow finish including, chrome, brushed gold, oil rubbed bronze, matt black, brushed copper, brushed nickel and gun metal grey - just make your selection from the options above.",
+                    "A stunning centrepiece for your bathroom, this bath features gently angled ends and a double-ended design, providing the ultimate in comfort and luxury. It has a robust and sturdy construction and is resistant to stains and scuffs, giving you a bath that you can enjoy for years to come.",
+                    "Team with one of our freestanding or wall-mounted bath taps and other items from the Milano Elswick collection for a stunning modern look and a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: L 1615mm x W 720mm x H 585mm",
+                    "Contemporary angular shape - a stunning centrepiece for your bathroom",
+                    "Modern double ended design for total comfort",
+                    "Crafted from premium quality Lucite acrylic - for long-lasting durability",
+                    "238 litre capacity for a luxurious bathing experience",
+                    "Exceptionally rigid and resistant to stains and scuffs",
+                    "Hidden metal frame and fully encapsulated baseboard provides additional strength",
+                    "Includes waste for your convenience and to ensure a perfect fit",
+                    "No tap-holes - suitable for use with wall-mounted or freestanding bath taps only",
+                    "Built-in overflow provides a neat finish",
+                    "Concealed adjustable legs for easier levelling on uneven floors",
+                    "Long life 10 year guarantee",
+                ],
+                whatsIncluded: [
+                    "White Push Button Waste",
+                    "Overflow with Overflow Pipe",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/freestanding-baths/square-double-ended/fsb019mvl_ls_1000_1.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/square-double-ended/fsb019mvl_ls_1000_2.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/square-double-ended/fsb019mvl_ls_1000_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Richmond - White Traditional Freestanding Bath - 1730mm x 780mm",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    freestandingBaths,
+                ],
+                fullPrice: 699.99,
+                currentPrice: 699.99,
+                description: [
+                    "The Milano Richmond 1730mm freestanding bath features a classic design that looks equally stylish in both modern and traditional bathrooms.",
+                    "Crafted from scratch-resistant acrylic, this exceptionally rigid and durable freestanding bath provides a relaxing spa-like bathing experience.",
+                    "The bath includes a choice of decorative claw feet in black, white, brushed gold, oil rubbed bronze and chrome finishes - simply make your selection from the options above.",
+                    "Combine with other items from the Milano Richmond collection for a stunning contemporary bathroom.",
+                    "Add the finishing touches with Milano bath taps and team with other items from the Richmond collection for a stunning traditional look and a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: L 1730mm x W 780mm x H 650mm",
+                    "Bath feet available in a choice of finishes - Brushed Gold, Oil Rubbed Bronze, Chrome, White and Black",
+                    "Traditional roll top design for an elegant look and a beautiful centrepiece",
+                    "Double ended design allows you to bathe comfortably at either end",
+                    "Crafted from twin-skinned Lucite acrylic - makes the bath highly durable",
+                    "205 litre capacity for a luxurious bathing experience",
+                    "Bath thickness: 14mm",
+                    "Exceptionally rigid and resistant to stains and scuffs",
+                    "No pre-drilled tap-holes - not suitable for drilling",
+                    "Pre-drilled waste holes",
+                    "Long life 10 year guarantee",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional/fsb004-c_ls_new_1000_1.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional/fsb004-c_ls_new_1000_2.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional/fsb004-c_ls_new_1000_3.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional/fsb004-c_ls_new_1000_4.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional/fsb004-c_ls_new_1000_5.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional/fsb004-c_ls_new_1000_6.jpg",
+                ],
+            },
+            {
+                name: "Milano Hest - Stone Grey Traditional Double-Ended Freestanding Bath - 1795mm x 785mm",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    freestandingBaths,
+                ],
+                fullPrice: 699.99,
+                currentPrice: 699.99,
+                description: [
+                    "The Milano Hest 1795mm double-ended roll top freestanding bath combines classic design with an on-trend stone grey exterior for a stand-out focal point.",
+                    "The bath is made from twin-skinned reinforced Lucite acrylic, making it exceptionally rigid and resistant to stains and scuffs, so you can be assured of great durability. The double-ended design and sloped sides provide a truly comfortable bathing experience.",
+                    "Complete and enhance the look with the Milano Elizabeth traditional style chrome deck-mounted, freestanding or wall-mounted bath taps.",
+                ],
+                features: [
+                    "Dimensions: L 1795mm x W 785mm x H 620mm",
+                    "Double-ended roll top design - perfect for any traditional bathroom",
+                    "Stone grey exterior finish (RAL 7024)",
+                    "Decorative chrome feet add a luxury touch",
+                    "Crafted from twin-skinned Lucite acrylic - makes the bath highly durable",
+                    "Exceptionally rigid and resistant to stains and scuffs",
+                    "Can be used with deck-mounted, wall mounted or freestanding bath taps",
+                    "No pre-drilled tap-holes - suitable for drilling",
+                    "Volume: 212 litres - for a luxurious bathing experience",
+                    "Bath thickness: 14mm",
+                    "Long life 10 year guarantee",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional-double-ended/fsb041sgc_ls_new_1000_1.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional-double-ended/fsb041sgc_ls_new_1000_2.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional-double-ended/fsb041sgc_ls_new_1000_3.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional-double-ended/fsb041sgc_ls_new_1000_4.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional-double-ended/fsb041sgc_ls_new_1000_5.jpg",
+                    process.env.CDN_URL + "baths/freestanding-baths/traditional-double-ended/fsb041sgc_ls_new_1000_6.jpg",
+                ],
+            },
+            {
+                name: "Milano Newby - 1675mm x 850mm Right Hand P-Shape Shower Bath - Choice of Panels, Screen and Waste",
+                categories: [
+                    baths,
+                    showers,
+                ],
+                subcategories: [
+                    showerBaths,
+                ],
+                fullPrice: 319.99,
+                currentPrice: 319.99,
+                description: [
+                    "Revamp your bathroom and maximise space with the stylish Milano Newby right hand p-shape shower bath.",
+                    "The Milano Newby shower bath is available with a choice of side and end panels, glass screen and waste - simply select what you require from the dropdown options above.",
+                    "Featuring curved lines and plenty of space for both bathing and showering, this British made shower bath has been crafted from premium quality Lucite acrylic, which is highly durable and resistant to stains and scuffs. Reinforced with resin and fibreglass and designed to withstand the rigours of daily use, you can be sure this shower bath will give you many years of use.",
+                    "Team with other items in the Milano Newby collection for a stylish modern look and a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "L 1675mm x W 850mm x H 555mm",
+                    "Side panel, end panel, screen and waste options to complete your shower bath installation",
+                    "Premium quality Lucite acrylic construction for long-lasting durability",
+                    "Reinforced with resin and fibreglass - makes the bath resistant to everyday wear and tear, stains and superficial scratches",
+                    "Hard-wearing white gloss finish makes your bath easier to clean",
+                    "230 litre capacity for a relaxing and comfortable soak",
+                    "Fully encapsulated baseboard covers the full base of the bath - adds extra strength and rigidity",
+                    "No pre-drilled tap holes giving you the option of deck-mounted or wall-mounted bath taps",
+                    "Height adjustable feet for easier levelling on uneven floors",
+                ],
+                whatsIncluded: [],
+                isFeatured: true,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/shower-baths/right-hand-p-shape/tr-sol1785l-c_1000_1.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/right-hand-p-shape/tr-sol1785l-c_1000_2.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/right-hand-p-shape/tr-sol1785l-c_1000_3.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/right-hand-p-shape/tr-sol1785l-c_1000_4.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/right-hand-p-shape/tr-sol1785l-c_1000_5.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/right-hand-p-shape/tr-sol1785l-c_1000_6.jpg",
+                ],
+            },
+            {
+                name: "Milano Elswick - Standard Single Ended Shower Bath with Smoked Glass Bath Screen - 1700mm x 750mm",
+                categories: [
+                    baths,
+                    showers,
+                ],
+                subcategories: [
+                    showerBaths,
+                    standardBaths,
+                ],
+                fullPrice: 449.99,
+                currentPrice: 379.99,
+                description: [
+                    "Bring a luxury, designer feel to your bathroom with the Milano Elswick 1700mm x 750mm single ended shower bath, complete with smoked glass bath screen.",
+                    "With the Elswick bath you can choose to add side and end panels to complete your new bath installation - just make your selection from the options above.",
+                    "Providing a comfortable bathing experience, the Elswick bath boasts a robust and sturdy construction with a hard-wearing white gloss finish that’s easy to clean. It does not have any pre-drilled tap-holes, which allows you to choose wall-mounted or deck-mounted taps to complete the look.",
+                    "The included bath screen features smoked glass for a unique and stylish look. It uses 6mm toughened glass with an easy-clean protective coating, making cleaning a breeze.",
+                    "Combine with other items from the Milano Elswick collection for a stylish and coordinated bathroom.",
+                ],
+                features: [
+                    "Bath Dimensions: 1700mm x 750mm x H 550mm",
+                    "Bath Screen Dimensions: W 800mm x H 1400mm",
+                    "Easy-clean 6mm toughened glass bath screen",
+                    "Side and end panel options to complete your bath installation",
+                    "Option to add a bath waste and trap",
+                    "Premium quality Lucite acrylic construction - makes the bath resistant to everyday wear and tear, stains and superficial scratches",
+                    "Reinforced with resin and fibreglass for strength and durability",
+                    "Hard-wearing white gloss finish makes your bath easier to clean",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: true,
+                photos: [
+                    process.env.CDN_URL + "baths/shower-baths/single-ended-with-screen/ssebelspansmb_ls_1000_1.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/single-ended-with-screen/ssebelspansmb_ls_1000_2.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/single-ended-with-screen/ssebelspansmb_ls_1000_3.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/single-ended-with-screen/ssebelspansmb_ls_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Farington - Standard Single Ended Bath with Black Sliding Bath Screen and Side Panel",
+                categories: [
+                    baths,
+                    showers,
+                ],
+                subcategories: [
+                    showerBaths,
+                    standardBaths,
+                ],
+                fullPrice: 549.99,
+                currentPrice: 549.99,
+                description: [
+                    "Create a look that’s bold and contemporary with the Milano Farington single ended bath, complete with side panel and black sliding bath screen.",
+                    "The Farington bath is available in a choice of sizes and there’s also the option to add a bath waste and trap - just make your selection from the options above.",
+                    "With the Farington bath you get plenty of bathing space for a relaxing and comfortable soak. It has been reinforced with resin and fibreglass, giving you a bath that will look like new for many years.",
+                    "The frameless sliding bath screen is both stylish and practical. It features a black profile and uses 6mm toughened glass with an easy-clean protective coating. With a magnetic seal to ensure the door stays shut and watertight, the sliding bath screen creates an enclosed area, helping to keep your bathroom floor protected from splashes of water when taking a shower.",
+                    "Combine with other items in the Milano Farington collection for a stunning modern look and a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Choice of bath sizes for the perfect fit",
+                    "Option to add a bath waste and trap",
+                    "Includes side panel",
+                    "Premium quality 4mm Lucite acrylic construction for long-lasting durability",
+                    "Reinforced with resin and fibreglass - makes the bath resistant to everyday wear and tear, stains and superficial scratches",
+                    "Hard-wearing white gloss finish makes your bath easier to clean",
+                    "Fully encapsulated baseboard covers the full base of the bath - adds extra strength and rigidity",
+                    "No pre-drilled tap holes giving you the option of wall-mounted or deck-mounted bath taps",
+                    "Height adjustable feet for easier levelling on uneven floors",
+                    "Bath screen dimensions: W 1700mm x H 1400mm",
+                    "Easy-clean 6mm toughened glass bath screen",
+                    "Bath screen entry width: 730mm",
+                    "Reversible design so entrance can be on either side",
+                    "Rolling mechanism for smooth opening and closing",
+                    "Magnetic seal ensures the door stays shut and watertight",
+                    "Long life 10 year guarantee for bath and 5 years for bath screen",
+                ],
+                whatsIncluded: [
+                    "Milano Farington - Single Ended Bath",
+                    "Milano Nero - Black Frameless Sliding Bath Screen",
+                    "Side Panel",
+                ],
+                isFeatured: true,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/shower-baths/standard-single-ended-with-sliding-screen/ssebsbsb_ls_new_1000_1.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/standard-single-ended-with-sliding-screen/ssebsbsb_ls_new_1000_2.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/standard-single-ended-with-sliding-screen/ssebsbsb_ls_new_1000_3.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/standard-single-ended-with-sliding-screen/ssebsbsb_ls_new_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Hest - Stone Grey Traditional Freestanding Corner Shower Bath with Black Feet and Black Grid Screen - 1685mm x 750mm - Left/Right Hand Options",
+                categories: [
+                    baths,
+                    showers,
+                ],
+                subcategories: [
+                    showerBaths,
+                    cornerBaths,
+                    freestandingBaths,
+                ],
+                fullPrice: 799.99,
+                currentPrice: 799.99,
+                description: [],
+                features: [
+                    "Bath Dimensions: L 1685mm x W 750mm x H 640mm",
+                    "Bath Screen Dimensions: W 800mm x H 1400mm",
+                    "Easy-clean 6mm toughened glass bath screen",
+                    "Black grid pattern is printed on to the outside of the glass for easier cleaning",
+                    "Left and right hand corner options to suit your bathroom design",
+                    "Decorative black feet add a luxury touch",
+                    "Stone grey exterior finish (RAL 7024)",
+                    "Premium quality twin-skinned Lucite acrylic construction - makes the bath resistant to everyday wear and tear, stains and superficial scratches",
+                    "Hard-wearing white gloss interior finish makes your bath easier to clean",
+                    "202 litre capacity for a luxurious bathing experience",
+                    "No pre-drilled tap holes giving you a choice of tap style - deck-mounted, wall-mounted or freestanding",
+                    "Reinforced with resin and fibreglass for strength and durability",
+                    "Bath thickness: 14mm",
+                    "Long life 10 year (bath) and 5 year (screen) guarantees",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                ],
+                whatsIncluded: [
+                    "Milano Barq - Black Grid Bath Screen",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/shower-baths/traditional-freestanding-corner/bssb2thsgbg_co_1000_1.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/traditional-freestanding-corner/bssb2thsgbg_co_1000_2.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/traditional-freestanding-corner/bssb2thsgbg_co_1000_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Elswick - Whirlpool Square Spa Shower Bath with Black Screen",
+                categories: [
+                    baths,
+                    showers,
+                ],
+                subcategories: [
+                    showerBaths,
+                ],
+                fullPrice: 899.99,
+                currentPrice: 499.99,
+                description: [
+                    "Bring a luxury, designer feel to your bathroom and enjoy the most comfortable bathing and shower experience with the Milano Elswick square whirlpool spa shower bath, complete with black screen",
+                    "With the Elswick whirlpool shower bath you can choose to add 6 or 14 whirlpool and airspa jets for the ultimate in relaxation and a spa-like experience. Whirlpool jets push water into the bath, while airspa jets blow air into the bath - why not combine both whirlpool and airspa jets for a truly indulgent soak. The shower bath also comes in a choice of two sizes and left / right hand designs to suit your bathroom space. There’s also the option to include panels to complete your new shower bath installation.",
+                    "With a modern square design for a stylish and contemporary look, this spa whirlpool shower bath has plenty of bathing space for a relaxing soak, as well as ample room for a comfortable shower too. Boasting a robust and sturdy construction for long-lasting durability, the shower bath features a white gloss finish that’s hard-wearing and easy to keep clean, ensuring it looks like new for many years.",
+                    "Team with Milano bath taps and other items in the Elswick collection for a bathroom that’s stylish and coordinated.",
+                ],
+                features: [
+                    "Option to add 6 or 14 whirlpool jets and airspa jets - for the ultimate in relaxation and a spa-like experience",
+                    "Choice of size and left / right hand designs to suit your bathroom",
+                    "Side panel and end panel options to complete your shower bath installation",
+                    "6mm toughened safety glass black bath screen",
+                    "Includes bath waste",
+                    "Premium quality Lucite acrylic construction - makes the bath resistant to everyday wear and tear, stains and superficial scratches",
+                    "Reinforced with resin and fibreglass for strength and durability",
+                    "Hard-wearing white gloss finish makes your bath easier to clean",
+                    "Fully encapsulated baseboard covers the full base of the bath - adds extra strength and rigidity",
+                    "No pre-drilled tap holes giving you the option of wall-mounted or deck-mounted bath taps",
+                    "Height adjustable feet for easier levelling on uneven floors",
+                    "Features a self-draining system and child safety suction",
+                    "Whirlpool pump - 240v, 650W 3/4HP",
+                    "Air spa blower - 240v, 400-500W",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                    "Long life 10 year guarantee for bath and 5 years for bath screen",
+                ],
+                whatsIncluded: [
+                    "Milano Nero - Black L Shaped Bath Shower Screen",
+                    "Bath Waste",
+                ],
+                isFeatured: true,
+                isOnSale: true,
+                photos: [
+                    process.env.CDN_URL + "baths/shower-baths/whirlpool-square-with-screen/ssblrelspanwb_ls_1000_1.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/whirlpool-square-with-screen/ssblrelspanwb_ls_1000_2.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/whirlpool-square-with-screen/ssblrelspanwb_ls_1000_3.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/whirlpool-square-with-screen/ssblrelspanwb_ls_1000_4.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/whirlpool-square-with-screen/ssblrelspanwb_ls_1000_5.jpg",
+                    process.env.CDN_URL + "baths/shower-baths/whirlpool-square-with-screen/ssblrelspanwb_ls_1000_6.jpg",
+                ],
+            },
+            {
+                name: "Milano Merso - 1210mm x 660mm Easy Access Walk-In Deep Soak Bath",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    smallBaths,
+                    cornerBaths,
+                ],
+                fullPrice: 2999.99,
+                currentPrice: 2999.99,
+                description: [
+                    "Blending style with superb functionality, the Milano Merso 1210mm x 660mm walk-in deep soak bath gives you the most relaxing and comfortable bathing experience.",
+                    "With the Merso deep soak bath you can choose to have the door on the left or right, and there’s also the option to add a bath screen, so you can complete your new bath installation - just make your selection from the options above.",
+                    "Boasting a robust and sturdy construction for guaranteed durability, this walk-in bath features an integral door, providing easy access and removing the need to climb in and out. The deep soak design of this walk-in bath provides the ultimate in comfort and indulgent bathing.",
+                    "Choose from a great range of Milano bath taps to further enhance and complete the look of the Merso walk-in bath.",
+                ],
+                features: [
+                    "Choice of bath screen",
+                    "Door can be positioned on the left or right",
+                    "Option to add a bath trap",
+                    "Bath Dimensions: L 1210mm x W 660mm x H 965mm",
+                    "With low threshold door for easier access in and out of the bath",
+                    "Twin wastes for up to 40% quicker drainage for added safety",
+                    "Anti-slip base for peace of mind",
+                    "Manual locking system with easy to operate push and pull mechanism",
+                    "Includes front and end panels",
+                    "Reinforced with resin and fibreglass for strength and durability",
+                    "Fully encapsulated baseboard covers the full base of the bath - adds extra strength and rigidity",
+                    "225 litre capacity for a relaxing and comfortable soak",
+                    "No pre-drilled tap holes: can be used with deck-mounted or wall-mounted bath taps",
+                    "Adjustable feet for easier levelling",
+                    "Long life 10 year guarantee",
+                ],
+                whatsIncluded: [
+                    "Bath Waste x2",
+                    "Front Panel",
+                    "End Panel",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/small-baths/easy-access-walk-in-deep-soak/ssbmerdpan_ls_1000_1.jpg",
+                    process.env.CDN_URL + "baths/small-baths/easy-access-walk-in-deep-soak/ssbmerdpan_ls_1000_2.jpg",
+                    process.env.CDN_URL + "baths/small-baths/easy-access-walk-in-deep-soak/ssbmerdpan_ls_1000_3.jpg",
+                    process.env.CDN_URL + "baths/small-baths/easy-access-walk-in-deep-soak/ssbmerdpan_ls_1000_4.jpg",
+                    process.env.CDN_URL + "baths/small-baths/easy-access-walk-in-deep-soak/ssbmerdpan_ls_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Farington - White Modern Single Ended Standard Bath - 1700mm x 700mm",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    standardBaths,
+                ],
+                fullPrice: 269.99,
+                currentPrice: 269.99,
+                description: [
+                    "The Milano Farington 1700mm x 700mm single ended bath features a modern, rectangular design that will add smart contemporary style to your bathroom.",
+                    "Practical, stylish and great value for money, this bath has a gently sloping end, allowing you to lay back and bathe in comfort.",
+                    "Made in Britain, this bath is crafted from premium quality Lucite, acrylic, which is highly durable and resistant to stains and scratches. It also features height adjustable feet, which allows for easier levelling on uneven floors.",
+                    "Choose from a superb range of Milano bath taps to complete the look.",
+                ],
+                features: [
+                    "Dimensions: L 1700mm x W 700m x H 550mm",
+                    "Premium quality 4mm Lucite acrylic construction for long-lasting durability",
+                    "Reinforced with resin and fibreglass - makes the bath resistant to everyday wear and tear, stains and superficial scratches",
+                    "Hard-wearing white gloss finish makes your bath easier to clean",
+                    "Fully encapsulated baseboard covers the full base of the bath - adds extra strength and rigidity",
+                    "185 litre capacity for a luxurious bathing experience",
+                    "No pre-drilled tap holes giving you the option of wall-mounted or deck-mounted bath taps",
+                    "Height adjustable feet for easier levelling on uneven floors",
+                    "Tested and Certified EN14516:2015+A1:2018 Standards",
+                    "Long life 10 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/standard-baths/modern-single-ended/tr-sos1770_1_ls_1000_1.jpg",
+                    process.env.CDN_URL + "baths/standard-baths/modern-single-ended/tr-sos1770_1_ls_1000_2.jpg",
+                    process.env.CDN_URL + "baths/standard-baths/modern-single-ended/tr-sos1770_1_ls_1000_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Serene - Whirlpool Double-Ended Deep Inset Spa Bath - 1800mm x 1200mm",
+                categories: [
+                    baths,
+                ],
+                subcategories: [
+                    standardBaths,
+                ],
+                fullPrice: 799.99,
+                currentPrice: 799.99,
+                description: [
+                    "Bring a luxury feel to your bathroom and enjoy the most comfortable and relaxing bathing experience with the Milano Serene 1800mm x 1200mm modern double-ended deep inset whirlpool spa bath.",
+                    "With the Serene inset bath you can choose to add whirlpool jets and airspa jets for the ultimate in relaxation and a spa-like experience. Whirlpool jets push water into the bath, while airspa jets blow air into the bath - why not combine both whirlpool and airspa jets for a truly indulgent soak.",
+                    "Boasting a robust and sturdy construction for long-lasting durability, this stylish spa bath has an inset design, which means it’s been designed to be tiled in or built around. The bath also has a deep, double-ended design, offering the utmost in indulgence and comfort.",
+                    "Choose from a stunning range of Milano bath taps to further enhance and complete the look of the Serene bath.",
+                ],
+                features: [
+                    "Option to add whirlpool jets and airspa jets - for the ultimate in relaxation and a spa-like experience",
+                    "Dimensions: L 1800mm x W 1200m x H 630mm",
+                    "Modern double-ended design ensures total comfort",
+                    "Inset design - designed to be tiled in or built around",
+                    "Linear waste cover - for added style and comfort",
+                    "Includes bath waste",
+                    "Reinforced with resin and fibreglass for strength and durability",
+                    "Premium quality Lucite acrylic construction - makes the bath resistant to everyday wear and tear, stains and superficial scratches",
+                    "Hard-wearing white gloss finish makes your bath easier to clean",
+                    "Fully encapsulated baseboard covers the full base of the bath - adds extra strength and rigidity",
+                    "440 litre capacity for a luxurious bathing experience",
+                    "No pre-drilled tap holes - suitable for drilling for deck-mounted bath taps",
+                    "Adjustable feet for easier levelling",
+                    "Features a self-draining system and child safety suction",
+                    "Whirlpool pump - 240v, 650W 3/4HP",
+                    "Air spa blower - 240v, 400-500W",
+                    "Long life 10 year guarantee",
+                    "Tested and certified: EN14516:2015+A1:2018",
+                ],
+                whatsIncluded: [
+                    "Bath Waste",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "baths/standard-baths/whirlpool-double-ended-deep-inset-spa/tr-am1812mvl_ls_1000_1.jpg",
+                    process.env.CDN_URL + "baths/standard-baths/whirlpool-double-ended-deep-inset-spa/tr-am1812mvl_ls_1000_2.jpg",
+                    process.env.CDN_URL + "baths/standard-baths/whirlpool-double-ended-deep-inset-spa/tr-am1812mvl_ls_1000_3.jpg",
+                    process.env.CDN_URL + "baths/standard-baths/whirlpool-double-ended-deep-inset-spa/tr-am1812mvl_ls_1000_4.jpg",
+                    process.env.CDN_URL + "baths/standard-baths/whirlpool-double-ended-deep-inset-spa/tr-am1812mvl_ls_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Oxley - Grey Modern Wall Hung Mirror - 700mm x 500mm",
+                categories: [
+                    furniture,
+                    accessories,
+                ],
+                subcategories: [
+                    mirrors,
+                    bathroomAccessories,
+                ],
+                fullPrice: 129.99,
+                currentPrice: 129.99,
+                description: [
+                    "Revamp your bathroom and enhance a minimal, contemporary look with the Milano Oxley 500mm x 700mm matt grey mirror.",
+                    "Perfect for modern bathrooms, this mirror features clean lines and an on-trend matt grey finish.",
+                    "Team with other items from the Milano Oxley Matt Grey furniture collection for a bathroom that’s sleek, stylish and coordinated.",
+                ],
+                features: [
+                    "Dimensions: W 500mm x H 700mm",
+                    "Minimal and contemporary framed design - perfect for any modern bathroom",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with matt grey finish",
+                    "EN1036-2 certified for guaranteed quality assurance",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/mirrors/modern-wall-hung/bfm1004gr-uv_1.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/modern-wall-hung/bfm1004gr-uv_2.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/modern-wall-hung/bfm1004gr-uv_3.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/modern-wall-hung/bfm1004gr-uv_4.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/modern-wall-hung/bfm1004gr-uv_5.jpg",
+                ],
+            },
+            {
+                name: "Milano - Black Oval Wall Hung Mirror - 1000mm x 400mm",
+                categories: [
+                    accessories,
+                    furniture,
+                ],
+                subcategories: [
+                    mirrors,
+                    bathroomAccessories,
+                ],
+                fullPrice: 199.99,
+                currentPrice: 149.99,
+                description: [
+                    "Add a stylish feature to your bathroom with the Milano 1000mm x 400mm black oval wall hung mirror.",
+                    "Perfect for enhancing any bathroom style, this mirror features an attractive oval shape and a black frame finish for a bold and luxurious look.",
+                    "Team with other black Milano items for a cohesive bathroom look.",
+                ],
+                features: [
+                    "Dimensions: W 400mm x H 1000mm x D 32mm",
+                    "Classic and elegant framed design - perfect for any bathroom style",
+                    "Made from steel with a hard-wearing black frame finish",
+                    "Wall-mounted installation",
+                    "EN1036-2 certified for guaranteed quality assurance",
+                ],
+                whatsIncluded: [],
+                isFeatured: true,
+                isOnSale: true,
+                photos: [
+                    process.env.CDN_URL + "furniture/mirrors/oval-wall-hung/bfm4002bl_ls_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/oval-wall-hung/bfm4002bl_ls_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/oval-wall-hung/bfm4002bl_ls_1000_3.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/oval-wall-hung/bfm4002bl_ls_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano - Brushed Gold Round Wall Hung Mirror - 600mm",
+                categories: [
+                    accessories,
+                    furniture,
+                ],
+                subcategories: [
+                    mirrors,
+                    bathroomAccessories,
+                ],
+                fullPrice: 229.99,
+                currentPrice: 229.99,
+                description: [
+                    "Further elevate the look of your bathroom and add those all-important final details with the Milano 600mm round brushed gold wall hung mirror.",
+                    "Sure to enhance any bathroom style, this round mirror features a brushed gold frame finish, bringing a touch of elegance to your space.",
+                    "Team with other brushed gold Milano items for a cohesive bathroom look.",
+                ],
+                features: [
+                    "Dimensions: 600mm Dia. x D 32mm",
+                    "Classic and elegant framed design - perfect for any bathroom style",
+                    "Made from steel with a hard-wearing brushed gold frame finish",
+                    "Wall-mounted installation",
+                    "EN1036-2 certified for guaranteed quality assurance",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/mirrors/round-wall-hung/bfm4001ab_ls_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/round-wall-hung/bfm4001ab_ls_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/round-wall-hung/bfm4001ab_ls_1000_3.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/round-wall-hung/bfm4001ab_ls_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Mirage - Modern Wall Mounted Shaving Mirror - Chrome",
+                categories: [
+                    accessories,
+                    furniture,
+                ],
+                subcategories: [
+                    mirrors,
+                    bathroomAccessories,
+                ],
+                fullPrice: 39.99,
+                currentPrice: 39.99,
+                description: [
+                    "Introduce a stylish and practical addition to your bathroom with the wall-mounted Milano Mirage shaving mirror.",
+                    "The modern design allows you to extend, tilt and swivel the mirror to suit your needs. The double-sided mirror gives a true reflection on one side and 2x magnification on the other for applying make-up or shaving. With a sleek chrome finish, the shaving mirror will easily blend into any décor and the solid brass construction ensures that it has long-lasting durability.",
+                ],
+                features: [
+                    "Dimensions: W 200mm x D 415mm x H 110mm",
+                    "Modern design - perfect for contemporary bathrooms",
+                    "Wall-mounted installation for ease of use",
+                    "Solid brass construction with chrome finish",
+                    "Features 2x magnification on one side",
+                    "Can extend, tilt and swivel to the perfect angle",
+                    "Arm extends up to 415mm",
+                ],
+                whatsIncluded: [
+                    "Fixing Kit",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/mirrors/wall-mounted-shaving/bm1208_ls_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/wall-mounted-shaving/bm1208_ls_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/wall-mounted-shaving/bm1208_ls_1000_3.jpg",
+                    process.env.CDN_URL + "furniture/mirrors/wall-mounted-shaving/bm1208_ls_1000_4.jpg",
+                ],
+            },
+            {
+                name: "RAK Washington - Black Bathroom Mirrored Cabinet - 650mm x 750mm",
+                categories: [
+                    furniture,
+                ],
+                subcategories: [
+                    mirrors,
+                    cabinetsAndStorage,
+                ],
+                fullPrice: 349.99,
+                currentPrice: 349.99,
+                description: [
+                    "The RAK Washington 650mm x 750mm black mirrored cabinet will grace your bathroom with class and elegance.",
+                    "Giving you a stylish and practical storage solution for your bathroom essentials, this wall mounted mirror cabinet features a black finish and a timeless design, making it perfect for further elevating your traditional style bathroom.",
+                    "Team with other items from the RAK Washington collection for a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 650mm x D 193mm x H 752mm",
+                    "Stylish and practical storage solution for your bathroom",
+                    "Two internal height adjustable glass shelves",
+                    "Traditional style cabinet with one soft-close mirrored door",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with black finish",
+                    "Includes concealed hanging brackets",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/storage-units/black-mirrored-cabinet/rakwmc60504sc_co_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/black-mirrored-cabinet/rakwmc60504sc_co_1000_2.jpg",
+                ],
+            },
+            {
+                name: "Name: RAK Washington - Greige Bathroom Mirrored Cabinet - 650mm x 750mm",
+                categories: [
+                    furniture,
+                ],
+                subcategories: [
+                    mirrors,
+                    cabinetsAndStorage,
+                ],
+                fullPrice: 349.99,
+                currentPrice: 349.99,
+                description: [
+                    "Further enhance your traditional bathroom and create a look that’s timeless and elegant with the RAK Washington 650mm x 750mm greige mirrored cabinet.",
+                    "Giving you a stylish and practical bathroom storage solution, this wall mounted mirror cabinet features a classic design and a greige finish for a modern twist.",
+                    "Team with other items from the RAK Washington collection for a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 650mm x D 193mm x H 752mm",
+                    "Stylish and practical storage solution for your bathroom",
+                    "Two internal height adjustable glass shelves",
+                    "Traditional style cabinet with one soft-close mirrored door",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with greige finish",
+                    "Includes concealed hanging brackets",
+                ],
+                whatsIncluded: [],
+                isFeatured: true,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/storage-units/greige-mirrored-cabinet/rakwmc60505sc_co_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/greige-mirrored-cabinet/rakwmc60505sc_co_1000_2.jpg",
+                ],
+            },
+            {
+                name: "Milano Ren - White Modern Mirrored Cabinet - 900mm x 650mm",
+                categories: [
+                    furniture,
+                ],
+                subcategories: [
+                    mirrors,
+                    cabinetsAndStorage,
+                ],
+                fullPrice: 149.99,
+                currentPrice: 149.99,
+                description: [
+                    "The Milano Ren three mirrored bathroom cabinet provides a stylish and practical storage solution for your toiletries and beauty products.",
+                    "Featuring a modern design and a white gloss finish, this mirrored cabinet has been made from highly durable moisture resistant engineered wood. It incorporates two internal shelves, so there's ample space to keep your bathroom essentials neatly hidden away yet easily accessible.",
+                    "Team with other items from the Milano Ren collection for a contemporary look and a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 900mm x D 110mm x H 650mm",
+                    "Modern cabinet with three mirrored doors and integral shelves",
+                    "For wall-mounting in bathrooms or en-suites",
+                    "Hard-wearing moisture resistant engineered wood construction with white gloss finish",
+                ],
+                whatsIncluded: [
+                    "Wall Fixings",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/storage-units/modern-mirrored-cabinet/bbs_vty055_ls_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/modern-mirrored-cabinet/bbs_vty055_ls_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/modern-mirrored-cabinet/bbs_vty055_ls_1000_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Lurus - White Modern Bathroom Mirrored Corner Cabinet - 650mm x 459mm",
+                categories: [
+                    furniture,
+                ],
+                subcategories: [
+                    mirrors,
+                    cabinetsAndStorage,
+                ],
+                fullPrice: 169.99,
+                currentPrice: 169.99,
+                description: [
+                    "The modern design of the wall-mounted Milano Lurus corner mirrored cabinet adds a touch of class to small bathrooms, en-suites or cloakrooms where space is at a premium. Within the stylish exterior is an integral shelf that provides room to store your toiletries out of sight to keep your bathroom looking tidy.",
+                    "The attractive cabinet is manufactured from moisture resistant engineered wood for durability and finished with a quality white gloss that will complement any décor and ensure protection for long term use. For ease of installation the cabinet is supplied fully assembled.",
+                    "Combine with other items from the Milano Lurus collection for a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 459mm x D 294mm x H 650mm",
+                    "Space-saving corner design - perfect for small bathrooms",
+                    "Modern corner cabinet with mirrored door and integral shelf",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with white gloss finish",
+                    "Supplied ready assembled to guarantee solid construction and facilitate easy installation",
+                ],
+                whatsIncluded: [
+                    "Wall Fixings",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/storage-units/modern-mirrored-corner-cabinet/4619_image_1.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/modern-mirrored-corner-cabinet/4619_image_2.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/modern-mirrored-corner-cabinet/4619_image_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Ren - White Modern Wall Hung Bathroom Mirrored Cabinet - 650mm x 600mm",
+                categories: [
+                    furniture,
+                ],
+                subcategories: [
+                    mirrors,
+                    cabinetsAndStorage,
+                ],
+                fullPrice: 129.99,
+                currentPrice: 129.99,
+                description: [
+                    "Keep your bathroom or en-suite looking smart and clutter-free with the stylish Milano Ren 600mm two door mirrored cabinet.",
+                    "This stylish and practical mirrored cabinet will enhance any modern bathroom design. It incorporates two shelves, giving you plenty of storage space for your bathroom essentials.",
+                    "The mirrored cabinet has been made from moisture resistant engineered wood and finished in a durable white gloss that complements any bathroom decor.",
+                    "Team with other items from the Milano Ren collection for a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 600mm x D 110mm x H 650mm",
+                    "Stylish and practical storage solution",
+                    "Modern cabinet with two mirrored doors and integral shelves",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with white gloss finish",
+                ],
+                whatsIncluded: [
+                    "Wall Fixings",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/storage-units/modern-wall-hung-mirrored-cabinet/bbs_78613_image_1.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/modern-wall-hung-mirrored-cabinet/bbs_78613_image_2.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/modern-wall-hung-mirrored-cabinet/bbs_78613_image_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Bexley - Dark Oak Modern Single Wall Hung Open Storage Unit - 300mm x 300mm",
+                categories: [
+                    furniture,
+                ],
+                subcategories: [
+                    mirrors,
+                    cabinetsAndStorage,
+                ],
+                fullPrice: 129.99,
+                currentPrice: 129.99,
+                description: [
+                    "The Milano Bexley 300mm open single storage unit will make a stylish and practical addition to your bathroom.",
+                    "Great for creating extra storage space, the Bexley 300mm open unit features a rich dark oak woodgrain textured finish and a contemporary design. Use the open shelf to keep your toiletries neat and organised, or to show off perfume and luxury beauty products.",
+                    "The shelf unit is available with and without the option of an LED light. The LED light fits neatly in the open shelf, creating a stylish feature and illuminating toiletries or decorative objects.",
+                    "Combine with other items from the Milano Bexley Dark Oak furniture collection for a bathroom that’s stylish and coordinated.",
+                ],
+                features: [
+                    "Dimensions: W 300mm x D 300mm x H 300mm",
+                    "Storage space dimensions: W 228mm x D 264mm x H 228mm",
+                    "Minimal and contemporary design - perfect for modern bathrooms",
+                    "LED light option - for a stylish and practical feature",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with dark oak woodgrain textured finish",
+                    "Supplied ready assembled to guarantee a solid construction and to facilitate easy installation",
+                ],
+                whatsIncluded: [
+                    "Wall Fixings",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/storage-units/single-wall-hung-open/bfsu1101dob-uv_lifestyle1_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/single-wall-hung-open/bfsu1101dob-uv_lifestyle1_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/single-wall-hung-open/bfsu1101dob-uv_lifestyle1_1000_3.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/single-wall-hung-open/bfsu1101dob-uv_lifestyle1_1000_4.jpg",
+                    process.env.CDN_URL + "furniture/storage-units/single-wall-hung-open/bfsu1101dob-uv_lifestyle1_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Elswick - 750mm Basin with Chrome Washstand",
+                categories: [
+                    basins,
+                    furniture,
+                ],
+                subcategories: [
+                    vanityUnits,
+                    washstands,
+                    counterTopBasin,
+                ],
+                fullPrice: 319.99,
+                currentPrice: 319.99,
+                description: [
+                    "Create a look that’s chic and contemporary with the Milano Elswick 750mm basin and chrome washstand.",
+                    "A great option for modern bathrooms, the basin and washstand feature clean lines and a minimalistic design, helping to enhance a sense of space. The stylish washstand has been made from durable stainless steel with a brilliant chrome finish that complements any bathroom décor. It has an integral towel rail, so you can keep your towels close to hand, as well as neat and organised.",
+                    "Crafted from premium quality ceramic with a hard-wearing white glaze that’s easy to clean, the Elswick basin incorporates ample wash space. It has a single tap-hole, so why not complete the look with one of our modern mono basin taps?",
+                    "Team with other items from the Milano Elswick collection for a stylish bathroom and a perfectly coordinated look.",
+                ],
+                features: [
+                    "Dimensions: W 750mm x D 420mm H 895mm",
+                    "Modern design - perfect for contemporary bathrooms",
+                    "Integral towel rail",
+                    "Single tap-hole - for use with mono basin taps",
+                    "Washstand made from stainless steel with a high quality chrome finish (requires assembly)",
+                    "Hard-wearing ceramic with easy to clean white glazed enamel finish",
+                    "With overflow - you will require a slotted waste or universal waste",
+                    "EN14688 certification to guarantee quality assurance",
+                    "Long life guarantees for basin (20 years) and washstand (10 years)",
+                    "Washstand may require shortening – please see our Guides section for more information",
+                ],
+                whatsIncluded: [
+                    "Fixing Kit",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/vanity-units/basin-with-washstand/bcws750c_ls_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/basin-with-washstand/bcws750c_ls_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/basin-with-washstand/bcws750c_ls_1000_3.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/basin-with-washstand/bcws750c_ls_1000_4.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/basin-with-washstand/bcws750c_ls_1000_5.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/basin-with-washstand/bcws750c_ls_1000_6.jpg",
+                ],
+            },
+            {
+                name: "Milano Lurus - Oak 400mm Compact Floor Standing Cloakroom Vanity Unit with Basin",
+                categories: [
+                    basins,
+                    furniture,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                    vanityUnits,
+                ],
+                fullPrice: 149.99,
+                currentPrice: 149.99,
+                description: [
+                    "A great choice for small cloakrooms and en-suites, the Milano Lurus 400mm compact freestanding vanity unit with basin features an oak effect finish and a minimalist design.",
+                    "Made from moisture resistant engineered wood for long lasting durability, this cloakroom vanity unit provides a stylish and practical storage solution for your toiletries.",
+                    "The vanity unit includes the ceramic basin, which has a hard-wearing white glazed finish that’s easy to clean. The basin has a single tap-hole that’s perfect for use with any of our mono basin taps.",
+                ],
+                features: [
+                    "Dimensions: W 400mm x D 220mm x H 860mm",
+                    "Compact freestanding design - perfect for small bathrooms or cloakrooms",
+                    "Incorporates plenty of storage space for your bathroom essentials",
+                    "Reversible soft close door to minimise noise",
+                    "One tap-hole- suitable for use with mono basin taps",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with oak finish",
+                    "Hard-wearing reversible ceramic basin with easy to clean white glazed enamel finish",
+                    "Tested and certified to EN14749 and EN14688 standard",
+                ],
+                whatsIncluded: [
+                    "Milano Lurus - Oak Vanity Unit - (requires assembly)",
+                    "Basin",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/vanity-units/compact-floor-standing/nvx892_ls_1.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/compact-floor-standing/nvx892_ls_2.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/compact-floor-standing/nvx892_ls_3.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/compact-floor-standing/nvx892_ls_4.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/compact-floor-standing/nvx892_ls_5.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/compact-floor-standing/nvx892_ls_6.jpg",
+                ],
+            },
+            {
+                name: "Milano Lurus - White 555mm Corner Vanity Unit with Basin",
+                categories: [
+                    basins,
+                    furniture,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                    vanityUnits,
+                ],
+                fullPrice: 209.99,
+                currentPrice: 199.99,
+                description: [
+                    "The Milano Lurus 555mm corner white freestanding vanity unit provides a stylish and practical space saving solution for your small bathroom, en-suite or cloakroom.",
+                    "Featuring a white gloss finish and a space enhancing corner design, this vanity unit incorporates ample room for your toiletries. It includes the ceramic basin, which has a hard-wearing white glaze enamel finish that’s easy to clean.",
+                    "The vanity unit has soft close doors to minimise noise and to reduce wear and tear, prolonging the life of the unit.",
+                    "Take your pick from any of the Milano mono basin taps to complete the look.",
+                ],
+                features: [
+                    "Dimensions: W 555mm x D 395mm x H 800mm",
+                    "Space saving corner design - ideal for small bathrooms or cloakrooms",
+                    "Incorporates plenty of storage space for your bathroom essentials",
+                    "Soft close doors to minimise noise",
+                    "One tap-hole - suitable for use with mono basin taps",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with white gloss finish",
+                    "Hard-wearing ceramic basin with easy to clean white glazed enamel finish",
+                    "With overflow - you will require a slotted waste or universal waste",
+                    "Tested and certified to EN14749 and EN14688 standard",
+                ],
+                whatsIncluded: [
+                    "Milano Lurus - Corner Vanity Unit - (requires assembly)",
+                    "Basin",
+                ],
+                isFeatured: false,
+                isOnSale: true,
+                photos: [
+                    process.env.CDN_URL + "furniture/vanity-units/corner-unit/vtcw001_ls_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/corner-unit/vtcw001_ls_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/corner-unit/vtcw001_ls_1000_3.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/corner-unit/vtcw001_ls_1000_4.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/corner-unit/vtcw001_ls_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Name: Milano Ren - White 1200mm Freestanding Vanity Unit with Double Basin",
+                categories: [
+                    basins,
+                    furniture,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                    vanityUnits,
+                ],
+                fullPrice: 549.99,
+                currentPrice: 549.99,
+                description: [
+                    "The perfect choice for your family bathroom, the Milano Ren 1200mm freestanding double vanity unit combines contemporary style with superb functionality.",
+                    "Featuring a white gloss finish and clean lines for a minimalistic look, the Ren vanity unit incorporates plenty of storage space for all your toiletries and beauty products. It has soft close doors to minimise noise and to reduce wear and tear, prolonging the life of the unit.",
+                    "The double basins create a his-and-hers look and are made from hard-wearing ceramic with an easy to clean white glazed enamel finish. They each have a single tap-hole that’s perfect for use with any of our mono basin taps.",
+                ],
+                features: [
+                    "Dimensions: W 1210mm x D 465mm x H 818mm",
+                    "Modern freestanding design - ideal for contemporary bathrooms",
+                    "Incorporates plenty of storage space for your bathroom essentials",
+                    "Soft close doors to minimise noise",
+                    "One tap-hole in each basin - suitable for use with mono basin taps",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with white gloss finish",
+                    "Hard-wearing ceramic double basin with easy to clean white glazed enamel finish",
+                    "With overflow - you will require a slotted waste or universal waste",
+                    "Tested and certified to EN14749 and EN14688 standard",
+                ],
+                whatsIncluded: [
+                    "Milano Ren - White Vanity Unit - (requires assembly)",
+                    "Double Basin",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/vanity-units/freestanding/bfcm1200w_ls_2_chrome_1.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/freestanding/bfcm1200w_ls_2_chrome_2.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/freestanding/bfcm1200w_ls_2_chrome_3.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/freestanding/bfcm1200w_ls_2_chrome_4.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/freestanding/bfcm1200w_ls_2_chrome_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Bexley - 1200mm Modern Dark Oak Open Vanity Unit with Double Basin",
+                categories: [
+                    basins,
+                    furniture,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                    vanityUnits,
+                ],
+                fullPrice: 824.99,
+                currentPrice: 824.99,
+                description: [
+                    "Featuring a rich dark oak effect finish and a space-enhancing wall-mounted design, the Milano Bexley 1200mm vanity unit, complete with double basin, will bring stunning designer style to your bathroom.",
+                    "Made from moisture resistant engineered wood for long-lasting durability, the vanity unit incorporates three push to open soft close drawers and two open shelves, giving you all the storage space you need for your bathroom essentials.",
+                    "Made from premium quality ceramic, the double basin features a hard-wearing white glaze that's easy to clean. Each basin has a single tap-hole, so why not complete the look with any of our mono basin taps?",
+                    "Team with other items from the Milano Bexley dark oak collection for a bathroom that's sophisticated and coordinated.",
+                ],
+                features: [
+                    "Dimensions: W 1210mm x D 465mm x H 618mm",
+                    "Contemporary wall-hung design - perfect for modern bathrooms",
+                    "Incorporates three push to open soft close drawers and two open shelves",
+                    "One tap-hole per basin – suitable for use with mono basin taps",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with dark oak woodgrain finish",
+                    "Hard-wearing ceramic double basin with easy to clean white glazed enamel finish",
+                    "With overflow - you will require a slotted waste or universal waste",
+                    "Supplied ready assembled to guarantee solid construction and facilitate easy installation",
+                ],
+                whatsIncluded: [
+                    "Milano Bexley - Dark Oak Vanity Unit",
+                    "Double Basin",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/vanity-units/modern-open-unit/bfmo1105do_ls_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/modern-open-unit/bfmo1105do_ls_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/modern-open-unit/bfmo1105do_ls_1000_3.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/modern-open-unit/bfmo1105do_ls_1000_4.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/modern-open-unit/bfmo1105do_ls_1000_5.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/modern-open-unit/bfmo1105do_ls_1000_6.jpg",
+                ],
+            },
+            {
+                name: "Milano Thornton - Light Grey 1200mm Traditional Vanity Unit with Double Basin",
+                categories: [
+                    basins,
+                    furniture,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                    vanityUnits,
+                ],
+                fullPrice: 799.99,
+                currentPrice: 799.99,
+                description: [
+                    "Bring elegance and timeless style to your bathroom with the Milano Thornton 1210mm light grey traditional freestanding vanity unit, complete with double basin.",
+                    "With the Thornton vanity unit you can select from a range of coloured handles, including matt black, chrome, brushed gold and oil rubbed bronze for a customised look - just make your selection from the options above.",
+                    "Featuring a light grey finish and a beautiful traditional design, this vanity unit gives you plenty of storage space for all your bathroom essentials. The double basin design creates a luxury feel, while the soft close doors prevent bangs and slams, helping to prolong the life of the unit.",
+                    "Made from hard-wearing resin, the double basin can be fitted with a mono basin tap, pillar taps, a 3 tap-hole tap or a wall-mounted tap - allowing you to customise your vanity unit.",
+                    "Combine with the matching light grey WC unit and Milano basin taps to complete the look and for a bathroom that’s perfectly coordinated.",
+                ],
+                features: [
+                    "Handles come in a choice of finishes - Matt Black, Chrome, Brushed Gold and Oil Rubbed Bronze",
+                    "Dimensions: W 1210mm x D 470mm x H 875mm",
+                    "Classic and elegant freestanding design - perfect for traditional bathrooms",
+                    "Stylish and practical storage solution for your bathroom essentials",
+                    "Soft close doors to minimise noise",
+                    "One internal shelf",
+                    "With decorative false drawer fascia",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with light grey finish",
+                    "No pre-drilled tap-holes - suitable for use with a range of tap styles",
+                    "Hard-wearing resin basin with easy to clean white finish",
+                    "Each basin is fitted with an overflow - you will require a slotted waste or universal waste",
+                    "Tested and certified to EN14749 and EN14688 standard",
+                ],
+                whatsIncluded: [
+                    "Milano Thornton - Light Grey Vanity Unit - (requires assembly)",
+                    "Double Basin",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/vanity-units/traditional/bftr1703lg_ls_new_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/traditional/bftr1703lg_ls_new_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/traditional/bftr1703lg_ls_new_1000_3.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/traditional/bftr1703lg_ls_new_1000_4.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/traditional/bftr1703lg_ls_new_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Oxley - Golden Oak 800mm Wall Hung Vanity Unit with Basin",
+                categories: [
+                    basins,
+                    furniture,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                    vanityUnits,
+                ],
+                fullPrice: 449.99,
+                currentPrice: 449.99,
+                description: [
+                    "Revamp your bathroom and create an eye-catching designer look with the Milano Oxley 800mm golden oak wall hung vanity unit.",
+                    "Made from highly durable moisture resistant engineered wood, the Oxley vanity unit features a golden oak woodgrain effect finish and a space-enhancing floating design. The push to open soft close drawer gives you plenty of storage space for your bathroom essentials.",
+                    "The vanity unit includes a high quality ceramic basin, which features a hard-wearing white glaze finish that's easy to clean. It has a single tap-hole, which is perfect for use with any of our mono basin taps.",
+                    "Combine with other items from the Milano Oxley collection for a stunning modern look and a perfectly coordinated bathroom.",
+                    "With the Oxley vanity unit you can choose to add the LED furniture light, which illuminates the drawer contents when open and gives the furniture a sleek glow when closed - just select the integrated LED light option from the dropdown menu above.",
+                ],
+                features: [
+                    "Dimensions: W 810mm x D 465mm x H 368mm",
+                    "LED furniture light option - for a stylish and practical feature",
+                    "Contemporary wall-hung design - perfect for modern bathrooms",
+                    "Incorporates a spacious push to open soft close drawer",
+                    "One tap-hole - suitable for use with mono basin taps",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with golden oak woodgrain finish",
+                    "Hard-wearing ceramic basin with easy to clean white glazed enamel finish",
+                    "With overflow - you will require a slotted waste or universal waste",
+                    "Supplied ready assembled to guarantee solid construction and facilitate easy installation",
+                    "Tested and certified to EN14749 and EN14688 standard",
+                ],
+                whatsIncluded: [
+                    "Milano Oxley - Vanity Unit",
+                    "Basin",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung/bfmo1202gob_ls_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung/bfmo1202gob_ls_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung/bfmo1202gob_ls_1000_3.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung/bfmo1202gob_ls_1000_4.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung/bfmo1202gob_ls_1000_5.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung/bfmo1202gob_ls_1000_6.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung/bfmo1202gob_ls_1000_7.jpg",
+                ],
+            },
+            {
+                name: "Milano Oxley - White 1400mm Wall Hung Stepped Vanity Unit with Basin",
+                categories: [
+                    basins,
+                    furniture,
+                ],
+                subcategories: [
+                    counterTopBasin,
+                    vanityUnits,
+                ],
+                fullPrice: 824.99,
+                currentPrice: 824.99,
+                description: [
+                    "Smarten up your bathroom with the sleek and stylish Milano Oxley 1400mm stepped wall hung vanity unit and basin.",
+                    "Made from moisture resistant engineered wood with a matt white finish, the Oxley floating vanity unit effortlessly combines style with funtionality. It incorporates two spacious push to open soft close drawers, allowing you to store your bathroom essentials out of sight to help you to maintain a minimalist look. Featuring a matt white countertop and a high quality ceramic basin with a hard-wearing white glaze, the overall effect is bold and eye-catching.",
+                    "The basin has a single tap-hole, so why not complete the look with one of our mono basin taps?",
+                    "Team with other items from the Milano Oxley collection for a stunning contemporary look and a perfectly coordinated bathroom.",
+                    "With the Oxley vanity unit you can choose to add the LED furniture light, which illuminates the drawer contents when open and gives the furniture a sleek glow when closed - just select the integrated LED light option from the dropdown menu above.",
+                ],
+                features: [
+                    "Dimensions: W 1397mm x D 465mm x H 718mm",
+                    "LED furniture light option - for a stylish and practical feature",
+                    "Contemporary wall-hung design - perfect for modern bathrooms",
+                    "Incorporates two push to open soft close drawers and a countertop",
+                    "One tap-hole - suitable for use with mono basin taps",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with matt white finish",
+                    "Hard-wearing ceramic basin with easy to clean white glazed enamel finish",
+                    "With overflow - you will require a slotted waste or universal waste",
+                    "Supplied ready assembled to guarantee solid construction and facilitate easy installation",
+                    "Tested and certified to EN14749 and EN14688 standard",
+                ],
+                whatsIncluded: [
+                    "Milano Oxley - White Vanity Unit",
+                    "Basin",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung-stepped/bfcst14wb_ls_1000_1.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung-stepped/bfcst14wb_ls_1000_2.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung-stepped/bfcst14wb_ls_1000_3.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung-stepped/bfcst14wb_ls_1000_4.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung-stepped/bfcst14wb_ls_1000_5.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung-stepped/bfcst14wb_ls_1000_6.jpg",
+                    process.env.CDN_URL + "furniture/vanity-units/wall-hung-stepped/bfcst14wb_ls_1000_7.jpg",
+                ],
+            },
+            {
+                name: "Milano Ryukyu - Modern Concealed Thermostatic Shower Tower Panel with Waterfall Shower Head, Hand Shower and Body Jets",
+                categories: [
+                    showers,
+                ],
+                subcategories: [
+                    mixerShowersAndSets,
+                ],
+                fullPrice: 699.99,
+                currentPrice: 699.99,
+                description: [
+                    "Boasting six massaging body jets, rainfall shower head with waterfall function and hand shower, the Milano Ryukyu thermostatic shower tower delivers a sensational showering experience.",
+                    "A great choice for bringing designer luxury to your bathroom, this stunning shower tower features a concealed design for a neat, streamlined look and a gun metal grey finish, which adds a touch of industrial inspired style. It provides effortless control and uses anti-scald technology, giving you a safe and comfortable shower every time.",
+                    "The six body jets deliver a massage effect to leave you feeling revived and invigorated, whilst the large rainfall shower head provides luxurious water coverage for the most calming and soothing shower. The hand shower creates a refreshing spray of water and sits neatly in the bracket when not in use.",
+                ],
+                features: [
+                    "Panel Dimensions: W 220mm x H 900mm",
+                    "Shower Head Dimensions: W 220mm x Projection 600mm",
+                    "Concealed design for a contemporary and minimal look",
+                    "Thermostatic temperature control for a safe showering experience",
+                    "Easy to use square handles",
+                    "Shower head with waterblade function provides luxurious water coverage",
+                    "Silicone nozzles for the easy removal of any limescale deposits",
+                    "Six body jets for a relaxing spa-like shower",
+                    "Hand shower with hose",
+                    "Made from premium quality stainless steel for guaranteed durability",
+                    "Suitable for domestic and commercial plumbing systems",
+                    "Recommended operating pressure: 2.0 bar",
+                    "Long life 10 year guarantee",
+                ],
+                whatsIncluded: [
+                    "Concealed Shower Panel",
+                    "Milano - Waterblade Shower Head",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-concealed-thermostatic-tower-panel/ml7046_ls_1_new_1000_1.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-concealed-thermostatic-tower-panel/ml7046_ls_1_new_1000_2.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-concealed-thermostatic-tower-panel/ml7046_ls_1_new_1000_3.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-concealed-thermostatic-tower-panel/ml7046_ls_1_new_1000_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Vis - Modern One Outlet Digital Thermostatic Shower with Square Wall Mounted Shower Head",
+                categories: [
+                    showers,
+                ],
+                subcategories: [
+                    mixerShowersAndSets,
+                ],
+                fullPrice: 379.99,
+                currentPrice: 379.99,
+                description: [
+                    "Control your shower with ease with the Milano Vis digital thermostatic shower system, complete with square shower head.",
+                    "The digital shower provides precise control over the temperature of the water, so you can achieve your perfect shower every time. Simply turn the shower on and off with the touch of a button and adjust the temperature by turning the control.",
+                    "The square shower head delivers a refreshing rainfall effect to awaken your senses. It includes the brass wall arm to complete the look.",
+                ],
+                features: [
+                    "Concealed design for a minimal and contemporary look",
+                    "200mm x 200mm stainless steel shower head with brass 150mm ceiling arm",
+                    "Turn the shower on and off with the touch of a button",
+                    "Adjust the temperature by simply turning the control",
+                    "Programmable shower functions for a customised showering experience",
+                    "Colour-changing indicator so you know when the water reaches the desired temperature",
+                    "Precise temperature control to +/- 2 degrees even if the water pressure fluctuates",
+                    "Control the temperature and divert the water flow between functions with ease",
+                    "Simple push fit installation with easy to set up cable connections",
+                    "Shower control made from brass with a premium quality chrome finish",
+                    "Controls one shower function",
+                    "Low voltage - helps to save energy",
+                    "Water saving - great for the environment and your bills",
+                    "Suitable for all domestic and commercial plumbing systems",
+                    "IPX4 rated",
+                    "WRAS and TUV approved - for added quality assurance",
+                    "Class 2 product",
+                    "½” inlet and outlet connection",
+                    "Shower head guarantee: 10 years",
+                    "Digital shower control guarantee: 5 years",
+                ],
+                whatsIncluded: [
+                    "Milano Vis - Digital One Outlet Shower Control",
+                    "Milano - 200mm x 200mm Square Shower Head and 330mm Wall Arm",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-digital-thermostatic-with-square-head/sbdig1105_ls_1000_1.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-digital-thermostatic-with-square-head/sbdig1105_ls_1000_2.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-digital-thermostatic-with-square-head/sbdig1105_ls_1000_3.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-digital-thermostatic-with-square-head/sbdig1105_ls_1000_4.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-digital-thermostatic-with-square-head/sbdig1105_ls_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Eris - Modern Thermostatic Bar Shower Valve with Round Shower Head and Hand Shower",
+                categories: [
+                    showers,
+                ],
+                subcategories: [
+                    mixerShowersAndSets,
+                ],
+                fullPrice: 299.99,
+                currentPrice: 299.99,
+                description: [
+                    "Give your bathroom a revamp and create a modern yet elegant look with the Milano Eris copper thermostatic shower kit, complete with bar valve, round shower head and multi-function hand shower.",
+                    "The solid brass thermostatic bar valve provides effortless control and uses anti-scald technology, ensuring a safe and comfortable shower every time. The round shower head provides soothing rainfall effect water coverage, while the hand shower delivers a refreshing spray of water.",
+                ],
+                features: [
+                    "Dimensions: W 277mm x D 400mm x H 830mm-1180mm",
+                    "Contemporary design - perfect for any modern bathroom",
+                    "Thermostatic temperature control for a safer showering experience",
+                    "200mm round ABS shower head provides luxurious water coverage",
+                    "Swivel joint allows you to position the shower head to the desired angle",
+                    "Multi-function ABS hand shower with 1.5m hose",
+                    "Moisture blemish resistant copper finish"
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-thermostatic-bar-with-round-head/sb1006or_closeup_1000_1.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-thermostatic-bar-with-round-head/sb1006or_closeup_1000_2.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-thermostatic-bar-with-round-head/sb1006or_closeup_1000_3.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-thermostatic-bar-with-round-head/sb1006or_closeup_1000_4.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-thermostatic-bar-with-round-head/sb1006or_closeup_1000_5.jpg",
+                    process.env.CDN_URL + "showers/mixer-showers-and-sets/modern-thermostatic-bar-with-round-head/sb1006or_closeup_1000_6.jpg",
+                ],
+            },
+            {
+                name: "RAK Cloud - Matt White Modern Back to Wall Bidet",
+                categories: [
+                    toilets,
+                ],
+                subcategories: [
+                    bidets,
+                ],
+                fullPrice: 684.99,
+                currentPrice: 684.99,
+                description: [
+                    "Create a look that’s contemporary and sophisticated with the RAK Cloud modern back to wall bidet.",
+                    "Made from hard-wearing Vitreous China, the Cloud bidet features soft, curved lines and a matt white finish, making it a great choice for modern bathrooms. It has a back to wall design for a minimal look and to maximise space, and uses concealed fixings, providing a neat and tidy finish.",
+                    "Team with other items in the RAK Cloud collection for a bathroom that’s stylish and perfectly coordinated.",
+                ],
+                features: [
+                    "Dimensions: W 400mm x D 560mm x H 420mm",
+                    "Modern curved design - perfect for any contemporary bathroom",
+                    "Back to wall installation for a minimal look and to maximise space",
+                    "Concealed fixings create a neat finish",
+                    "One tap-hole - for use with a mono bidet tap",
+                    "Hard-wearing Vitreous China with matt white finish",
+                    "Integral overflow",
+                    "Long life 25 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "toilets/bidets/modern-back-to-wall/clobd2015500asc_co_1000_1.jpg",
+                    process.env.CDN_URL + "toilets/bidets/modern-back-to-wall/clobd2015500asc_co_1000_2.jpg",
+                ],
+            },
+            {
+                name: "RAK Washington - Gloss White Traditional Bidet",
+                categories: [
+                    toilets,
+                ],
+                subcategories: [
+                    bidets,
+                ],
+                fullPrice: 144.99,
+                currentPrice: 144.99,
+                description: [
+                    "The RAK Washington traditional style bidet will grace your bathroom with class and elegance.",
+                    "Made from hard-wearing Vitreous China, this bidet features a classic and timeless design and a gloss white finish that’s easy to clean. It has a single tap-hole, so you can choose from one of our stylish mono bidet taps to complete the look.",
+                    "Team with other items in the RAK Washington collection for a bathroom that’s stylish and perfectly coordinated.",
+                ],
+                features: [
+                    "Dimensions: W 360mm x D 580mm x H 400mm",
+                    "Classic and elegant design - perfect for any traditional bathroom",
+                    "Back to wall installation for a minimal look and to maximise space",
+                    "One tap-hole - for use with a mono bidet tap",
+                    "Hard-wearing Vitreous China with gloss alpine white finish",
+                    "Integral overflow",
+                    "Long life 25 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "toilets/bidets/traditional/wasbid_co_1000_1.jpg",
+                    process.env.CDN_URL + "toilets/bidets/traditional/wasbid_co_1000_2.jpg",
+                    process.env.CDN_URL + "toilets/bidets/traditional/wasbid_co_1000_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Richmond - White Traditional Floor Standing Bidet - 405mm x 390mm",
+                categories: [
+                    toilets,
+                ],
+                subcategories: [
+                    bidets,
+                ],
+                fullPrice: 139.99,
+                currentPrice: 139.99,
+                description: [
+                    "Bring timeless elegance to your bathroom with the Richmond floor-standing bidet.",
+                    "Featuring smooth rounded lines and a robust ceramic body with an easy to clean white glaze, this bidet will enhance any traditional bathroom.",
+                    "The bidet has one tap-hole, so complete the look with one of our traditional mono bidet taps.",
+                ],
+                features: [
+                    "Dimensions: W 390mm x D 565mm x H 405mm",
+                    "Traditional floor-standing design for a timeless and elegant look",
+                    "One tap-hole - for use with a mono bidet tap",
+                    "Hard-wearing ceramic with easy to clean white glazed ceramic",
+                    "Integral overflow",
+                    "Long life 20 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "toilets/bidets/traditional-floor-standing/ncs830_1_ls_1000_1.jpg",
+                    process.env.CDN_URL + "toilets/bidets/traditional-floor-standing/ncs830_1_ls_1000_2.jpg",
+                    process.env.CDN_URL + "toilets/bidets/traditional-floor-standing/ncs830_1_ls_1000_3.jpg",
+                    process.env.CDN_URL + "toilets/bidets/traditional-floor-standing/ncs830_1_ls_1000_4.jpg",
+                    process.env.CDN_URL + "toilets/bidets/traditional-floor-standing/ncs830_1_ls_1000_5.jpg",
+                    process.env.CDN_URL + "toilets/bidets/traditional-floor-standing/ncs830_1_ls_1000_6.jpg",
+                    process.env.CDN_URL + "toilets/bidets/traditional-floor-standing/ncs830_1_ls_1000_7.jpg",
+                ],
+            },
+            {
+                name: "Milano Elswick- Modern Close Coupled Toilet with Soft Close Seat",
+                categories: [
+                    toilets,
+                ],
+                subcategories: [
+                    standardToilets,
+                ],
+                fullPrice: 279.99,
+                currentPrice: 279.99,
+                description: [
+                    "Revamp your bathroom with the Milano Elswick close coupled toilet, complete with dual flush cistern and soft close seat.",
+                    "Featuring clean lines and a modern design, the Elswick floor-standing toilet has been made using premium quality ceramic with a hard-wearing white glaze finish that's easy to clean. The dual flush cistern helps to save water, while the soft close seat minimises noise and reduces wear and tear. The seat also has top mounted fittings, which makes it easier to remove and replace when needed.",
+                    "Combine with the matching Milano Elswick basin and bath for a bathroom that's stylish and coordinated.",
+                ],
+                features: [
+                    "Dimensions: W 370mm x D 610mm x H 785mm",
+                    "Contemporary streamlined square design - perfect for any modern bathroom",
+                    "Water-saving 6/3 litre dual flush cistern - better for the environment and your bills",
+                    "Soft close seat - minimises noise and reduces wear and tear",
+                    "Hard-wearing ceramic with easy to clean white glazed enamel finish",
+                    "Certified to meet EN14055 approval",
+                    "Long life 20 year guarantee",
+                    "Includes pan fixing kit",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-close-coupled/bctcc007_ls_1000_1.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-close-coupled/bctcc007_ls_1000_2.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-close-coupled/bctcc007_ls_1000_3.jpg",
+                ],
+            },
+            {
+                name: "Milano Irwell - Modern Round Close Coupled Toilet with Soft Close Seat",
+                categories: [
+                    toilets,
+                ],
+                subcategories: [
+                    standardToilets,
+                ],
+                fullPrice: 299.99,
+                currentPrice: 299.99,
+                description: [
+                    "Give your bathroom an upgrade with the Milano Irwell modern close coupled toilet, complete with water-saving dual flush cistern and soft close seat.",
+                    "The Irwell toilet features a contemporary curved design and a hard-wearing white glaze finish that’s easy to clean. It has been made using premium quality ceramic, ensuring long-lasting durability. The included toilet seat has soft close hinges to minimise noise, as well as quick release hinges, making it easier to remove for cleaning.",
+                    "Team with other items in the Milano Irwell collection for a coordinated look and a stylish, modern bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 395mm x D 670mm x H 825mm",
+                    "Contemporary curved design - perfect for any modern bathroom",
+                    "Water-saving 6/3 litre dual flush cistern - better for the environment and your bills",
+                    "Quick release soft close seat - minimises noise and reduces wear and tear",
+                    "Hard-wearing ceramic with easy to clean white glazed enamel finish",
+                    "Certified to meet EN14055 approval",
+                    "Long life 20 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-round-close-coupled/bctcc008_ls_1000_1.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-round-close-coupled/bctcc008_ls_1000_2.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-round-close-coupled/bctcc008_ls_1000_3.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-round-close-coupled/bctcc008_ls_1000_4.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-round-close-coupled/bctcc008_ls_1000_5.jpg",
+                ],
+            },
+            {
+                name: "Milano Lurus - White Modern Square Toilet and Basin Combination Unit - 500mm x 890mm",
+                categories: [
+                    toilets,
+                ],
+                subcategories: [
+                    standardToilets,
+                ],
+                fullPrice: 469.99,
+                currentPrice: 469.99,
+                description: [
+                    "The Milano Lurus 2-in-1 toilet and basin combination unit is the perfect choice for even the smallest of cloakrooms and en-suites.",
+                    "Combining a basin and toilet into one space-saving design, the combination unit features a white gloss finish and clean lines for a minimal and contemporary look.",
+                    "The toilet and basin unit conceals the cistern and unsightly pipework, ensuring a neat and tidy finish. The basin is included, which has a hard-wearing easy to clean white finish and a single tap-hole that’s perfect for use with any of the Milano mono basin taps.",
+                ],
+                features: [
+                    "Dimensions: W 502mm x D 876mm x H 890mm",
+                    "Space-saving 2-in-1 design - perfect for cloakrooms and en-suites",
+                    "Long-lasting and moisture resistant FSC certified engineered wood construction with white gloss finish",
+                    "Hard-wearing resin basin and ceramic toilet",
+                    "One tap-hole basin - suitable for use with mono basin taps",
+                    "Basin has an overflow - you will require a slotted waste or universal waste",
+                    "Quick release soft close toilet seat - minimises noise and reduces wear and tear",
+                    "Dual flush 6/4 litre concealed cistern - better for the environment and your water bills",
+                    "Chrome flush push button",
+                    "Tested and certified to EN14749 and EN14688 standard",
+                ],
+                whatsIncluded: [
+                    "Milano Lurus - White Combination Unit with Basin - (requires assembly)",
+                    "Milano Farington - Back to Wall Toilet with Soft Close Seat",
+                    "Milano - Concealed Cistern",
+                    "Pan Fixing Kit",
+                ],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-square-and-basin/lurus-10-2_1.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-square-and-basin/lurus-10-2_2.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-square-and-basin/lurus-10-2_3.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/modern-square-and-basin/lurus-10-2_4.jpg",
+                ],
+            },
+            {
+                name: "Milano Nero - Round Back to Wall Toilet with Soft Close Seat - Black",
+                categories: [
+                    toilets,
+                ],
+                subcategories: [
+                    standardToilets
+                ],
+                fullPrice: 249.99,
+                currentPrice: 249.99,
+                description: [
+                    "Bring bold, contemporary style to your bathroom with the Milano Nero black back to wall toilet, complete with soft close seat.",
+                    "Featuring stylish curved lines and a daring black finish, this toilet is sure to create a stand-out feature. Crafted from premium quality ceramic, the toilet has a back to wall design for a neat, minimal appearance. It comes with a quality seat, which has soft close hinges to minimise noise, while the quick release mechanism makes the seat easier to remove for cleaning.",
+                    "Team with other items in the Milano Nero collection for a stunning designer look and a perfectly coordinated bathroom.",
+                ],
+                features: [
+                    "Dimensions: W 360mm x D 565mm x H 460mm",
+                    "Contemporary, minimalist design - perfect for modern bathrooms",
+                    "Back to wall installation for a minimal look and to maximise space",
+                    "Quick release soft close seat - minimises noise and reduces wear and tear",
+                    "Hard-wearing ceramic with easy to clean black finish",
+                    "Includes pan fixing kit",
+                    "Long life 20 year guarantee",
+                ],
+                whatsIncluded: [],
+                isFeatured: false,
+                isOnSale: false,
+                photos: [
+                    process.env.CDN_URL + "toilets/standard-toilets/round-back-to-wall/bctbw001b_ls_1000_1.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/round-back-to-wall/bctbw001b_ls_1000_2.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/round-back-to-wall/bctbw001b_ls_1000_3.jpg",
+                    process.env.CDN_URL + "toilets/standard-toilets/round-back-to-wall/bctbw001b_ls_1000_4.jpg",
+                ],
+            },
+        ]
+    
+        products.forEach(async (product) => {
+            const newProduct = new Product({
+                ...product
+            })
+            await newProduct.save()
+        })        
     } catch (err) {
         console.log(err)
     }
 }
-
-addSubcategory()
+populateDatabase()

@@ -9,7 +9,7 @@ const ProductSchema = new mongoose_1.Schema({
     subcategories: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Subcategory' }],
     fullPrice: { type: Number },
     currentPrice: { type: Number },
-    description: { type: String },
+    description: [{ type: String }],
     features: [{ type: String }],
     whatsIncluded: [{ type: String }],
     isFeatured: { type: Boolean },

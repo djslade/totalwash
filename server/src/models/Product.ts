@@ -7,7 +7,7 @@ const ProductSchema = new Schema({
     subcategories: [{ type: Schema.Types.ObjectId, ref: 'Subcategory' }],
     fullPrice: { type: Number },
     currentPrice: { type: Number },
-    description: { type: String },
+    description: [{ type: String }],
     features: [{ type: String }],
     whatsIncluded: [{ type: String }],
     isFeatured: { type: Boolean },
