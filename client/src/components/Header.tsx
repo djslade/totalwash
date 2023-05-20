@@ -1,20 +1,24 @@
 "use client"
 import { state } from "@/store"
+import { useState } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdLightMode, MdDarkMode } from "react-icons/md"
 import { RiShoppingCartLine } from "react-icons/ri"
 import { RxHamburgerMenu } from "react-icons/rx"
 import { useSnapshot } from "valtio"
 import { useRouter } from "next/navigation"
+import { Category, Subcategory } from "@/types"
 
 export const Header = ({
     categories,
     subcategories
 }: {
-    categories: any[],
-    subcategories: any[],
+    categories: Category[],
+    subcategories: Subcategory[],
 }) => {
     const snap = useSnapshot(state)
+
+    const [dropdownVisible, setDropdownVisible] = useState<boolean>(true)
 
     const setDarkTheme = () => {
       state.darkTheme = true
@@ -31,7 +35,13 @@ export const Header = ({
             router.push(path)
             state.showCartSidebar = false
             state.showNavSidebar = false
+            setDropdownVisible(false)
         }
+    }
+
+    const resetDropdown = () => {
+        setDropdownVisible(true)
+        return true
     }
 
     return (
@@ -86,16 +96,29 @@ export const Header = ({
             <nav className="hidden w-full justify-between md:flex text-base flex-nowrap py-3 max-w-screen-lg mx-auto">
             {categories.map((category) =>
                 <div className="hover:underline underline-offset-4 relative group" key={category._id}>
-                    <button className="hover:underline underline-offset-4" role="link" onClick={() => navigate(`/catalog/${category.slug}`)}>
+                    <button
+                    className="hover:underline underline-offset-4"
+                    role="link"
+                    onClick={() => navigate(`/catalog/${category.slug}`)}
+                    onBlur={() => setDropdownVisible(true)}
+                    onMouseLeave={() => setDropdownVisible(true)}
+                    onFocus={() => setDropdownVisible(true)}>
                         <span>{category.name}</span>
                     </button>
-                    <div className="absolute flex-col hidden group-hover:flex bg-gray-50 px-5 py-10 gap-6 w-48">
-                        {subcategories.map((subcategory) => subcategory.categories[0]._id === category._id &&
-                        <div key={subcategory._id}>
-                            <button className="hover:underline underline-offset-4" role="link" onClick={() => navigate(`/catalog/${subcategory.slug}`)}>
-                                <span>{subcategory.name}</span>
-                            </button>
-                        </div>
+                    <div className={`top-6 absolute flex-col group-hover:flex bg-gray-50 py-3 rounded shadow-lg ${dropdownVisible ? 'hidden' : '!hidden'}`}>
+                        {subcategories.map((subcategory) =>
+                            subcategory.categories.map((savedCategory:any) =>
+                                savedCategory._id === category._id &&
+                                <div key={subcategory._id}>
+                                    <button
+                                    className="py-3 px-6 w-full brightness-100 hover:brightness-95 whitespace-nowrap bg-gray-50 flex items-center justify-start"
+                                    role="link"
+                                    onClick={() => navigate(`/catalog/${subcategory.slug}`)}
+                                    onBlur={() => setDropdownVisible(true)}>
+                                        <span>{subcategory.name}</span>
+                                    </button>
+                                </div>
+                            )
                         )}
                     </div>
                 </div>
