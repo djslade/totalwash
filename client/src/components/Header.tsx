@@ -20,6 +20,10 @@ export const Header = ({
 
     const [dropdownVisible, setDropdownVisible] = useState<boolean>(true)
 
+    const [searchBarVisible, setSearchBarVisible] = useState<boolean>(false)
+
+    const [focusIsLocked, setFocusIsLocked] = useState<boolean>(false)
+
     const setDarkTheme = () => {
       state.darkTheme = true
     }
@@ -39,10 +43,22 @@ export const Header = ({
         }
     }
 
-    const resetDropdown = () => {
-        setDropdownVisible(true)
-        return true
+    const handleShowSearchBar = () => {
+        setSearchBarVisible(true)
+        setFocusIsLocked(true)
+        setFocusIsLocked(false)
     }
+
+    const handleSearchBlur = () => {
+        const searchBar = document.getElementById('mobileSearchBar')
+        const input = searchBar?.querySelector('input')
+        const button = searchBar?.querySelector('button')
+        console.log(input, button)
+        console.log(document.activeElement)
+        if (document.activeElement === input || document.activeElement === button) return
+        setSearchBarVisible(false)
+    }
+
 
     return (
         <header className={`sticky top-0 border-b-2 px-6 ${snap.darkTheme ? 'header-dark' : 'header-light'}`}>
@@ -51,7 +67,9 @@ export const Header = ({
                     <button className="md:hidden flex justify-center items-center aspect-square rounded-full" onClick={() => state.showNavSidebar = true}>
                         <RxHamburgerMenu />
                     </button>
-                    <button className="md:hidden flex justify-center items-center aspect-square rounded-full">
+                    <button
+                    className="md:hidden flex justify-center items-center aspect-square rounded-full"
+                    onClick={handleShowSearchBar}>
                         <AiOutlineSearch />
                     </button>
                     <button className="w-min text-xl" role="link" onClick={() => navigate("/catalog")}>
@@ -124,6 +142,24 @@ export const Header = ({
                 </div>
                 )}
             </nav>
+            <div className={`absolute left-0 right-0 md:!hidden ${searchBarVisible ? "block" : "hidden"} px-6 py-3 bg-gray-100`}>
+                <div
+                id="mobileSearchBar"
+                className={`border-2 justify-end  border-black rounded-sm h-9 focus-within:border-blue-500 flex`}>
+                    
+                        <input
+                        type="text"
+                        className={snap.darkTheme ? 'header-search-input-dark' : 'header-search-input'}
+                        placeholder="Search"
+                        autoFocus
+                        onBlur={handleSearchBlur}/>
+                        <button
+                        className={snap.darkTheme ? 'header-search-btn-dark' : 'header-search-btn'}
+                        onBlur={handleSearchBlur}>
+                            <AiOutlineSearch />
+                        </button>
+                </div>
+            </div>
         </header>
     )
 }
