@@ -8,6 +8,8 @@ import { RxHamburgerMenu } from "react-icons/rx"
 import { useSnapshot } from "valtio"
 import { useRouter } from "next/navigation"
 import { Category, Subcategory } from "@/types"
+import { CSSTransition } from "react-transition-group"
+import { MobileSearch } from "./MobileSearch"
 
 export const Header = ({
     categories,
@@ -21,8 +23,6 @@ export const Header = ({
     const [dropdownVisible, setDropdownVisible] = useState<boolean>(true)
 
     const [searchBarVisible, setSearchBarVisible] = useState<boolean>(false)
-
-    const [focusIsLocked, setFocusIsLocked] = useState<boolean>(false)
 
     const setDarkTheme = () => {
       state.darkTheme = true
@@ -43,19 +43,11 @@ export const Header = ({
         }
     }
 
-    const handleShowSearchBar = () => {
+    const showMobileSearch = () => {
         setSearchBarVisible(true)
-        setFocusIsLocked(true)
-        setFocusIsLocked(false)
     }
 
-    const handleSearchBlur = () => {
-        const searchBar = document.getElementById('mobileSearchBar')
-        const input = searchBar?.querySelector('input')
-        const button = searchBar?.querySelector('button')
-        console.log(input, button)
-        console.log(document.activeElement)
-        if (document.activeElement === input || document.activeElement === button) return
+    const hideMobileSearch = () => {
         setSearchBarVisible(false)
     }
 
@@ -69,7 +61,7 @@ export const Header = ({
                     </button>
                     <button
                     className="md:hidden flex justify-center items-center aspect-square rounded-full"
-                    onClick={handleShowSearchBar}>
+                    onClick={showMobileSearch}>
                         <AiOutlineSearch />
                     </button>
                     <button className="w-min text-xl" role="link" onClick={() => navigate("/catalog")}>
@@ -111,11 +103,10 @@ export const Header = ({
                     </div>
                 </div>
             </div>
-            <nav className="hidden w-full justify-between md:flex text-base flex-nowrap py-3 max-w-screen-lg mx-auto">
+            <nav className="hidden w-full justify-between md:flex text-base flex-nowrap py-3 max-w-screen-lg mx-auto bg-inherit">
             {categories.map((category) =>
-                <div className="hover:underline underline-offset-4 relative group" key={category._id}>
+                <div className="relative group" key={category._id}>
                     <button
-                    className="hover:underline underline-offset-4"
                     role="link"
                     onClick={() => navigate(`/catalog/${category.slug}`)}
                     onBlur={() => setDropdownVisible(true)}
@@ -123,13 +114,13 @@ export const Header = ({
                     onFocus={() => setDropdownVisible(true)}>
                         <span>{category.name}</span>
                     </button>
-                    <div className={`top-6 absolute flex-col group-hover:flex bg-gray-50 py-3 rounded shadow-lg ${dropdownVisible ? 'hidden' : '!hidden'}`}>
+                    <div className={`top-6 absolute flex-col group-hover:flex bg-inherit py-3 rounded shadow-lg ${dropdownVisible ? 'hidden' : '!hidden'} ${snap.darkTheme ? "header-dark" : "header-light"}`}>
                         {subcategories.map((subcategory) =>
                             subcategory.categories.map((savedCategory:any) =>
                                 savedCategory._id === category._id &&
                                 <div key={subcategory._id}>
                                     <button
-                                    className="py-3 px-6 w-full brightness-100 hover:brightness-95 whitespace-nowrap bg-gray-50 flex items-center justify-start"
+                                    className={`py-3 px-6 w-full brightness-100 whitespace-nowrap bg-inherit flex items-center justify-start ${snap.darkTheme ? "header-dark hover:bg-[#5c5c5c]" : "header-light hover:brightness-95"}`}
                                     role="link"
                                     onClick={() => navigate(`/catalog/${subcategory.slug}`)}
                                     onBlur={() => setDropdownVisible(true)}>
@@ -142,24 +133,7 @@ export const Header = ({
                 </div>
                 )}
             </nav>
-            <div className={`absolute left-0 right-0 md:!hidden ${searchBarVisible ? "block" : "hidden"} px-6 py-3 bg-gray-100`}>
-                <div
-                id="mobileSearchBar"
-                className={`border-2 justify-end  border-black rounded-sm h-9 focus-within:border-blue-500 flex`}>
-                    
-                        <input
-                        type="text"
-                        className={snap.darkTheme ? 'header-search-input-dark' : 'header-search-input'}
-                        placeholder="Search"
-                        autoFocus
-                        onBlur={handleSearchBlur}/>
-                        <button
-                        className={snap.darkTheme ? 'header-search-btn-dark' : 'header-search-btn'}
-                        onBlur={handleSearchBlur}>
-                            <AiOutlineSearch />
-                        </button>
-                </div>
-            </div>
+            {searchBarVisible && <MobileSearch closeSearch={hideMobileSearch}/>}
         </header>
     )
 }
