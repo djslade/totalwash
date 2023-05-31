@@ -39,6 +39,8 @@ export const Header = ({
             router.push(path)
             state.showCartSidebar = false
             state.showNavSidebar = false
+            // This prevents a bug that prevents the dropdown menus in nav from appearing sometimes
+            if (path === '/catalog') return
             setDropdownVisible(false)
         }
     }
