@@ -7,6 +7,7 @@ const CategorySchema = new mongoose_1.Schema({
     name: { type: String, unique: true },
     description: { type: String },
     slug: { type: String, slug: 'name', unique: true },
+    photo: { type: String, required: false },
 });
 CategorySchema
     .pre('validate', function (next) {

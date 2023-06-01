@@ -55,7 +55,7 @@ export const Header = ({
 
 
     return (
-        <header className={`sticky top-0 border-b-2 px-6 ${snap.darkTheme ? 'header-dark' : 'header-light'}`}>
+        <header className={`z-50 sticky top-0 border-b-2 px-6 ${snap.darkTheme ? 'header-dark' : 'header-light'}`}>
             <div className="flex h-20 items-center max-w-screen-lg mx-auto">
                 <div className="flex-[2] flex md:flex-1 sm:gap-6 justify-between items-center h-full">
                     <button className="md:hidden flex justify-center items-center aspect-square rounded-full" onClick={() => state.showNavSidebar = true}>
