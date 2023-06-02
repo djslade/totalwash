@@ -55,7 +55,7 @@ export const Header = ({
 
 
     return (
-        <header className={`z-50 sticky top-0 border-b-2 px-6 ${snap.darkTheme ? 'header-dark' : 'header-light'}`}>
+        <header className={`z-50 sticky top-0 border-b-2 px-6 ${snap.darkTheme ? 'header-dark' : 'header-light'} overflow-hidden`}>
             <div className="flex h-20 items-center max-w-screen-lg mx-auto">
                 <div className="flex-[2] flex md:flex-1 sm:gap-6 justify-between items-center h-full">
                     <button className="md:hidden flex justify-center items-center aspect-square rounded-full" onClick={() => state.showNavSidebar = true}>
@@ -66,12 +66,12 @@ export const Header = ({
                     onClick={showMobileSearch}>
                         <AiOutlineSearch />
                     </button>
-                    <button className="w-min text-xl" role="link" onClick={() => navigate("/catalog")}>
+                    <button className="text-xl" role="link" onClick={() => navigate("/catalog")}>
                         <span>Total</span>
                         <span className="text-blue-400">Wash</span>
                     </button>
                 </div>
-                <div className="hidden md:flex flex-[2] border-2 justify-end  border-black rounded-sm h-9 focus-within:border-blue-500">
+                <div className="hidden md:flex flex-[2] border-2 justify-end border-black rounded-sm h-9 focus-within:border-blue-500">
                     <input type="text" className={snap.darkTheme ? 'header-search-input-dark' : 'header-search-input'} placeholder="Search" />
                     <button className={snap.darkTheme ? 'header-search-btn-dark' : 'header-search-btn'}>
                         <AiOutlineSearch />
