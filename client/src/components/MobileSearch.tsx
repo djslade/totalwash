@@ -47,7 +47,7 @@ export const MobileSearch = ({
     }, [])
     
     return (
-        <div className={`md:!hidden px-6 py-3 bg-inherit`} ref={searchRef}>
+        <div className={`absolute left-0 right-0 md:!hidden px-6 py-3 bg-inherit`} ref={searchRef}>
             <div
             id="mobileSearchBar"
             className={`border-2 justify-end  border-black rounded-sm h-9 focus-within:border-blue-500 flex`}>

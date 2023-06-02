@@ -5,6 +5,7 @@ import { SidebarCategories } from "./SidebarCategories"
 import { SidebarSubcategories } from "./SidebarSubcategories"
 import { MobileSearch } from "./MobileSearch"
 import { ProductRange } from "./ProductRange"
+import { CatalogHero } from "./CatalogHero"
 
 export {
     NavSidebar,
@@ -14,4 +15,5 @@ export {
     SidebarSubcategories,
     MobileSearch,
     ProductRange,
+    CatalogHero,
 }

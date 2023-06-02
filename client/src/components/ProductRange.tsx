@@ -1,6 +1,6 @@
 "use client"
-import { useRouter } from "next/navigation"
 import { Category } from "@/types"
+import { useNavigate } from "@/hooks"
 
 export const ProductRange = ({
     categories,
@@ -8,14 +8,8 @@ export const ProductRange = ({
     categories: Category[],
 }
 ) => {
-    const router = useRouter()
+    const navigate = useNavigate()
 
-    const navigate = (path:string) => {
-      if (router) {
-        router.push(path)
-      }
-    }
-    
     return (
         <section className="w-full flex flex-col py-6">
             <h1 className="font-bold text-2xl my-6">Shop Product Range</h1>
