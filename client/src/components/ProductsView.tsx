@@ -8,7 +8,7 @@ export const ProductsView = ({
     products: Product[]
 }) => {
     return (
-        <div className="grid md:grid-cols-3 grid-cols-1 xs:grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 xxs:grid-cols-2 w-full">
             {products.map((product) =>
             <ProductCard product={product}/>)}
         </div>
