@@ -6,6 +6,9 @@ import { SidebarSubcategories } from "./SidebarSubcategories"
 import { MobileSearch } from "./MobileSearch"
 import { ProductRange } from "./ProductRange"
 import { CatalogHero } from "./CatalogHero"
+import { ProductCard } from "./ProductCard"
+import { ProductsView } from "./ProductsView"
+import { FeaturedProducts } from "./FeaturedProducts"
 
 export {
     NavSidebar,
@@ -16,4 +19,7 @@ export {
     MobileSearch,
     ProductRange,
     CatalogHero,
+    ProductCard,
+    ProductsView,
+    FeaturedProducts,
 }
