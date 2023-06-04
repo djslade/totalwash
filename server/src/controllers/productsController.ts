@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { Category, Subcategory, Product } from "../models"
 import { body, validationResult } from "express-validator"
-import { ProductBody, ProductQuery } from "../types"
+import { ParsedQs, ProductBody, ProductQuery } from "../types"
 import { validateArrayOfObjectIds } from "../utilities"
 
 const getProduct = async (req: Request, res: Response, next: NextFunction) => {
@@ -16,7 +16,10 @@ const getProduct = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { category, subcategory, sale, featured, minprice, maxprice } = req.query
+        const { category, subcategory, sale, featured, minprice, maxprice, text } = req.query
+        const page = parseInt(req.query.page as string) || 1
+        const limit = parseInt(req.query.limit as string) || 0
+        const offset = (page - 1) * limit
         const query:ProductQuery = {}
         if (category) {
             query.categories = category
@@ -31,9 +34,28 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
             query.isFeatured = true
         }
         if (minprice || maxprice) {
-            query.currentPrice =  { $lte: maxprice || 1000000000, $gte: minprice || 0 }
+            query.currentPrice =  { $lte: parseInt(maxprice as string) || 1000000000, $gte: parseInt(minprice as string) || 0 }
         }
-        const products = await Product.find(query).populate('categories', 'subcategories').exec()
+        if (text) {
+            query.text = { $text : { $search: text } }, { $score: { $meta: "textScore" }}
+        }
+        const getSortMethod = (query:ParsedQs) => {
+            if (query.text) {
+                return { score : { $meta : 'textScore' } }
+            }
+            switch(query.sortby) {
+                case 'name':
+                    return { name: 1} as any
+                case 'high-low':
+                    return { currentPrice: -1 } as any
+                case 'low-high':
+                    return { currentPrice: 1 } as any
+                default:
+                    return { name: 1 } as any
+            }
+        }
+        const sortby = getSortMethod(req.query)
+        const products = await Product.find(query).limit(limit).skip(offset).populate('categories', 'subcategories').sort(sortby).exec()
         return res.status(200).send({ products })
     } catch (err) {
         return next(err)

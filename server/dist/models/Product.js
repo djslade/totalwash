@@ -24,4 +24,18 @@ ProductSchema
     }
     next();
 });
+ProductSchema.index({
+    name: "text",
+    description: "text",
+    features: "text",
+    whatsIncluded: "text",
+}, {
+    name: "Product Text Index",
+    weights: {
+        name: 10,
+        description: 5,
+        features: 5,
+        whatsIncluded: 1,
+    }
+});
 exports.Product = (0, mongoose_1.model)('Product', ProductSchema);

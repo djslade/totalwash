@@ -25,7 +25,10 @@ const getProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { category, subcategory, sale, featured, minprice, maxprice } = req.query;
+        const { category, subcategory, sale, featured, minprice, maxprice, text } = req.query;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 0;
+        const offset = (page - 1) * limit;
         const query = {};
         if (category) {
             query.categories = category;
@@ -40,9 +43,28 @@ const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             query.isFeatured = true;
         }
         if (minprice || maxprice) {
-            query.currentPrice = { $lte: maxprice || 1000000000, $gte: minprice || 0 };
+            query.currentPrice = { $lte: parseInt(maxprice) || 1000000000, $gte: parseInt(minprice) || 0 };
         }
-        const products = yield models_1.Product.find(query).populate('categories', 'subcategories').exec();
+        if (text) {
+            query.text = { $text: { $search: text } }, { $score: { $meta: "textScore" } };
+        }
+        const getSortMethod = (query) => {
+            if (query.text) {
+                return { score: { $meta: 'textScore' } };
+            }
+            switch (query.sortby) {
+                case 'name':
+                    return { name: 1 };
+                case 'high-low':
+                    return { currentPrice: -1 };
+                case 'low-high':
+                    return { currentPrice: 1 };
+                default:
+                    return { name: 1 };
+            }
+        };
+        const sortby = getSortMethod(req.query);
+        const products = yield models_1.Product.find(query).limit(limit).skip(offset).populate('categories', 'subcategories').sort(sortby).exec();
         return res.status(200).send({ products });
     }
     catch (err) {

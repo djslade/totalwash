@@ -1,32 +1,25 @@
 "use client"
 import { Product } from '@/types'
-import React from 'react'
 import { ProductsView } from './ProductsView'
-import { useState } from 'react'
-import { sortProductsArrayAlphabetically } from '@/utilities'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useRef } from 'react'
 
 export const SearchedProducts = ({
     products,
 }: {
     products: Product[],
 }) => {
-    const [productSortMethod, setProductSortMethod] = useState<string>('name')
+    const pathname = usePathname()
 
-    const sortProducts = () => {
-        switch(productSortMethod) {
-            case "high-low":
-                return products.sort((a, b) => b.currentPrice - a.currentPrice)
-            case "low-high":
-                return products.sort((a, b) => a.currentPrice - b.currentPrice)
-            case "name":
-                return products.sort(sortProductsArrayAlphabetically)
-            default:
-                return products.sort(sortProductsArrayAlphabetically)
-        }
-    }
+    const router = useRouter()
+
+    const searchparams = useSearchParams()
 
     const handleSelectChange = (evt:any) => {
-        setProductSortMethod(evt.target.value)
+        const params = new URLSearchParams(searchparams as any)
+        params.set('sortby', evt.target.value)
+        const newParams = params.toString()
+        router.replace(`${pathname}?${newParams}`)
     }
 
     return (
@@ -42,7 +35,15 @@ export const SearchedProducts = ({
                     </select>
                 </div>
             </div>
-            <ProductsView products={sortProducts()} />
+            <ProductsView products={products} />
+            <div className="flex items-center gap-3 text-xl">
+                <label>Items per page</label>
+                <select className="border py-1 px-3 rounded border-black" onChange={handleSelectChange}>
+                    <option value="name">6</option>
+                    <option value="high-low">12</option>
+                    <option value="low-high">18</option>
+                </select>
+            </div>
         </section>
     )
 }
