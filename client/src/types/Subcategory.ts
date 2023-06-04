@@ -6,4 +6,5 @@ export interface Subcategory {
     description: string;
     categories: Category[];
     slug: string;
+    photo: string;
 }

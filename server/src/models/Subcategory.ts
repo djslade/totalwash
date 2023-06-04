@@ -6,6 +6,7 @@ const SubcategorySchema = new Schema({
     description: { type: String },
     categories: [{ type: Schema.Types.ObjectId, ref: 'Category'}],
     slug: { type: String, slug: 'name', unique: true },
+    photo: { type: String, required: false },
 })
 
 SubcategorySchema

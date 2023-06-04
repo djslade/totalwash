@@ -4,11 +4,13 @@ import { Header } from "./Header"
 import { SidebarCategories } from "./SidebarCategories"
 import { SidebarSubcategories } from "./SidebarSubcategories"
 import { MobileSearch } from "./MobileSearch"
-import { ProductRange } from "./ProductRange"
+import { CategoryPreview } from "./CategoryPreview"
 import { CatalogHero } from "./CatalogHero"
 import { ProductCard } from "./ProductCard"
 import { ProductsView } from "./ProductsView"
 import { FeaturedProducts } from "./FeaturedProducts"
+import { SearchedProducts } from "./SearchedProducts"
+import { CategoryInfo } from "./CategoryInfo"
 
 export {
     NavSidebar,
@@ -17,9 +19,11 @@ export {
     SidebarCategories,
     SidebarSubcategories,
     MobileSearch,
-    ProductRange,
+    CategoryPreview,
     CatalogHero,
     ProductCard,
     ProductsView,
     FeaturedProducts,
+    SearchedProducts,
+    CategoryInfo,
 }

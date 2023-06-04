@@ -8,6 +8,7 @@ const SubcategorySchema = new mongoose_1.Schema({
     description: { type: String },
     categories: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Category' }],
     slug: { type: String, slug: 'name', unique: true },
+    photo: { type: String, required: false },
 });
 SubcategorySchema
     .pre('validate', function (next) {

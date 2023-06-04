@@ -110,7 +110,7 @@ export const Header = ({
                 <div className="relative group" key={category._id}>
                     <button
                     role="link"
-                    onClick={() => navigate(`/catalog/${category.slug}`)}
+                    onClick={() => navigate(`/catalog/categories/${category.slug}`)}
                     onBlur={() => setDropdownVisible(true)}
                     onMouseLeave={() => setDropdownVisible(true)}
                     onFocus={() => setDropdownVisible(true)}>
@@ -124,7 +124,7 @@ export const Header = ({
                                     <button
                                     className={`py-3 px-6 w-full brightness-100 whitespace-nowrap bg-inherit flex items-center justify-start ${snap.darkTheme ? "header-dark hover:bg-[#5c5c5c]" : "header-light hover:brightness-95"}`}
                                     role="link"
-                                    onClick={() => navigate(`/catalog/${subcategory.slug}`)}
+                                    onClick={() => navigate(`/catalog/subcategories/${subcategory.slug}`)}
                                     onBlur={() => setDropdownVisible(true)}>
                                         <span>{subcategory.name}</span>
                                     </button>

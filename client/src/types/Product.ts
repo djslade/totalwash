@@ -2,6 +2,7 @@ import { Category } from "./Category"
 import { Subcategory } from "./Subcategory"
 
 export interface Product {
+    _id: string;
     name: string;
     categories: Category[];
     subcategories: Subcategory[];
