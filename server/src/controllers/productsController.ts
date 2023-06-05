@@ -36,11 +36,8 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
         if (minprice || maxprice) {
             query.currentPrice =  { $lte: parseInt(maxprice as string) || 1000000000, $gte: parseInt(minprice as string) || 0 }
         }
-        if (text) {
-            query.text = { $text : { $search: text } }, { $score: { $meta: "textScore" }}
-        }
         const getSortMethod = (query:ParsedQs) => {
-            if (query.text) {
+            if (text) {
                 return { score : { $meta : 'textScore' } }
             }
             switch(query.sortby) {
@@ -55,8 +52,26 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
             }
         }
         const sortby = getSortMethod(req.query)
-        const products = await Product.find(query).limit(limit).skip(offset).populate('categories', 'subcategories').sort(sortby).exec()
-        return res.status(200).send({ products })
+        if (text) {
+            const products = await Product
+            .find(
+                { $text: { $search: decodeURI(text as string) } },
+                { score: { $meta: 'textScore' } }
+              )
+                .populate('categories', 'subcategories')
+                .sort(sortby)
+                .exec()
+            return res.status(200).send({ products })
+        } else {
+            const products = await Product
+            .find(query)
+            .limit(limit)
+            .skip(offset)
+            .populate('categories', 'subcategories')
+            .sort(sortby)
+            .exec()
+            return res.status(200).send({ products })
+        }
     } catch (err) {
         return next(err)
     }

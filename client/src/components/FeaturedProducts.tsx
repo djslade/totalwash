@@ -9,7 +9,7 @@ export const FeaturedProducts = ({
 }) => {
     return (
         <section className="w-full py-6">
-            <h1 className="font-bold text-2xl my-6">Featured Products</h1>
+            <h1 className="font-bold text-xl my-6">Featured Products</h1>
             <ProductsView products={products} />
         </section>
     )

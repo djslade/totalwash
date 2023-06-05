@@ -1,48 +1,120 @@
 "use client"
 import { Product } from '@/types'
 import { ProductsView } from './ProductsView'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
+import { sortProductsArrayAlphabetically } from '@/utilities'
 
 export const SearchedProducts = ({
     products,
+    relevance,
 }: {
     products: Product[],
+    relevance?: boolean;
 }) => {
-    const pathname = usePathname()
+    const [sortingMethod, setSortingMethod] = useState("name")
 
-    const router = useRouter()
+    const [limit, setLimit] = useState<number>(6)
 
-    const searchparams = useSearchParams()
+    const [page, setPage] = useState<number>(1)
 
-    const handleSelectChange = (evt:any) => {
-        const params = new URLSearchParams(searchparams as any)
-        params.set('sortby', evt.target.value)
-        const newParams = params.toString()
-        router.replace(`${pathname}?${newParams}`)
+    const sectionRef = useRef<HTMLElement>(null)
+
+    const handleProductsScroll = () => {
+        if (!sectionRef.current) return
+        const headeroffset = 140
+        const elementPosition = sectionRef.current.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.scrollY - headeroffset
+        window.scrollTo({
+            top: offsetPosition,
+        })
+    }
+
+    const handleSortingMethodChange = (evt:any) => {
+        setSortingMethod(evt.target.value)
+        handleProductsScroll()
+    }
+
+    const handlePageLimitChange = (evt:any) => {
+        setPage(1)
+        setLimit(parseInt(evt.target.value))
+        handleProductsScroll()
+    }
+
+
+    const sortProducts = () => {
+        const productsCopy = products
+        switch (sortingMethod) {
+            case "name":
+                return productsCopy.sort(sortProductsArrayAlphabetically)
+            case "low-high":
+                return productsCopy.sort((a, b) => a.currentPrice - b.currentPrice)
+            case "high-low":
+                return productsCopy.sort((a, b) => b.currentPrice - a.currentPrice)
+            default:
+                return productsCopy
+        }
+    }
+
+    const getProductsSlice = () => {
+        const endingSlice = limit * page
+        const startingSlice = endingSlice - limit
+        const sortedProducts = sortProducts()
+        return sortedProducts.slice(startingSlice, endingSlice)
+    }
+
+    const getNumberOfPages = () => {
+        const pages = Math.ceil(products.length / limit)
+        const array:number[] = []
+        for (let i = 0; i < pages; i += 1) {
+            array.push(i + 1)
+        }
+        return array
+    }
+
+    const handlePageChange = (newPage:number) => {
+        setPage(newPage)
+        handleProductsScroll()
+    }
+
+    if (products.length === 0) {
+        return (
+            <section className="w-full py-6" ref={sectionRef}>
+                <h2>Your search returned no results.</h2>
+            </section>
+        )
     }
 
     return (
-        <section className="w-full py-6">
+        <section className="w-full py-6" ref={sectionRef}>
             <div className="w-full xs:flex justify-between">
-                <h1 className="font-bold text-xl my-6">{`Showing ${products.length} of ${products.length} items`}</h1>
-                <div className="flex items-center gap-3 text-xl">
+                <h1 className="font-bold my-6">{`Showing ${(page * limit) - (limit - 1)}-${page * limit < products.length ? page * limit : products.length} of ${products.length} items`}</h1>
+                <div className="flex items-center gap-3">
                     <label>Sort By</label>
-                    <select className="border py-1 px-3 rounded border-black" onChange={handleSelectChange}>
+                    <select className="border py-1 px-3 rounded border-black" onChange={handleSortingMethodChange}>
+                        {relevance && <option value="relevance">Relevance</option>}
                         <option value="name">Product Name</option>
                         <option value="high-low">Price High to Low</option>
                         <option value="low-high">Price Low to High</option>
                     </select>
                 </div>
             </div>
-            <ProductsView products={products} />
-            <div className="flex items-center gap-3 text-xl">
-                <label>Items per page</label>
-                <select className="border py-1 px-3 rounded border-black" onChange={handleSelectChange}>
-                    <option value="name">6</option>
-                    <option value="high-low">12</option>
-                    <option value="low-high">18</option>
-                </select>
+            <ProductsView products={getProductsSlice()} />
+            <div className="w-full xs:flex justify-between items-center my-6">
+                <div className="flex items-center gap-3">
+                    <label>Items per page</label>
+                    <select className="border py-1 px-3 rounded border-black" onChange={handlePageLimitChange}>
+                        <option value="6">6</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+                <div className="flex gap-3 font-semibold">
+                    <button className="p-3">{"<"}</button>
+                    {getNumberOfPages().map((pageNumber) =>
+                    <button className={`p-3 ${pageNumber === page ? "bg-gray-100 border-gray-100 rounded-lg" : ""}`} key={pageNumber} onClick={() => handlePageChange(pageNumber)}>
+                        {pageNumber}
+                    </button>)}
+                    <button className="p-3">{">"}</button>
+                </div>
             </div>
         </section>
     )

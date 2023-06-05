@@ -1,6 +1,6 @@
 "use client"
 import { state } from "@/store"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import { MdLightMode, MdDarkMode } from "react-icons/md"
 import { RiShoppingCartLine } from "react-icons/ri"
@@ -8,8 +8,8 @@ import { RxHamburgerMenu } from "react-icons/rx"
 import { useSnapshot } from "valtio"
 import { useRouter } from "next/navigation"
 import { Category, Subcategory } from "@/types"
-import { CSSTransition } from "react-transition-group"
 import { MobileSearch } from "./MobileSearch"
+import { useSearchProducts } from "@/hooks"
 
 export const Header = ({
     categories,
@@ -23,6 +23,10 @@ export const Header = ({
     const [dropdownVisible, setDropdownVisible] = useState<boolean>(true)
 
     const [searchBarVisible, setSearchBarVisible] = useState<boolean>(false)
+
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    const search = useSearchProducts()
 
     const setDarkTheme = () => {
       state.darkTheme = true
@@ -53,6 +57,12 @@ export const Header = ({
         setSearchBarVisible(false)
     }
 
+    const handleSearchClick = () => {
+        if (!inputRef.current) return
+        if (!inputRef.current.value) return
+        search(inputRef.current.value)
+    }
+
 
     return (
         <header className={`z-50 sticky top-0 border-b-2 px-6 ${snap.darkTheme ? 'header-dark' : 'header-light'}`}>
@@ -72,8 +82,8 @@ export const Header = ({
                     </button>
                 </div>
                 <div className="hidden md:flex flex-[2] border-2 justify-end border-black rounded-sm h-9 focus-within:border-blue-500">
-                    <input type="text" className={snap.darkTheme ? 'header-search-input-dark' : 'header-search-input'} placeholder="Search" />
-                    <button className={snap.darkTheme ? 'header-search-btn-dark' : 'header-search-btn'}>
+                    <input ref={inputRef} type="text" className={snap.darkTheme ? 'header-search-input-dark' : 'header-search-input'} placeholder="Search" />
+                    <button className={snap.darkTheme ? 'header-search-btn-dark' : 'header-search-btn'} onClick={handleSearchClick}>
                         <AiOutlineSearch />
                     </button>
                 </div>
@@ -107,7 +117,7 @@ export const Header = ({
             </div>
             <nav className="hidden w-full justify-between md:flex text-base flex-nowrap py-3 max-w-screen-lg mx-auto bg-inherit">
             {categories.map((category) =>
-                <div className="relative group" key={category._id}>
+                <div className="relative group flex justify-center" key={category._id}>
                     <button
                     role="link"
                     onClick={() => navigate(`/catalog/categories/${category.slug}`)}

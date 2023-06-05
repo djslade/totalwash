@@ -30,7 +30,6 @@ ProductSchema.index({
     features: "text",
     whatsIncluded: "text",
 }, {
-    name: "Product Text Index",
     weights: {
         name: 10,
         description: 5,

@@ -13,47 +13,30 @@ const getSubcategories = async (id:string) => {
   return data?.subcategories as Subcategory[]
 }
 
-const getProducts = async (id:string, query?:string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?category=${id}${query ? `${query}`: ''}`)
+const getProducts = async (id:string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?category=${id}`,
+    {
+      next: {
+        tags: ['category-products']
+      }
+    })
   const data = await res.json()
   return data?.products as Product[]
 }
 
 const page = async ({
   params,
-  searchParams,
 }: {
   params:{ id: string },
-  searchParams: { page: string, limit: string, text: string, sortby: string },
 }) => {
   const { id } = params
-
-  const { page, limit, text, sortby } = searchParams
-
-  console.log(searchParams)
-
-  const getQueryString = () => {
-    let queryString = ''
-    if (page) {
-      queryString += `&page=${page}`
-    }
-    if (limit) {
-      queryString += `&limit=${limit}`
-    }
-    if (text) {
-      queryString += `&text=${text}`
-    }
-    if (sortby) {
-      queryString += `&sortby=${sortby}`
-    }
-    return queryString
-  }
 
   const category = await getCategory(id)
 
   const subcategories = await getSubcategories(category._id)
 
-  const products = await getProducts(category._id, getQueryString())
+  const products = await getProducts(category._id)
 
   return (
     <main className="max-w-screen-lg mx-auto py-3">
