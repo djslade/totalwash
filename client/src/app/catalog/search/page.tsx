@@ -7,7 +7,7 @@ const getProducts = async (query:string) => {
       `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?text=${query}`,
       {
         next: {
-          tags: ['category-products']
+          tags: ['category-products'],
         }
       })
     const data = await res.json()

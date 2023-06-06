@@ -1379,7 +1379,13 @@ const populateDatabase = async () => {
                 ],
                 fullPrice: 799.99,
                 currentPrice: 799.99,
-                description: [],
+                description: [
+                    "Make a style statement in your traditional bathroom with the stunning Milano Hest stone grey 1685mm x 750mm freestanding corner shower bath, complete with black grid glass screen and decorative black feet.",
+                    "This freestanding bath comes in left and right hand corner options to suit your bathroom design - just make your selection from the options above.",
+                    "This robust and sturdy freestanding corner bath features a stone grey exterior and black feet, creating a bold yet utterly elegant and sophisticated look. There’s ample bathing space for a relaxing soak, and thanks to the corner design and the included glass screen, you can shower in total comfort too.",
+                    "The bath screen features a black grid pattern, creating a striking look. Featuring 6mm toughened glass with an easy-clean protective coating, the bath screen is a stylish and practical way to protect your bathroom floor from spills and splashes when taking a shower.",
+                    "Team with some stylish traditional Milano black bath taps to complete and further elevate the look of this freestanding bath.",
+                ],
                 features: [
                     "Bath Dimensions: L 1685mm x W 750mm x H 640mm",
                     "Bath Screen Dimensions: W 800mm x H 1400mm",
