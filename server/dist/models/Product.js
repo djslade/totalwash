@@ -31,7 +31,7 @@ ProductSchema.index({
     whatsIncluded: "text",
 }, {
     weights: {
-        name: 10,
+        name: 8,
         description: 5,
         features: 5,
         whatsIncluded: 1,

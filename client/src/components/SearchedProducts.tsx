@@ -26,10 +26,12 @@ export const SearchedProducts = ({
         const offsetPosition = elementPosition + window.scrollY - headeroffset
         window.scrollTo({
             top: offsetPosition,
+            behavior: "smooth"
         })
     }
 
     const handleSortingMethodChange = (evt:any) => {
+        console.log(evt.target.value)
         setSortingMethod(evt.target.value)
         handleProductsScroll()
     }
@@ -42,7 +44,7 @@ export const SearchedProducts = ({
 
 
     const sortProducts = () => {
-        const productsCopy = products
+        const productsCopy = [...products]
         switch (sortingMethod) {
             case "name":
                 return productsCopy.sort(sortProductsArrayAlphabetically)
@@ -50,8 +52,11 @@ export const SearchedProducts = ({
                 return productsCopy.sort((a, b) => a.currentPrice - b.currentPrice)
             case "high-low":
                 return productsCopy.sort((a, b) => b.currentPrice - a.currentPrice)
+            case "relevance":
+                console.log(products[0].name)
+                return products
             default:
-                return productsCopy
+                return products
         }
     }
 
@@ -62,13 +67,23 @@ export const SearchedProducts = ({
         return sortedProducts.slice(startingSlice, endingSlice)
     }
 
-    const getNumberOfPages = () => {
-        const pages = Math.ceil(products.length / limit)
+    const getPageButtonsArray = () => {
+        const pageCount = Math.ceil(products.length / limit)
         const array:number[] = []
-        for (let i = 0; i < pages; i += 1) {
+        for (let i = 0; i < pageCount; i += 1) {
             array.push(i + 1)
         }
-        return array
+        const startingSlice = (page < 3 ? 1 : page - 2) - 1
+        const endingSlice = page < 3 ? 5 : page + 2
+        if (array.length >= 5) {
+            if (page === pageCount) {
+                return array.slice(startingSlice - 2, endingSlice)
+            }
+            if (page === pageCount - 1) {
+                return array.slice(startingSlice -1, endingSlice)
+            }
+        }
+        return array.slice(startingSlice, endingSlice)
     }
 
     const handlePageChange = (newPage:number) => {
@@ -109,7 +124,7 @@ export const SearchedProducts = ({
                 </div>
                 <div className="flex gap-3 font-semibold">
                     <button className="p-3">{"<"}</button>
-                    {getNumberOfPages().map((pageNumber) =>
+                    {getPageButtonsArray().map((pageNumber) =>
                     <button className={`p-3 ${pageNumber === page ? "bg-gray-100 border-gray-100 rounded-lg" : ""}`} key={pageNumber} onClick={() => handlePageChange(pageNumber)}>
                         {pageNumber}
                     </button>)}

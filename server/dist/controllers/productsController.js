@@ -45,6 +45,9 @@ const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         if (minprice || maxprice) {
             query.currentPrice = { $lte: parseInt(maxprice) || 1000000000, $gte: parseInt(minprice) || 0 };
         }
+        if (text) {
+            console.log(decodeURI(text));
+        }
         const getSortMethod = (query) => {
             if (text) {
                 return { score: { $meta: 'textScore' } };
@@ -65,7 +68,7 @@ const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             const products = yield models_1.Product
                 .find({ $text: { $search: decodeURI(text) } }, { score: { $meta: 'textScore' } })
                 .populate('categories', 'subcategories')
-                .sort(sortby)
+                .sort({ score: { $meta: 'textScore' } })
                 .exec();
             return res.status(200).send({ products });
         }

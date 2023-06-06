@@ -36,6 +36,9 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
         if (minprice || maxprice) {
             query.currentPrice =  { $lte: parseInt(maxprice as string) || 1000000000, $gte: parseInt(minprice as string) || 0 }
         }
+        if (text) {
+            console.log(decodeURI(text as string))
+        }
         const getSortMethod = (query:ParsedQs) => {
             if (text) {
                 return { score : { $meta : 'textScore' } }
@@ -59,7 +62,7 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
                 { score: { $meta: 'textScore' } }
               )
                 .populate('categories', 'subcategories')
-                .sort(sortby)
+                .sort({ score : { $meta : 'textScore' } })
                 .exec()
             return res.status(200).send({ products })
         } else {

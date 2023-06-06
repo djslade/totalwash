@@ -8,6 +8,7 @@ const getProducts = async (query:string) => {
       {
         next: {
           tags: ['category-products'],
+          revalidate: 60
         }
       })
     const data = await res.json()
