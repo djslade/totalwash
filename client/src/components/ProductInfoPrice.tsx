@@ -8,7 +8,7 @@ export const ProductInfoPrice = ({
     currentPrice: number,
 }) => {
     return (
-        <div className="my-3 text-2xl border-t border-gray-800 py-3">
+        <div className="my-3 text-2xl border-t border-gray-800 p-3">
             {!isOnSale ?
             <span className="font-semibold">{`£${currentPrice}`}</span>
             :

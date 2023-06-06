@@ -40,7 +40,7 @@ export const ProductAddToCart = ({
     }
 
     return (
-        <div className="flex sm:flex-row gap-3 my-12 flex-col text-sm items-center ">
+        <div className="flex gap-3 my-12 text-sm xs:items-center flex-col xs:flex-row p-3">
             <div className="flex items-center h-10">
                 <button
                 onClick={handleDecreaseQuantity} 
@@ -55,7 +55,7 @@ export const ProductAddToCart = ({
             </div>
             <button
             onClick={handleAddToCart}
-            className="flex-1 border py-3 uppercase bg-blue-500 rounded-md text-white font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">Add to Cart</button>
+            className="w-full border py-3 uppercase bg-blue-500 rounded-md text-white font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">Add to Cart</button>
         </div>
     )
 }

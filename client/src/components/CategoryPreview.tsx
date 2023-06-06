@@ -12,6 +12,14 @@ export const CategoryPreview = ({
 ) => {
     const navigate = useNavigate()
 
+    const getNavigateUrl = () => {
+        if ((categories[0] as Subcategory).categories) {
+            return "/catalog/subcategories/"
+        } else {
+            return "/catalog/categories/"
+        }
+    }
+
     return (
         <section className="w-full flex flex-col py-6">
             <h1 className="font-bold text-xl my-6">{heading}</h1>
@@ -20,7 +28,7 @@ export const CategoryPreview = ({
                 <div key={category._id} className="relative flex flex-col items-center rounded border aspect-square">
                 <img src={category.photo} alt={category.name} className="h-full w-full object-cover"/>
                 <button
-                onClick={() => navigate(`/catalog/${category.slug}`)}
+                onClick={() => navigate(`${getNavigateUrl()}${category.slug}`)}
                 className="text-sm xs:absolute bottom-10 left-3 right-3 uppercase bg-white text-black py-2 rounded-md border-black font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">{`Browse ${category.name}`}</button>
                 </div>)}
             </div>

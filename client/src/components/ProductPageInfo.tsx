@@ -5,7 +5,7 @@ import { ProductInfoPrice } from "./ProductInfoPrice"
 import { ProductAddToCart } from "./ProductAddToCart"
 import { ProductInfoText } from "./ProductInfoText"
 
-const ProductPageInfo = ({
+export const ProductPageInfo = ({
     product,
 }: {
     product: Product,
@@ -22,5 +22,3 @@ const ProductPageInfo = ({
         </div>
     )
 }
-
-export default ProductPageInfo

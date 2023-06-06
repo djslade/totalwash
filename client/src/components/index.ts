@@ -11,7 +11,8 @@ import { ProductsView } from "./ProductsView"
 import { FeaturedProducts } from "./FeaturedProducts"
 import { SearchedProducts } from "./SearchedProducts"
 import { CategoryInfo } from "./CategoryInfo"
-import ProductPageInfo from "./ProductPageInfo"
+import { ProductPageInfo } from "./ProductPageInfo"
+import { ProductInfoName } from "./ProductInfoName"
 
 export {
     NavSidebar,

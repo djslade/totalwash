@@ -30,7 +30,7 @@ export const ProductInfoText = ({
                 {showText &&
                 <ul className="list-disc pl-8 py-3 px-3">
                     {textArray.map((text) =>
-                    <li className="mb-3">{text}</li>)}
+                    <li className="mb-3" key={text}>{text}</li>)}
                 </ul>
                 }
             </div>

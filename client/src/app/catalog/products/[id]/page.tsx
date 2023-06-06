@@ -1,6 +1,8 @@
 import { ProductPageInfo } from "@/components"
+import { ProductImageGallery } from "@/components/ProductImageGallery"
+import { ProductInfoName } from "@/components/ProductInfoName"
 import { Product } from "@/types"
-import { BiMinus, BiPlus } from "react-icons/bi"
+import { AiOutlineRight, AiOutlineLeft } from 'react-icons/ai'
 
 const getProduct = async (id:string) => {
     const res = await fetch(
@@ -24,11 +26,10 @@ const page = async ({
     const product = await getProduct(id)
     return (
         <main className="max-w-screen-lg mx-auto py-3">
-            <div className="flex w-full gap-6 my-3">
-                <div className="flex-1">
-                    <img className="w-full aspect-square object-cover"src={product.photos[0]}/>
-                </div>
-                <ProductPageInfo product={product}/>
+            <div className="flex w-full my-3 sm:flex-row flex-col">
+              <ProductInfoName productName={product.name} mobile/>
+              <ProductImageGallery product={product} />
+              <ProductPageInfo product={product} />
             </div>
         </main>
     )

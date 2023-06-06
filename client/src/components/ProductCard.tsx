@@ -15,7 +15,7 @@ export const ProductCard = ({
   }
   return (
       <div className="p-3 hover:border border-gray-500 rounded-md flex flex-col justify-between">
-        <button className="">
+        <button onClick={handleMoreDetailsClick}>
           <img className="w-full aspect-square object-cover"src={product.photos[0]}/>
           <div className="w-full text-ellipsis line-clamp-3">
             <h2 className="font-bold my-3">{product.name}</h2>
