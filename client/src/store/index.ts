@@ -8,6 +8,7 @@ interface StateObject {
     showImageGallery: boolean;
     currentGalleryPhoto: string;
     currentProduct: Product;
+    showAddedToCartModel: boolean;
     cartContents: Product[];
 }
 
@@ -32,5 +33,6 @@ export const state:StateObject = proxy({
         slug: "",
         photos: [],
     },
+    showAddedToCartModel: false,
     cartContents: [],
 })

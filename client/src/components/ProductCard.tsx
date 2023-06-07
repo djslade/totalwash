@@ -2,6 +2,7 @@
 import { useNavigate } from '@/hooks'
 import { Product } from '@/types'
 import React from 'react'
+import { AddToCartButton } from './AddToCartButton'
 
 export const ProductCard = ({
     product,
@@ -36,7 +37,7 @@ export const ProductCard = ({
             <button
             className="flex-1 border py-2.5 uppercase bg-white text-gray-900 rounded-md border-gray-500 font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90"
             onClick={handleMoreDetailsClick}>More Details</button>
-            <button className="flex-1 border py-2.5 uppercase bg-blue-500 rounded-md text-white font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">Add to Cart</button>
+            <AddToCartButton product={product} card />
           </div>
         </div>
       </div>
