@@ -11,7 +11,7 @@ export const SearchedProducts = ({
     products: Product[],
     relevance?: boolean;
 }) => {
-    const [sortingMethod, setSortingMethod] = useState("name")
+    const [sortingMethod, setSortingMethod] = useState<string>(relevance ? "relevance" : "name")
 
     const [limit, setLimit] = useState<number>(6)
 

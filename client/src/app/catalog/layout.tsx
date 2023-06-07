@@ -1,4 +1,4 @@
-import { CartSidebar, Header, NavSidebar } from "@/components"
+import { CartSidebar, Header, NavSidebar, ImageGalleryModal } from "@/components"
 import { Category, Subcategory } from "@/types"
 
 const getCategories = async () => {
@@ -26,6 +26,7 @@ const Layout = async ({
         <>
             <NavSidebar categories={categories} subcategories={subcategories} />
             <CartSidebar />
+            <ImageGalleryModal />
             <Header categories={categories} subcategories={subcategories} />
             {children}
         </>

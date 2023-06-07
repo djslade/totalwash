@@ -3,21 +3,33 @@ import { Product } from '@/types'
 import { useState } from 'react'
 import { BiCircle } from 'react-icons/bi'
 import { AiTwotoneCheckCircle } from 'react-icons/ai'
+import { useSnapshot } from 'valtio'
+import { state } from '@/store'
 
 export const ProductImageGallery = ({
     product,
 }: {
     product: Product,
 }) => {
+    const snap = useSnapshot(state)
+
     const [currentPhoto, setCurrentPhoto] = useState<string>(product.photos[0])
 
     const handleImageChange = (photoSrc:string) => {
         setCurrentPhoto(photoSrc)
     }
 
+    const handleOpenModal = () => {
+        state.showImageGallery = true
+        state.currentGalleryPhoto = currentPhoto
+        state.currentProduct = product
+    }
+
     return (
         <div className="flex-1 p-3">
-            <img className="w-full"src={currentPhoto}/>
+            <button className="w-full" onClick={handleOpenModal}>
+                <img className="w-full"src={currentPhoto}/>
+            </button>
             <div className="flex w-full gap-3 text-2xl py-3">
             <div className="hidden grid-cols-6 gap-3 sm:grid">
                 {product.photos.map((photo) =>

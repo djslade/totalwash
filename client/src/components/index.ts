@@ -13,6 +13,7 @@ import { SearchedProducts } from "./SearchedProducts"
 import { CategoryInfo } from "./CategoryInfo"
 import { ProductPageInfo } from "./ProductPageInfo"
 import { ProductInfoName } from "./ProductInfoName"
+import { ImageGalleryModal } from "./ImageGalleryModal"
 
 export {
     NavSidebar,
@@ -29,4 +30,6 @@ export {
     SearchedProducts,
     CategoryInfo,
     ProductPageInfo,
+    ProductInfoName,
+    ImageGalleryModal,
 }
