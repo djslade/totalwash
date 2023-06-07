@@ -14,6 +14,7 @@ import { CategoryInfo } from "./CategoryInfo"
 import { ProductPageInfo } from "./ProductPageInfo"
 import { ProductInfoName } from "./ProductInfoName"
 import { ImageGalleryModal } from "./ImageGalleryModal"
+import { RelatedProducts } from "./RelatedProducts"
 
 export {
     NavSidebar,
@@ -32,4 +33,5 @@ export {
     ProductPageInfo,
     ProductInfoName,
     ImageGalleryModal,
+    RelatedProducts,
 }

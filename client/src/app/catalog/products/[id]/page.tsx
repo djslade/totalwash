@@ -1,8 +1,7 @@
-import { ImageGalleryModal, ProductPageInfo } from "@/components"
+import { ProductPageInfo, RelatedProducts } from "@/components"
 import { ProductImageGallery } from "@/components/ProductImageGallery"
 import { ProductInfoName } from "@/components/ProductInfoName"
 import { Product } from "@/types"
-import { AiOutlineRight, AiOutlineLeft } from 'react-icons/ai'
 
 const getProduct = async (id:string) => {
     const res = await fetch(
@@ -15,7 +14,22 @@ const getProduct = async (id:string) => {
       })
     const data = await res.json()
     return data?.product as Product
-  }
+}
+
+const getRelatedProducts = async (productName:string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?text=${productName}`,
+    {
+      next: {
+        tags: ['viewed-product'],
+        revalidate: 60,
+      }
+    })
+    const data = await res.json()
+    const products = data?.products as Product[]
+    const filteredProducts = products.filter((product) => product.name !== productName)
+    return filteredProducts.slice(0, 6)
+}
 
 const page = async ({
     params,
@@ -24,6 +38,7 @@ const page = async ({
 }) => {
     const { id } = params
     const product = await getProduct(id)
+    const relatedProducts = await getRelatedProducts(product.name)
     return (
         <main className="max-w-screen-lg mx-auto py-3">
             <div className="flex w-full my-3 sm:flex-row flex-col">
@@ -31,6 +46,7 @@ const page = async ({
               <ProductImageGallery product={product} />
               <ProductPageInfo product={product} />
             </div>
+            <RelatedProducts products={relatedProducts} />
         </main>
     )
 }
