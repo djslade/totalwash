@@ -1,4 +1,4 @@
-import { ProductPageInfo } from "@/components"
+import { ImageGalleryModal, ProductPageInfo } from "@/components"
 import { ProductImageGallery } from "@/components/ProductImageGallery"
 import { ProductInfoName } from "@/components/ProductInfoName"
 import { Product } from "@/types"

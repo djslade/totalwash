@@ -26,6 +26,11 @@
     .bg-input-dark {
         background-color: #666666;
     }
+
+    .noscroll {
+        overflow: hidden;
+        height: 100vh;
+    }
 }
 
 @layer components {

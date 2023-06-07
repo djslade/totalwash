@@ -24,9 +24,6 @@ const Layout = async ({
 
     return (
         <>
-            <NavSidebar categories={categories} subcategories={subcategories} />
-            <CartSidebar />
-            <ImageGalleryModal />
             <Header categories={categories} subcategories={subcategories} />
             {children}
         </>
