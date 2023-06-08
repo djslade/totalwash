@@ -2,20 +2,21 @@ import { Category, Product, Subcategory } from "@/types"
 import { CategoryPreview, CategoryInfo, SearchedProducts } from "@/components"
 
 const getCategory = async (id:string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/categories/${id}`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges/${id}`)
   const data = await res.json()
-  return data?.category as Category
+  return data?.range as Category
 }
 
 const getSubcategories = async (id:string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/subcategories?category=${id}`, { next: { revalidate: 60 }})
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges?parent=${id}`, { next: { revalidate: 60 }})
   const data = await res.json()
-  return data?.subcategories as Subcategory[]
+  console.log(data?.ranges)
+  return data?.ranges as Subcategory[]
 }
 
 const getProducts = async (id:string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?category=${id}`,
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?range=${id}`,
     {
       next: {
         tags: ['category-products']
@@ -34,14 +35,14 @@ const page = async ({
 
   const category = await getCategory(id)
 
-  const subcategories = await getSubcategories(category._id)
+  const subcategories = category.parents.length === 0 ? await getSubcategories(category._id) : null
 
   const products = await getProducts(category._id)
 
   return (
     <main className="max-w-screen-lg mx-auto py-3">
       <CategoryInfo category={category} />
-      <CategoryPreview categories={subcategories} heading="Subcategories"/>
+      {subcategories && <CategoryPreview categories={subcategories} heading="Subcategories"/>}
       <SearchedProducts products={products} />
     </main>
   )

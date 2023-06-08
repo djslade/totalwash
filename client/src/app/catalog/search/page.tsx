@@ -4,7 +4,7 @@ import { SearchedProducts } from "@/components"
 
 const getProducts = async (query:string) => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?text=${query}`,
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?q=${query}`,
       {
         next: {
           tags: ['category-products'],

@@ -16,7 +16,7 @@ const utilities_1 = require("../utilities");
 const getRange = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { rangeId } = req.params;
-        const range = yield models_1.Range.findOne({ slug: rangeId }).populate('categories').exec();
+        const range = yield models_1.Range.findOne({ slug: rangeId }).populate('parents').exec();
         return res.status(200).send({ range });
     }
     catch (err) {
@@ -28,7 +28,7 @@ const getAllRanges = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         const { parent } = req.query;
         const query = {};
         if (parent) {
-            query.parent = parent;
+            query.parents = parent;
         }
         const ranges = yield models_1.Range.find(query).populate('parents').exec();
         return res.status(200).send({ ranges });

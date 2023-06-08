@@ -6,7 +6,7 @@ import { validateArrayOfObjectIds } from "../utilities"
 const getRange = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { rangeId } =  req.params
-        const range = await Range.findOne({ slug: rangeId }).populate('categories').exec()
+        const range = await Range.findOne({ slug: rangeId }).populate('parents').exec()
         return res.status(200).send({ range })
     } catch (err) {
         return next(err)
@@ -16,9 +16,9 @@ const getRange = async (req: Request, res: Response, next: NextFunction) => {
 const getAllRanges = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { parent } = req.query
-        const query: { parent?: string } = {}
+        const query: { parents?: string } = {}
         if (parent) {
-            query.parent = parent as string
+            query.parents = parent as string
         }
         const ranges = await Range.find(query).populate('parents').exec()
         return res.status(200).send({ ranges })

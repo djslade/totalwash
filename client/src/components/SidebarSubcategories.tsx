@@ -10,7 +10,7 @@ export const SidebarSubcategories = ({
     navigate,
 }
 :{
-    subcategories:Subcategory[],
+    subcategories:Category[],
     selectedCategory: Category,
     setSelectedCategory:Dispatch<SetStateAction<Category>>,
     navigate:(path: string) => void,
@@ -25,13 +25,13 @@ return (
         </button>   
     </div>
     {subcategories.map((subcategory) =>
-        subcategory.categories.map((savedCategory:any) =>
+        subcategory.parents.map((savedCategory:any) =>
             savedCategory._id === selectedCategory._id &&
             <div key={subcategory._id} className="border-b-2">
                 <button
                 className="py-3 flex items-center justify-start w-72 px-6 h-20"
                 role="link"
-                onClick={() => navigate(`/catalog/${subcategory.slug}`)}>
+                onClick={() => navigate(`/catalog/categories/${subcategory.slug}`)}>
                     <span>{subcategory.name}</span>
                 </button>
             </div>

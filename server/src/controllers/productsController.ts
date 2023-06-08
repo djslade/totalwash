@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { Category, Subcategory, Product } from "../models"
+import { Category, Product, Range } from "../models"
 import { body, validationResult } from "express-validator"
 import { ParsedQs, ProductBody, ProductQuery } from "../types"
 import { validateArrayOfObjectIds } from "../utilities"
@@ -16,16 +16,14 @@ const getProduct = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { category, subcategory, sale, featured, minprice, maxprice, text } = req.query
+        const { range, sale, featured, minprice, maxprice } = req.query
+        const textToSearch = req.query.q
         const page = parseInt(req.query.page as string) || 1
         const limit = parseInt(req.query.limit as string) || 0
         const offset = (page - 1) * limit
         const query:ProductQuery = {}
-        if (category) {
-            query.categories = category
-        }
-        if (subcategory) {
-            query.subcategories = subcategory
+        if (range) {
+            query.ranges = range
         }
         if (sale === 'true' ) {
             query.isOnSale = true
@@ -36,13 +34,8 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
         if (minprice || maxprice) {
             query.currentPrice =  { $lte: parseInt(maxprice as string) || 1000000000, $gte: parseInt(minprice as string) || 0 }
         }
-        if (text) {
-            console.log(decodeURI(text as string))
-        }
         const getSortMethod = (query:ParsedQs) => {
-            if (text) {
-                return { score : { $meta : 'textScore' } }
-            }
+
             switch(query.sortby) {
                 case 'name':
                     return { name: 1} as any
@@ -50,28 +43,34 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
                     return { currentPrice: -1 } as any
                 case 'low-high':
                     return { currentPrice: 1 } as any
+                case 'relevance':
+                    return { score : { $meta : 'textScore' } }
                 default:
-                    return { name: 1 } as any
+                    if (textToSearch) {
+                        return { score : { $meta : 'textScore' } }
+                    } else {
+                        return { name: 1 } as any
+                }         
             }
         }
         const sortby = getSortMethod(req.query)
-        if (text) {
+        if (textToSearch) {
             const products = await Product
             .find(
-                { $text: { $search: decodeURI(text as string) } },
+                { $text: { $search: decodeURI(textToSearch as string) } },
                 { score: { $meta: 'textScore' } }
               )
-                .populate('categories', 'subcategories')
-                .sort({ score : { $meta : 'textScore' } })
-                .exec()
+            .sort({ score : { $meta : 'textScore' } })
+            .skip(offset)
+            .limit(limit)
+            .populate('ranges')
+            .exec()
             return res.status(200).send({ products })
         } else {
             const products = await Product
             .find(query)
-            .limit(limit)
-            .skip(offset)
-            .populate('categories', 'subcategories')
             .sort(sortby)
+            .populate('ranges')
             .exec()
             return res.status(200).send({ products })
         }
@@ -82,8 +81,7 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
 
 const postProduct = [
     body('name').isString().notEmpty().trim(),
-    body('categories').isArray().custom((value) => validateArrayOfObjectIds(value)),
-    body('subcategories').isArray().custom((value) => validateArrayOfObjectIds(value)),
+    body('ranges').isArray().custom((value) => validateArrayOfObjectIds(value)),
     body('fullPrice').isNumeric(),
     body('currentPrice').isNumeric(),
     body('description').isArray(),
@@ -100,8 +98,7 @@ const postProduct = [
             }
             const { 
                 name,
-                categories,
-                subcategories,
+                ranges,
                 fullPrice,
                 currentPrice,
                 description,
@@ -111,22 +108,15 @@ const postProduct = [
                 isOnSale,
                 photos,
             }: ProductBody = req.body
-            categories.forEach(async (category) => {
-                const categoryInDatabase = await Category.findById(category)
-                if (!categoryInDatabase) {
-                    throw new Error('Specified category was not in database')
-                }
-            })
-            subcategories.forEach(async (subcategory) => {
-                const subcategoryInDatabase = await Subcategory.findById(subcategory)
-                if (!subcategoryInDatabase) {
-                    throw new Error('Specified subcategory was not in database')
+            ranges.forEach(async (range) => {
+                const rangeInDatabase = await Category.findById(range)
+                if (!rangeInDatabase) {
+                    throw new Error('Specified range was not in database')
                 }
             })
             const product = new Product({
                 name,
-                categories,
-                subcategories,
+                ranges,
                 fullPrice,
                 currentPrice,
                 description,
@@ -146,8 +136,7 @@ const postProduct = [
 
 const updateProduct = [
     body('name').isString().notEmpty().trim(),
-    body('categories').isArray().custom((value) => validateArrayOfObjectIds(value)),
-    body('subcategories').isArray().custom((value) => validateArrayOfObjectIds(value)),
+    body('ranges').isArray().custom((value) => validateArrayOfObjectIds(value)),
     body('fullPrice').isNumeric(),
     body('currentPrice').isNumeric(),
     body('description').isArray(),
@@ -164,8 +153,7 @@ const updateProduct = [
             }
             const { 
                 name,
-                categories,
-                subcategories,
+                ranges,
                 fullPrice,
                 currentPrice,
                 description,
@@ -175,16 +163,10 @@ const updateProduct = [
                 isOnSale,
                 photos,
             }: ProductBody = req.body
-            categories.forEach(async (category) => {
-                const categoryInDatabase = await Category.findById(category)
-                if (!categoryInDatabase) {
-                    throw new Error('Specified category was not in database')
-                }
-            })
-            subcategories.forEach(async (subcategory) => {
-                const subcategoryInDatabase = await Subcategory.findById(subcategory)
-                if (!subcategoryInDatabase) {
-                    throw new Error('Specified subcategory was not in database')
+            ranges.forEach(async (range) => {
+                const rangeInDatabase = await Range.findById(range)
+                if (!rangeInDatabase) {
+                    throw new Error('Specified range was not in database')
                 }
             })
             const { productId } = req.params
@@ -194,8 +176,7 @@ const updateProduct = [
                 },
                 {
                     name,
-                    categories,
-                    subcategories,
+                    ranges,
                     fullPrice,
                     currentPrice,
                     description,

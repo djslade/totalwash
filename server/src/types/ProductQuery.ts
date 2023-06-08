@@ -10,12 +10,9 @@ type TextQuery = {
 }
 
 export interface ProductQuery {
-    categories?: string | ParsedQs | string[] | ParsedQs[];
-    subcategories?: string | ParsedQs | string[] | ParsedQs[];
+    ranges?: string | ParsedQs | string[] | ParsedQs[];
     isOnSale?: boolean;
     isFeatured?: boolean;
     currentPrice?: CurrentPriceQuery;
     text?: TextQuery;
-    page?: string | ParsedQs | string[] | ParsedQs[];
-    limit?: string | ParsedQs | string[] | ParsedQs[];
 }

@@ -16,7 +16,7 @@ export const NavSidebar = ({
     subcategories
 }: {
     categories: Category[],
-    subcategories: Subcategory[],
+    subcategories: Category[],
 }) => {
     const snap = useSnapshot(state)
 

@@ -18,7 +18,7 @@ const getProduct = async (id:string) => {
 
 const getRelatedProducts = async (productName:string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?text=${productName}`,
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?q=${productName}`,
     {
       next: {
         tags: ['viewed-product'],

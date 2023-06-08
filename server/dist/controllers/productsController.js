@@ -25,16 +25,14 @@ const getProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { category, subcategory, sale, featured, minprice, maxprice, text } = req.query;
+        const { range, sale, featured, minprice, maxprice } = req.query;
+        const textToSearch = req.query.q;
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 0;
         const offset = (page - 1) * limit;
         const query = {};
-        if (category) {
-            query.categories = category;
-        }
-        if (subcategory) {
-            query.subcategories = subcategory;
+        if (range) {
+            query.ranges = range;
         }
         if (sale === 'true') {
             query.isOnSale = true;
@@ -45,13 +43,7 @@ const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         if (minprice || maxprice) {
             query.currentPrice = { $lte: parseInt(maxprice) || 1000000000, $gte: parseInt(minprice) || 0 };
         }
-        if (text) {
-            console.log(decodeURI(text));
-        }
         const getSortMethod = (query) => {
-            if (text) {
-                return { score: { $meta: 'textScore' } };
-            }
             switch (query.sortby) {
                 case 'name':
                     return { name: 1 };
@@ -59,26 +51,33 @@ const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
                     return { currentPrice: -1 };
                 case 'low-high':
                     return { currentPrice: 1 };
+                case 'relevance':
+                    return { score: { $meta: 'textScore' } };
                 default:
-                    return { name: 1 };
+                    if (textToSearch) {
+                        return { score: { $meta: 'textScore' } };
+                    }
+                    else {
+                        return { name: 1 };
+                    }
             }
         };
         const sortby = getSortMethod(req.query);
-        if (text) {
+        if (textToSearch) {
             const products = yield models_1.Product
-                .find({ $text: { $search: decodeURI(text) } }, { score: { $meta: 'textScore' } })
-                .populate('categories', 'subcategories')
+                .find({ $text: { $search: decodeURI(textToSearch) } }, { score: { $meta: 'textScore' } })
                 .sort({ score: { $meta: 'textScore' } })
+                .skip(offset)
+                .limit(limit)
+                .populate('ranges')
                 .exec();
             return res.status(200).send({ products });
         }
         else {
             const products = yield models_1.Product
                 .find(query)
-                .limit(limit)
-                .skip(offset)
-                .populate('categories', 'subcategories')
                 .sort(sortby)
+                .populate('ranges')
                 .exec();
             return res.status(200).send({ products });
         }
@@ -89,8 +88,7 @@ const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
 });
 const postProduct = [
     (0, express_validator_1.body)('name').isString().notEmpty().trim(),
-    (0, express_validator_1.body)('categories').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
-    (0, express_validator_1.body)('subcategories').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
+    (0, express_validator_1.body)('ranges').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
     (0, express_validator_1.body)('fullPrice').isNumeric(),
     (0, express_validator_1.body)('currentPrice').isNumeric(),
     (0, express_validator_1.body)('description').isArray(),
@@ -105,23 +103,16 @@ const postProduct = [
             if (!errors.isEmpty()) {
                 throw new Error('Validation error');
             }
-            const { name, categories, subcategories, fullPrice, currentPrice, description, features, whatsIncluded, isFeatured, isOnSale, photos, } = req.body;
-            categories.forEach((category) => __awaiter(void 0, void 0, void 0, function* () {
-                const categoryInDatabase = yield models_1.Category.findById(category);
-                if (!categoryInDatabase) {
-                    throw new Error('Specified category was not in database');
-                }
-            }));
-            subcategories.forEach((subcategory) => __awaiter(void 0, void 0, void 0, function* () {
-                const subcategoryInDatabase = yield models_1.Subcategory.findById(subcategory);
-                if (!subcategoryInDatabase) {
-                    throw new Error('Specified subcategory was not in database');
+            const { name, ranges, fullPrice, currentPrice, description, features, whatsIncluded, isFeatured, isOnSale, photos, } = req.body;
+            ranges.forEach((range) => __awaiter(void 0, void 0, void 0, function* () {
+                const rangeInDatabase = yield models_1.Category.findById(range);
+                if (!rangeInDatabase) {
+                    throw new Error('Specified range was not in database');
                 }
             }));
             const product = new models_1.Product({
                 name,
-                categories,
-                subcategories,
+                ranges,
                 fullPrice,
                 currentPrice,
                 description,
@@ -141,8 +132,7 @@ const postProduct = [
 ];
 const updateProduct = [
     (0, express_validator_1.body)('name').isString().notEmpty().trim(),
-    (0, express_validator_1.body)('categories').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
-    (0, express_validator_1.body)('subcategories').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
+    (0, express_validator_1.body)('ranges').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
     (0, express_validator_1.body)('fullPrice').isNumeric(),
     (0, express_validator_1.body)('currentPrice').isNumeric(),
     (0, express_validator_1.body)('description').isArray(),
@@ -157,17 +147,11 @@ const updateProduct = [
             if (!errors.isEmpty()) {
                 throw new Error('Validation error');
             }
-            const { name, categories, subcategories, fullPrice, currentPrice, description, features, whatsIncluded, isFeatured, isOnSale, photos, } = req.body;
-            categories.forEach((category) => __awaiter(void 0, void 0, void 0, function* () {
-                const categoryInDatabase = yield models_1.Category.findById(category);
-                if (!categoryInDatabase) {
-                    throw new Error('Specified category was not in database');
-                }
-            }));
-            subcategories.forEach((subcategory) => __awaiter(void 0, void 0, void 0, function* () {
-                const subcategoryInDatabase = yield models_1.Subcategory.findById(subcategory);
-                if (!subcategoryInDatabase) {
-                    throw new Error('Specified subcategory was not in database');
+            const { name, ranges, fullPrice, currentPrice, description, features, whatsIncluded, isFeatured, isOnSale, photos, } = req.body;
+            ranges.forEach((range) => __awaiter(void 0, void 0, void 0, function* () {
+                const rangeInDatabase = yield models_1.Range.findById(range);
+                if (!rangeInDatabase) {
+                    throw new Error('Specified range was not in database');
                 }
             }));
             const { productId } = req.params;
@@ -175,8 +159,7 @@ const updateProduct = [
                 slug: productId,
             }, {
                 name,
-                categories,
-                subcategories,
+                ranges,
                 fullPrice,
                 currentPrice,
                 description,

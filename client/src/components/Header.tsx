@@ -7,7 +7,7 @@ import { RiShoppingCartLine } from "react-icons/ri"
 import { RxHamburgerMenu } from "react-icons/rx"
 import { useSnapshot } from "valtio"
 import { useRouter } from "next/navigation"
-import { Category, Subcategory } from "@/types"
+import { Category } from "@/types"
 import { MobileSearch } from "./MobileSearch"
 import { useSearchProducts } from "@/hooks"
 import { CartSidebar } from "./CartSidebar"
@@ -18,7 +18,7 @@ export const Header = ({
     subcategories
 }: {
     categories: Category[],
-    subcategories: Subcategory[],
+    subcategories: Category[],
 }) => {
     const snap = useSnapshot(state)
 
@@ -131,13 +131,13 @@ export const Header = ({
                         </button>
                         <div className={`top-6 absolute flex-col group-hover:flex bg-inherit py-3 rounded shadow-lg ${dropdownVisible ? 'hidden' : '!hidden'} ${snap.darkTheme ? "header-dark" : "header-light"}`}>
                             {subcategories.map((subcategory) =>
-                                subcategory.categories.map((savedCategory:any) =>
+                                subcategory.parents.map((savedCategory:any) =>
                                     savedCategory._id === category._id &&
                                     <div key={subcategory._id}>
                                         <button
                                         className={`py-3 px-6 w-full brightness-100 whitespace-nowrap bg-inherit flex items-center justify-start ${snap.darkTheme ? "header-dark hover:bg-[#5c5c5c]" : "header-light hover:brightness-95"}`}
                                         role="link"
-                                        onClick={() => navigate(`/catalog/subcategories/${subcategory.slug}`)}
+                                        onClick={() => navigate(`/catalog/categories/${subcategory.slug}`)}
                                         onBlur={() => setDropdownVisible(true)}>
                                             <span>{subcategory.name}</span>
                                         </button>

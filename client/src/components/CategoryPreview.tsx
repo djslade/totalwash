@@ -13,11 +13,7 @@ export const CategoryPreview = ({
     const navigate = useNavigate()
 
     const getNavigateUrl = () => {
-        if ((categories[0] as Subcategory).categories) {
-            return "/catalog/subcategories/"
-        } else {
-            return "/catalog/categories/"
-        }
+        return "/catalog/categories/"
     }
 
     return (

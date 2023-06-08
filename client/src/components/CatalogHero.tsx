@@ -1,10 +1,7 @@
 "use client"
-import { useRouter } from "next/navigation"
 import { useNavigate } from "@/hooks"
 
 export const CatalogHero = () => {
-    const router = useRouter()
-
     const navigate = useNavigate()
 
     return (
@@ -13,7 +10,7 @@ export const CatalogHero = () => {
             <h1 className="text-2xl font-bold">Reinvent your bathroom</h1>
             <h2 className="text-xl">For a limited time you can save on select items in our store.</h2>
             <button
-            onClick={() => navigate("/catalog")}
+            onClick={() => navigate("/catalog/sale")}
             className="w-48 uppercase bg-white text-black px-9 py-2 rounded-md border-black font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">Shop Now</button>
             </div>
             <div className="md:flex-1 h-[400px]">

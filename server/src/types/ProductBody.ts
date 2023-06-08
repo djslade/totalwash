@@ -1,7 +1,6 @@
 export interface ProductBody {
     name: string;
-    categories: string[],
-    subcategories: string[],
+    ranges: string[],
     brand: string,
     fullPrice: number,
     currentPrice: number,
