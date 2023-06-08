@@ -1,6 +1,6 @@
-import { Product } from "./models"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
+import { Category, Product, Range, Subcategory } from "./models"
 
 dotenv.config()
 
@@ -9,16 +9,62 @@ mongoose.connect(process.env.MONGO_URI || "")
 
 const updatedb = async () => {
     try {
-        await Product.findOneAndUpdate({
-            name: "Milano Hest - Stone Grey Traditional Freestanding Corner Shower Bath with Black Feet and Black Grid Screen - 1685mm x 750mm - Left/Right Hand Options",
-        }, {
-            description: [
-                "Make a style statement in your traditional bathroom with the stunning Milano Hest stone grey 1685mm x 750mm freestanding corner shower bath, complete with black grid glass screen and decorative black feet.",
-                "This freestanding bath comes in left and right hand corner options to suit your bathroom design - just make your selection from the options above.",
-                "This robust and sturdy freestanding corner bath features a stone grey exterior and black feet, creating a bold yet utterly elegant and sophisticated look. There’s ample bathing space for a relaxing soak, and thanks to the corner design and the included glass screen, you can shower in total comfort too.",
-                "The bath screen features a black grid pattern, creating a striking look. Featuring 6mm toughened glass with an easy-clean protective coating, the bath screen is a stylish and practical way to protect your bathroom floor from spills and splashes when taking a shower.",
-                "Team with some stylish traditional Milano black bath taps to complete and further elevate the look of this freestanding bath.",
-            ],
+        const parents = await Category.find().exec()
+        const parentsPromises:any = parents.map(async (parent) => {
+            const { name, description, photo } = parent
+            const newRange = new Range({
+                name,
+                description,
+                photo,
+            })
+            const savedRange = await newRange.save()
+            return {
+                name,
+                id: savedRange._id
+            }
+        })
+        const parentIds = await Promise.all(parentsPromises)
+        const subcategories = await Subcategory.find().populate('categories').exec()
+        const otherRanges = subcategories.map((subcategory) => {
+            const { name, description, photo } = subcategory
+            const categories:any[] = subcategory.categories
+            const parents = categories.map((category) => {
+                return parentIds.filter((id) => id.name === category.name)[0].id
+            })
+            return {
+                name,
+                description,
+                photo,
+                parents,
+            }
+        })
+        const rangesPromises:any = otherRanges.map(async (range) => {
+            const { name, description, photo, parents } = range
+            const newRange = new Range({
+                name,
+                description,
+                photo,
+                parents
+            })
+            const savedRange = await newRange.save()
+            return {
+                name,
+                id: savedRange._id
+            }
+        })
+        const otherRangesIds = await Promise.all(rangesPromises)
+        const allRangeIds = [...parentIds, ...otherRangesIds]
+        console.log(allRangeIds)
+        const products = await Product.find().populate('categories').populate('subcategories').exec()
+        console.log(products)
+        products.forEach(async (product) => {
+            const categoriesAndSubcategories:any[] = [...product.categories, ...product.subcategories]
+            const ranges = categoriesAndSubcategories.map((item) => {
+                return allRangeIds.filter((id) => id.name === item.name)[0].id
+            })
+            const updatedProduct = await Product.findByIdAndUpdate(product._id, {
+                ranges
+            })
         })
     } catch (err) {
         console.log(err)

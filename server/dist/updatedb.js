@@ -12,25 +12,71 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const models_1 = require("./models");
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const models_1 = require("./models");
 dotenv_1.default.config();
 mongoose_1.default.set('strictQuery', false);
 mongoose_1.default.connect(process.env.MONGO_URI || "");
 const updatedb = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield models_1.Product.findOneAndUpdate({
-            name: "Milano Hest - Stone Grey Traditional Freestanding Corner Shower Bath with Black Feet and Black Grid Screen - 1685mm x 750mm - Left/Right Hand Options",
-        }, {
-            description: [
-                "Make a style statement in your traditional bathroom with the stunning Milano Hest stone grey 1685mm x 750mm freestanding corner shower bath, complete with black grid glass screen and decorative black feet.",
-                "This freestanding bath comes in left and right hand corner options to suit your bathroom design - just make your selection from the options above.",
-                "This robust and sturdy freestanding corner bath features a stone grey exterior and black feet, creating a bold yet utterly elegant and sophisticated look. There’s ample bathing space for a relaxing soak, and thanks to the corner design and the included glass screen, you can shower in total comfort too.",
-                "The bath screen features a black grid pattern, creating a striking look. Featuring 6mm toughened glass with an easy-clean protective coating, the bath screen is a stylish and practical way to protect your bathroom floor from spills and splashes when taking a shower.",
-                "Team with some stylish traditional Milano black bath taps to complete and further elevate the look of this freestanding bath.",
-            ],
+        const parents = yield models_1.Category.find().exec();
+        const parentsPromises = parents.map((parent) => __awaiter(void 0, void 0, void 0, function* () {
+            const { name, description, photo } = parent;
+            const newRange = new models_1.Range({
+                name,
+                description,
+                photo,
+            });
+            const savedRange = yield newRange.save();
+            return {
+                name,
+                id: savedRange._id
+            };
+        }));
+        const parentIds = yield Promise.all(parentsPromises);
+        const subcategories = yield models_1.Subcategory.find().populate('categories').exec();
+        const otherRanges = subcategories.map((subcategory) => {
+            const { name, description, photo } = subcategory;
+            const categories = subcategory.categories;
+            const parents = categories.map((category) => {
+                return parentIds.filter((id) => id.name === category.name)[0].id;
+            });
+            return {
+                name,
+                description,
+                photo,
+                parents,
+            };
         });
+        const rangesPromises = otherRanges.map((range) => __awaiter(void 0, void 0, void 0, function* () {
+            const { name, description, photo, parents } = range;
+            const newRange = new models_1.Range({
+                name,
+                description,
+                photo,
+                parents
+            });
+            const savedRange = yield newRange.save();
+            return {
+                name,
+                id: savedRange._id
+            };
+        }));
+        const otherRangesIds = yield Promise.all(rangesPromises);
+        const allRangeIds = [...parentIds, ...otherRangesIds];
+        console.log(allRangeIds);
+        const products = yield models_1.Product.find().populate('categories').populate('subcategories').exec();
+        console.log(products);
+        products.forEach((product) => __awaiter(void 0, void 0, void 0, function* () {
+            const categoriesAndSubcategories = [...product.categories, ...product.subcategories];
+            const ranges = categoriesAndSubcategories.map((item) => {
+                return allRangeIds.filter((id) => id.name === item.name)[0].id;
+            });
+            const updatedProduct = yield models_1.Product.findByIdAndUpdate(product._id, {
+                ranges
+            });
+        }));
     }
     catch (err) {
         console.log(err);

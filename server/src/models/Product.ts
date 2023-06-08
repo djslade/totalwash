@@ -5,6 +5,7 @@ const ProductSchema = new Schema({
     name: { type: String, unique: true },
     categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
     subcategories: [{ type: Schema.Types.ObjectId, ref: 'Subcategory' }],
+    ranges: [{ type: Schema.Types.ObjectId, ref: 'Range', required: false }],
     fullPrice: { type: Number },
     currentPrice: { type: Number },
     description: [{ type: String }],
