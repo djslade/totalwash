@@ -2,7 +2,7 @@ import { Category, Product } from "@/types"
 import { CatalogHero, FeaturedProducts, CategoryPreview } from "@/components"
 
 const getCategories = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/categories`, { next: { revalidate: 60 }})
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/categories`)
   const data = await res.json()
   return data?.categories as Category[]
 }

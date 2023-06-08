@@ -8,20 +8,14 @@ const getCategory = async (id:string) => {
 }
 
 const getSubcategories = async (id:string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges?parent=${id}`, { next: { revalidate: 60 }})
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges?parent=${id}`)
   const data = await res.json()
   console.log(data?.ranges)
   return data?.ranges as Subcategory[]
 }
 
 const getProducts = async (id:string) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?range=${id}`,
-    {
-      next: {
-        tags: ['category-products']
-      }
-    })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?range=${id}`)
   const data = await res.json()
   return data?.products as Product[]
 }

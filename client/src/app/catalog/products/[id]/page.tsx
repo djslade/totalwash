@@ -5,26 +5,14 @@ import { Product } from "@/types"
 
 const getProduct = async (id:string) => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products/${id}`,
-      {
-        next: {
-          tags: ['viewed-product'],
-          revalidate: 60,
-        }
-      })
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products/${id}`)
     const data = await res.json()
     return data?.product as Product
 }
 
 const getRelatedProducts = async (productName:string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?q=${productName}`,
-    {
-      next: {
-        tags: ['viewed-product'],
-        revalidate: 60,
-      }
-    })
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?q=${productName}`)
     const data = await res.json()
     const products = data?.products as Product[]
     const filteredProducts = products.filter((product) => product.name !== productName)

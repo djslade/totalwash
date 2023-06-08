@@ -4,13 +4,7 @@ import { SearchedProducts } from "@/components"
 
 const getProducts = async (query:string) => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?q=${query}`,
-      {
-        next: {
-          tags: ['category-products'],
-          revalidate: 60
-        }
-      })
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?q=${query}`)
     const data = await res.json()
     return data?.products as Product[]
   }
