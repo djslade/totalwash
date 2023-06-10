@@ -10,7 +10,6 @@ const getCategory = async (id:string) => {
 const getSubcategories = async (id:string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges?parent=${id}`)
   const data = await res.json()
-  console.log(data?.ranges)
   return data?.ranges as Subcategory[]
 }
 
@@ -34,7 +33,7 @@ const page = async ({
   const products = await getProducts(category._id)
 
   return (
-    <main className="max-w-screen-lg mx-auto py-3">
+    <main className="max-w-screen-lg mx-auto p-3">
       <CategoryInfo category={category} />
       {subcategories && <CategoryPreview categories={subcategories} heading="Subcategories"/>}
       <SearchedProducts products={products} />

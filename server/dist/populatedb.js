@@ -53,7 +53,6 @@ const populateDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
                 description,
             });
             const savedCategory = yield newCategory.save();
-            console.log(savedCategory);
             return savedCategory._id;
         }));
         const categoryIds = yield Promise.all(categoryPromises);

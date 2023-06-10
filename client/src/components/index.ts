@@ -15,6 +15,7 @@ import { ProductPageInfo } from "./ProductPageInfo"
 import { ProductInfoName } from "./ProductInfoName"
 import { ImageGalleryModal } from "./ImageGalleryModal"
 import { RelatedProducts } from "./RelatedProducts"
+import { Navbar } from "./Navbar"
 
 export {
     NavSidebar,
@@ -34,4 +35,5 @@ export {
     ProductInfoName,
     ImageGalleryModal,
     RelatedProducts,
+    Navbar,
 }

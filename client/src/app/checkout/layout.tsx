@@ -1,4 +1,4 @@
-import { Header, Navbar } from "@/components"
+import { Header } from "@/components"
 import { Category } from "@/types"
 
 const getCategories = async () => {
@@ -21,7 +21,6 @@ const Layout = async ({
     return (
         <>
             <Header categories={categories} subcategories={subcategories} />
-            <Navbar categories={categories} subcategories={subcategories} />
             {children}
         </>
     )

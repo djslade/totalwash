@@ -54,9 +54,7 @@ const updatedb = async () => {
         })
         const otherRangesIds = await Promise.all(rangesPromises)
         const allRangeIds = [...parentIds, ...otherRangesIds]
-        console.log(allRangeIds)
         const products = await Product.find().populate('categories').populate('subcategories').exec()
-        console.log(products)
         products.forEach(async (product) => {
             const categoriesAndSubcategories:any[] = [...product.categories, ...product.subcategories]
             const ranges = categoriesAndSubcategories.map((item) => {

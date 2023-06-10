@@ -37,6 +37,7 @@ const createCart = [
                 discount: 0,
             });
             const newCart = yield cart.save();
+            yield newCart.populate('products');
             return res.status(200).send({ cart: newCart });
         }
         catch (err) {
@@ -61,6 +62,7 @@ const updateCart = [
             }, {
                 new: true
             }).exec();
+            yield (cart === null || cart === void 0 ? void 0 : cart.populate('products'));
             return res.status(200).send({ cart });
         }
         catch (err) {

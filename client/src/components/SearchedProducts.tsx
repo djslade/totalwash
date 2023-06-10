@@ -31,7 +31,6 @@ export const SearchedProducts = ({
     }
 
     const handleSortingMethodChange = (evt:any) => {
-        console.log(evt.target.value)
         setSortingMethod(evt.target.value)
         handleProductsScroll()
     }
@@ -53,7 +52,6 @@ export const SearchedProducts = ({
             case "high-low":
                 return productsCopy.sort((a, b) => b.currentPrice - a.currentPrice)
             case "relevance":
-                console.log(products[0].name)
                 return products
             default:
                 return products

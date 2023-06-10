@@ -3,6 +3,7 @@ import { Product } from '@/types'
 import { useState } from 'react'
 import { BiMinus, BiPlus } from 'react-icons/bi'
 import { useSnapshot } from 'valtio'
+import { AddToCartButton } from './AddToCartButton'
 
 export const ProductAddToCart = ({
     product,
@@ -33,12 +34,6 @@ export const ProductAddToCart = ({
         setQuantity(number)
     }
 
-    const handleAddToCart = () => {
-        for (let i = 0; i < quantity; i += 1) {
-            state.cartContents.push(product)
-        }
-    }
-
     return (
         <div className="flex gap-3 my-12 text-sm xs:items-center flex-col xs:flex-row p-3">
             <div className="flex items-center h-10">
@@ -53,9 +48,7 @@ export const ProductAddToCart = ({
                 onClick={handleIncreaseQuantity}
                 className="text-xl border border-gray-900 h-full aspect-square flex justify-center items-center bg-gray-50"><BiPlus /></button>
             </div>
-            <button
-            onClick={handleAddToCart}
-            className="w-full border py-3 uppercase bg-blue-500 rounded-md text-white font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">Add to Cart</button>
+            <AddToCartButton product={product} quantity={quantity} />
         </div>
     )
 }

@@ -27,6 +27,7 @@ const createCart = [
                 discount: 0,
             })
             const newCart = await cart.save()
+            await newCart.populate('products')
             return res.status(200).send({ cart: newCart })
         } catch (err) {
             return next(err)
@@ -56,6 +57,7 @@ const updateCart = [
                     new: true
                 }
             ).exec()
+            await cart?.populate('products')
             return res.status(200).send({ cart })
         } catch (err) {
             return next(err)

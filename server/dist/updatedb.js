@@ -65,9 +65,7 @@ const updatedb = () => __awaiter(void 0, void 0, void 0, function* () {
         }));
         const otherRangesIds = yield Promise.all(rangesPromises);
         const allRangeIds = [...parentIds, ...otherRangesIds];
-        console.log(allRangeIds);
         const products = yield models_1.Product.find().populate('categories').populate('subcategories').exec();
-        console.log(products);
         products.forEach((product) => __awaiter(void 0, void 0, void 0, function* () {
             const categoriesAndSubcategories = [...product.categories, ...product.subcategories];
             const ranges = categoriesAndSubcategories.map((item) => {

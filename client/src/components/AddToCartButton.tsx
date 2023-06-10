@@ -1,25 +1,54 @@
 "use client"
 import { state } from "@/store"
 import { Product } from "@/types"
-import { returnMutableCartArray } from "@/utilities"
 import { useSnapshot } from "valtio"
 import { AddToCartModal } from "./AddedToCartModal"
 import { useState } from "react"
+import axios from "axios"
 
 export const AddToCartButton = ({
     product,
     card,
+    quantity,
 }: {
     product: Product,
     card?: boolean,
+    quantity?: number,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false)
 
     const snap = useSnapshot(state)
 
-    const handleAddToCart = () => {
-        console.log('hello')
-        state.cartContents = [...returnMutableCartArray(snap.cartContents as Product[]), product]
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const handleAddToCart = async () => {
+        const numberOfItems = quantity || 1
+        const productsArray:Product[] = []
+        for (let i = 0; i < numberOfItems; i += 1) {
+            productsArray.push(product)
+        }
+        const productIdsArray = productsArray.map((product) => product._id)
+        if (!snap.cartId) {
+            const cart = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts`,
+                {
+                    products: productIdsArray
+                }
+            )
+            localStorage.setItem('cartId', cart.data.cart._id)
+            state.cartId = cart.data.cart._id as string
+            state.cartContents = cart.data.cart.products
+        } else {
+            const cartContentsIds = snap.cartContents.map((product) => product._id)
+            const cart = await axios.put(
+                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts/${snap.cartId}`,
+                {
+                    discount: 0,
+                    products: [...cartContentsIds, ...productIdsArray]
+                }
+            )
+            state.cartContents = cart.data.cart.products
+        }
         setShowModal(true)
     }
 

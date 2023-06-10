@@ -43,7 +43,6 @@ const populateDatabase = async () => {
                 description,
             })
             const savedCategory = await newCategory.save()
-            console.log(savedCategory)
             return savedCategory._id
         })
 

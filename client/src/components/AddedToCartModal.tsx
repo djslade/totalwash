@@ -20,8 +20,8 @@ export const AddToCartModal = ({
 
   const getTotalCartPrice = () => {
     const priceArray = snap.cartContents.map((product) => product.currentPrice)
-    const total = priceArray.reduce((total, price) => total + price, 0)
-    return total
+    const totalInPence = priceArray.reduce((total, price) => total + price, 0)
+    return +parseFloat(`${totalInPence}`).toFixed(2)
   }
 
   return (

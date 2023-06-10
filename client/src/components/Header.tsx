@@ -1,17 +1,16 @@
 "use client"
 import { state } from "@/store"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
-import { MdLightMode, MdDarkMode } from "react-icons/md"
 import { RiShoppingCartLine } from "react-icons/ri"
 import { RxHamburgerMenu } from "react-icons/rx"
 import { useSnapshot } from "valtio"
 import { useRouter } from "next/navigation"
-import { Category } from "@/types"
+import { Category, Product } from "@/types"
 import { MobileSearch } from "./MobileSearch"
 import { useSearchProducts } from "@/hooks"
-import { CartSidebar } from "./CartSidebar"
 import { NavSidebar } from "./NavSidebar"
+import axios from "axios"
 
 export const Header = ({
     categories,
@@ -29,14 +28,6 @@ export const Header = ({
     const inputRef = useRef<HTMLInputElement>(null)
 
     const search = useSearchProducts()
-
-    const setDarkTheme = () => {
-      state.darkTheme = true
-    }
-  
-    const setLightTheme = () => {
-      state.darkTheme = false
-    }
 
     const router = useRouter()
 
@@ -65,19 +56,26 @@ export const Header = ({
         search(inputRef.current.value)
     }
 
+    const getCartProducts = async (id:string) => {
+        const cartProducts = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts/${id}`)
+        return cartProducts.data.cart.products as Product[]
+    }
+
+    useEffect(() => {
+        if (snap.cartId) return
+        const cartId = localStorage.getItem('cartId') || ''
+        if (!cartId) return
+        state.cartId = cartId
+        getCartProducts(cartId).then((response) => state.cartContents = response)
+    }, [])
 
     return (
         <>
-            <header className={`z-50 sticky top-0 border-b-2 px-6 ${snap.darkTheme ? 'header-dark' : 'header-light'}`}>
-                <div className="flex h-20 items-center max-w-screen-lg mx-auto">
-                    <div className="flex-[2] flex md:flex-1 sm:gap-6 justify-between items-center h-full">
+            <header className={`z-50 sticky top-0 px-6 bg-gray-100 text-gray-900`}>
+                <div className="flex h-20 items-center max-w-screen-lg mx-auto p-3">
+                    <div className="flex-[2] flex md:flex-1 gap-6 items-center h-full">
                         <button className="md:hidden flex justify-center items-center aspect-square rounded-full" onClick={() => state.showNavSidebar = true}>
                             <RxHamburgerMenu />
-                        </button>
-                        <button
-                        className="md:hidden flex justify-center items-center aspect-square rounded-full"
-                        onClick={showMobileSearch}>
-                            <AiOutlineSearch />
                         </button>
                         <button className="text-xl" role="link" onClick={() => navigate("/catalog")}>
                             <span>Total</span>
@@ -90,67 +88,26 @@ export const Header = ({
                             <AiOutlineSearch />
                         </button>
                     </div>
-                    <div className="flex-1 justify-evenly gap-3 pl-3 hidden xxs:flex">
-                        <div className="flex flex-1 justify-end">
-                        {snap.darkTheme ?            
+                    <div className="flex-1 justify-evenly gap-3 pl-3 flex">
+                        <div className="flex flex-1 md:justify-end justify-between">
                         <button
-                        onClick={setLightTheme}
-                        className="flex items-center text-base gap-3 md:rounded-xl md:w-auto aspect-square md:aspect-auto rounded-full justify-center hover:underline underline-offset-4">
-                            <MdLightMode />
-                            <span className="hidden md:inline">Theme</span>
+                        className="md:hidden flex justify-center items-center aspect-square rounded-full"
+                        onClick={showMobileSearch}>
+                            <AiOutlineSearch />
                         </button>
-                        :
                         <button
-                        onClick={setDarkTheme}
+                        onClick={() => navigate('/cart')}
                         className="flex items-center text-base gap-3 md:rounded-xl md:w-auto aspect-square md:aspect-auto rounded-full justify-center hover:underline underline-offset-4">
-                            <MdDarkMode />
-                            <span className="hidden md:inline">Theme</span>
-                        </button>
-                        }
-                        </div>
-                        <div className="flex flex-1 justify-end">
-                        <button
-                        onClick={() => state.showCartSidebar = true}
-                        className="flex items-center text-base gap-3 md:rounded-xl md:w-auto aspect-square md:aspect-auto rounded-full justify-center hover:underline underline-offset-4">
-                            <RiShoppingCartLine />
+                            <div className="relative">
+                                <RiShoppingCartLine />
+                            </div>  
                             <span className="hidden md:inline">Cart</span>
                         </button>
                         </div>
                     </div>
                 </div>
-                <nav className="hidden w-full justify-between md:flex text-base flex-nowrap py-3 max-w-screen-lg mx-auto bg-inherit">
-                {categories.map((category) =>
-                    <div className="relative group flex justify-center" key={category._id}>
-                        <button
-                        role="link"
-                        onClick={() => navigate(`/catalog/categories/${category.slug}`)}
-                        onBlur={() => setDropdownVisible(true)}
-                        onMouseLeave={() => setDropdownVisible(true)}
-                        onFocus={() => setDropdownVisible(true)}>
-                            <span>{category.name}</span>
-                        </button>
-                        <div className={`top-6 absolute flex-col group-hover:flex bg-inherit py-3 rounded shadow-lg ${dropdownVisible ? 'hidden' : '!hidden'} ${snap.darkTheme ? "header-dark" : "header-light"}`}>
-                            {subcategories.map((subcategory) =>
-                                subcategory.parents.map((savedCategory:any) =>
-                                    savedCategory._id === category._id &&
-                                    <div key={subcategory._id}>
-                                        <button
-                                        className={`py-3 px-6 w-full brightness-100 whitespace-nowrap bg-inherit flex items-center justify-start ${snap.darkTheme ? "header-dark hover:bg-[#5c5c5c]" : "header-light hover:brightness-95"}`}
-                                        role="link"
-                                        onClick={() => navigate(`/catalog/categories/${subcategory.slug}`)}
-                                        onBlur={() => setDropdownVisible(true)}>
-                                            <span>{subcategory.name}</span>
-                                        </button>
-                                    </div>
-                                )
-                            )}
-                        </div>
-                    </div>
-                    )}
-                </nav>
                 {searchBarVisible && <MobileSearch closeSearch={hideMobileSearch}/>}
             </header>
-            <CartSidebar />
             <NavSidebar categories={categories} subcategories={subcategories}/>
         </>
     )

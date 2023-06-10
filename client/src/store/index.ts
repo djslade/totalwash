@@ -10,6 +10,7 @@ interface StateObject {
     currentProduct: Product;
     showAddedToCartModel: boolean;
     cartContents: Product[];
+    cartId: string;
 }
 
 export const state:StateObject = proxy({
@@ -35,4 +36,5 @@ export const state:StateObject = proxy({
     },
     showAddedToCartModel: false,
     cartContents: [],
+    cartId: '',
 })
