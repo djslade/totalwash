@@ -11,6 +11,7 @@ import { MobileSearch } from "./MobileSearch"
 import { useSearchProducts } from "@/hooks"
 import { NavSidebar } from "./NavSidebar"
 import axios from "axios"
+import { AnimatePresence } from "framer-motion"
 
 export const Header = ({
     categories,
@@ -111,7 +112,14 @@ export const Header = ({
                 </div>
                 {searchBarVisible && <MobileSearch closeSearch={hideMobileSearch}/>}
             </header>
-            {showNavSidebar && <NavSidebar categories={categories} subcategories={subcategories} closeModal={() => setShowNavSidebar(false)}/>}
+            <AnimatePresence>
+                {showNavSidebar &&
+                <NavSidebar
+                categories={categories}
+                subcategories={subcategories}
+                isVisible={showNavSidebar}
+                closeModal={() => setShowNavSidebar(false)}/>}
+            </AnimatePresence>
         </>
     )
        

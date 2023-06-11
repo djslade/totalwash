@@ -1,25 +1,28 @@
 "use client"
 import { state } from "@/store"
-import { useEffect } from "react"
 import { useSnapshot } from "valtio"
 import { useOutsideClick } from "@/hooks"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { SidebarSubcategories } from "./SidebarSubcategories"
 import { SidebarCategories } from "./SidebarCategories"
-import { Category, Subcategory } from "@/types"
+import { Category } from "@/types"
 import { emptyCategoryObject } from "@/data"
 import FocusLock from 'react-focus-lock'
 import { ModalPortal } from "./ModalPortal"
+import { ModalBackdrop } from "./ModalBackdrop"
+import { motion, AnimatePresence } from "framer-motion"
 
 export const NavSidebar = ({
     categories,
     subcategories,
     closeModal,
+    isVisible,
 }: {
     categories: Category[],
     subcategories: Category[],
     closeModal: () => void,
+    isVisible:boolean,
 }) => {
     const snap = useSnapshot(state)
 
@@ -36,25 +39,48 @@ export const NavSidebar = ({
 
     const modalRef = useOutsideClick(closeModal)
 
+    const dropIn = {
+        hidden: {
+            x: "-100vw",
+            opacity: 0,
+        },
+        visible: {
+            x: "0",
+            opacity: 1,
+            transition: {
+                duration: 0.05
+            }
+        },
+        exit: {
+            x: "100vw",
+            opacity: 0,
+        },
+    }
+
     return (
         <ModalPortal>
-            <div className={`overflow-hidden z-[100] fixed top-0 left-0 right-0 bottom-0 bg-black opacity-10 lg:hidden`}/>
             <FocusLock>
-                <div ref={modalRef} className={`top-0 left-0 max-w-sm bg-[#F5F5F5] fixed h-full z-[100] ease-in-out duration-300 border-r-2 transition-transform lg:-translate-x-full`}>
-                    {
-                    selectedCategory !== emptyCategoryObject
-                    ?
-                    <SidebarSubcategories
-                    subcategories={subcategories}
-                    selectedCategory={selectedCategory}
-                    setSelectedCategory={setSelectedCategory}
-                    navigate={navigate}/>
-                    :
-                    <SidebarCategories
-                    categories={categories}
-                    setSelectedCategory={setSelectedCategory}/>
-                    }
-                </div>
+                <ModalBackdrop onClick={closeModal} />
+                    <motion.div
+                    onClick={(evt) => evt.stopPropagation()}
+                    initial={{ x: "-100vw", opacity: 1 }}
+                    animate={{ x: 0, opacity: 1, transition: { duration: 0.05 }}}
+                    exit={{ x: "-100vw", opacity: 1, transition: { duration: 0.05 }}}
+                    className={`top-0 left-0 max-w-sm bg-[#F5F5F5] fixed h-full z-[100] ease-in-out duration-300 border-r-2 transition-transform lg:-translate-x-full`}>
+                        {
+                        selectedCategory !== emptyCategoryObject
+                        ?
+                        <SidebarSubcategories
+                        subcategories={subcategories}
+                        selectedCategory={selectedCategory}
+                        setSelectedCategory={setSelectedCategory}
+                        navigate={navigate}/>
+                        :
+                        <SidebarCategories
+                        categories={categories}
+                        setSelectedCategory={setSelectedCategory}/>
+                        }
+                    </motion.div>
             </FocusLock>
         </ModalPortal>
     )
