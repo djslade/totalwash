@@ -7,6 +7,8 @@
         background-image: url('/bathroom.jpg');
         background-color: #474141;
         background-blend-mode: multiply;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
     .header-dark {
