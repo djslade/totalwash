@@ -76,12 +76,12 @@ export const Header = ({
     return (
         <>
             <header className={`z-50 sticky top-0 px-6 bg-gray-100 text-gray-900`}>
-                <div className="flex h-20 items-center max-w-screen-lg mx-auto p-3">
-                    <div className="flex-[2] flex md:flex-1 gap-6 items-center h-full">
-                        <button className="md:hidden flex justify-center items-center aspect-square rounded-full" onClick={() => setShowNavSidebar(true)}>
+                <div className="flex h-20 items-center max-w-screen-lg mx-auto p-3 md:justify-start justify-between">
+                    <div className="flex md:flex-1 gap-6 items-center h-full">
+                        <button className="md:hidden flex justify-center items-center outline-offset-8" onClick={() => setShowNavSidebar(true)}>
                             <RxHamburgerMenu />
                         </button>
-                        <button className="text-xl" role="link" onClick={() => navigate("/catalog")}>
+                        <button className="text-xl hidden md:flex outline-offset-8" role="link" onClick={() => navigate("/catalog")}>
                             <span>Total</span>
                             <span className="text-blue-400">Wash</span>
                         </button>
@@ -92,21 +92,27 @@ export const Header = ({
                             <AiOutlineSearch />
                         </button>
                     </div>
-                    <div className="flex-1 justify-evenly gap-3 pl-3 flex">
-                        <div className="flex flex-1 md:justify-end justify-between">
-                        <button
-                        className="md:hidden flex justify-center items-center aspect-square rounded-full"
-                        onClick={showMobileSearch}>
-                            <AiOutlineSearch />
+                    <div className="md:hidden">
+                        <button className="text-xl outline-offset-8" role="link" onClick={() => navigate("/catalog")}>
+                            <span>Total</span>
+                            <span className="text-blue-400">Wash</span>
                         </button>
-                        <button
-                        onClick={() => navigate('/checkout/cart')}
-                        className="flex items-center text-base gap-3 md:rounded-xl md:w-auto aspect-square md:aspect-auto rounded-full justify-center hover:underline underline-offset-4">
-                            <div className="relative">
-                                <RiShoppingCartLine />
-                            </div>  
-                            <span className="hidden md:inline">Cart</span>
-                        </button>
+                    </div>
+                    <div className="md:flex-1 justify-evenly items-center gap-6 md:gap-3 pl-3 flex">
+                        <div className="flex flex-1 md:justify-end justify-between w-full gap-6 items-center">
+                            <button
+                            className="md:hidden flex justify-center items-center aspect-square outline-offset-8"
+                            onClick={showMobileSearch}>
+                                <AiOutlineSearch />
+                            </button>
+                            <button
+                            onClick={() => navigate('/checkout/cart')}
+                            className="flex items-center text-base gap-3 md:w-auto aspect-square md:aspect-auto justify-center hover:underline underline-offset-4 outline-offset-8">
+                                <div className="relative">
+                                    <RiShoppingCartLine />
+                                </div>  
+                                <span className="hidden md:inline">Cart</span>
+                            </button>
                         </div>
                     </div>
                 </div>
