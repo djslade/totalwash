@@ -14,7 +14,7 @@ export const SidebarCategories = (
 ) => {
   return (
     <nav className="justify-between items-start flex flex-col text-base flex-nowrap w-full whitespace-nowrap">
-        <div className="text-xl font-bold bg-gray-200 w-full h-16 px-6 flex items-center">
+        <div className="text-xl bg-gray-200 w-full h-20 px-6 flex items-center">
             <span>Total</span>
             <span className="text-blue-400">Wash</span>
         </div>

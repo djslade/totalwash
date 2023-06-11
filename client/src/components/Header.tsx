@@ -25,11 +25,14 @@ export const Header = ({
 
     const [searchBarVisible, setSearchBarVisible] = useState<boolean>(false)
 
+    const [showNavSidebar, setShowNavSidebar] = useState<boolean>(false)
+
     const inputRef = useRef<HTMLInputElement>(null)
 
     const search = useSearchProducts()
 
     const router = useRouter()
+
 
     const navigate = (path:string) => {
         if (router) {
@@ -74,7 +77,7 @@ export const Header = ({
             <header className={`z-50 sticky top-0 px-6 bg-gray-100 text-gray-900`}>
                 <div className="flex h-20 items-center max-w-screen-lg mx-auto p-3">
                     <div className="flex-[2] flex md:flex-1 gap-6 items-center h-full">
-                        <button className="md:hidden flex justify-center items-center aspect-square rounded-full" onClick={() => state.showNavSidebar = true}>
+                        <button className="md:hidden flex justify-center items-center aspect-square rounded-full" onClick={() => setShowNavSidebar(true)}>
                             <RxHamburgerMenu />
                         </button>
                         <button className="text-xl" role="link" onClick={() => navigate("/catalog")}>
@@ -108,7 +111,7 @@ export const Header = ({
                 </div>
                 {searchBarVisible && <MobileSearch closeSearch={hideMobileSearch}/>}
             </header>
-            <NavSidebar categories={categories} subcategories={subcategories}/>
+            {showNavSidebar && <NavSidebar categories={categories} subcategories={subcategories} closeModal={() => setShowNavSidebar(false)}/>}
         </>
     )
        
