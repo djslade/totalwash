@@ -5,6 +5,7 @@ import { useSnapshot } from "valtio"
 import { AddToCartModal } from "./AddedToCartModal"
 import { useState } from "react"
 import axios from "axios"
+import { cookies } from "next/dist/client/components/headers"
 
 export const AddToCartButton = ({
     product,
@@ -35,6 +36,9 @@ export const AddToCartButton = ({
                     products: productIdsArray
                 }
             )
+            let cookie = `cart_id=${cart.data.cart._id};`
+            cookie += "path=/;"
+            document.cookie = cookie
             localStorage.setItem('cartId', cart.data.cart._id)
             state.cartId = cart.data.cart._id as string
             state.cartContents = cart.data.cart.products

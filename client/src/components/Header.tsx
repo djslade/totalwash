@@ -14,7 +14,7 @@ import axios from "axios"
 
 export const Header = ({
     categories,
-    subcategories
+    subcategories,
 }: {
     categories: Category[],
     subcategories: Category[],
@@ -96,7 +96,7 @@ export const Header = ({
                             <AiOutlineSearch />
                         </button>
                         <button
-                        onClick={() => navigate('/cart')}
+                        onClick={() => navigate('/checkout/cart')}
                         className="flex items-center text-base gap-3 md:rounded-xl md:w-auto aspect-square md:aspect-auto rounded-full justify-center hover:underline underline-offset-4">
                             <div className="relative">
                                 <RiShoppingCartLine />

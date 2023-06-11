@@ -5,7 +5,7 @@ import { state } from "@/store"
 import { Product } from "@/types"
 import { AiFillCloseCircle, AiOutlineCheckCircle } from "react-icons/ai"
 import { RiShoppingCartLine } from "react-icons/ri"
-import { useOutsideClick } from "@/hooks"
+import { useNavigate, useOutsideClick } from "@/hooks"
 
 export const AddToCartModal = ({
   product,
@@ -15,6 +15,8 @@ export const AddToCartModal = ({
   closeModal: () => void,
 }) => {
   const snap = useSnapshot(state)
+
+  const navigate = useNavigate()
 
   const modalRef = useOutsideClick(closeModal)
 
@@ -27,11 +29,11 @@ export const AddToCartModal = ({
   return (
     <ModalPortal>
         <div className={`z-[100] inset-0 bg-black opacity-50 fixed`}></div>
-        <div ref={modalRef} className="rounded-md fixed z-[100] bg-slate-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-6xl flex h-72">
+        <div ref={modalRef} className="rounded-md fixed z-[100] bg-slate-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-6xl flex sm:h-72 flex-col sm:flex-row">
           <button onClick={closeModal} className="-top-3 -right-3 text-black bg-white rounded-full border border-black absolute text-3xl"><AiFillCloseCircle /></button>
-          <div className="flex-1 border-r border-gray-900">
+          <div className="sm:flex-1 sm:border-r border-gray-900">
           <div className="w-full flex flex-col items-center p-6">
-            <div className="flex w-full gap-2 items-center mb-6">
+            <div className="sm:flex w-full gap-2 items-center mb-6">
               <AiOutlineCheckCircle className="bg-green-500 text-white rounded-full text-xl"/>
               <h1 className="text-xl">Item was added to your cart</h1>
             </div>
@@ -57,7 +59,7 @@ export const AddToCartModal = ({
             </div>
           </div>
           </div>
-          <div className="flex-1">
+          <div className="sm:flex-1 bg-inherit">
             <div className="flex flex-col p-6 gap-6">
               <div className="flex gap-2 items-center w-full">
                 <RiShoppingCartLine className="bg-blue-500 text-white text-xl rounded-full p-1"/>
@@ -67,9 +69,9 @@ export const AddToCartModal = ({
                 <span className="text-lg">Total</span>
                 <span className="text-2xl font-semibold">{`£${getTotalCartPrice()}`}</span>
               </div>
-              <div className="flex gap-3">
-                <button onClick={closeModal} className="flex-1 border py-2.5 bg-white text-gray-900 rounded-md border-gray-500 font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">Continue Shopping</button>
-                <button className={"flex-1 border py-2.5 uppercase bg-blue-500 rounded-md text-white font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90"}>Go to Checkout</button>
+              <div className="flex gap-3 flex-col sm:flex-row w-full">
+                <button onClick={closeModal} className="line-clamp-1 flex-1 border py-2.5 bg-white text-gray-900 rounded-md border-gray-500 font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">Continue Shopping</button>
+                <button onClick={() => navigate('/checkout/cart')} className={"flex-1 border py-2.5 uppercase bg-blue-500 rounded-md text-white font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90"}>Go to Checkout</button>
               </div>
             </div>
           </div>
