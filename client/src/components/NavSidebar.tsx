@@ -11,7 +11,7 @@ import { emptyCategoryObject } from "@/data"
 import FocusLock from 'react-focus-lock'
 import { ModalPortal } from "./ModalPortal"
 import { ModalBackdrop } from "./ModalBackdrop"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 
 export const NavSidebar = ({
     categories,
@@ -24,8 +24,6 @@ export const NavSidebar = ({
     closeModal: () => void,
     isVisible:boolean,
 }) => {
-    const snap = useSnapshot(state)
-
     const [selectedCategory, setSelectedCategory] = useState<Category>(emptyCategoryObject)
 
     const router = useRouter()
@@ -35,26 +33,6 @@ export const NavSidebar = ({
             router.push(path)
             closeModal()
         }
-    }
-
-    const modalRef = useOutsideClick(closeModal)
-
-    const dropIn = {
-        hidden: {
-            x: "-100vw",
-            opacity: 0,
-        },
-        visible: {
-            x: "0",
-            opacity: 1,
-            transition: {
-                duration: 0.05
-            }
-        },
-        exit: {
-            x: "100vw",
-            opacity: 0,
-        },
     }
 
     return (

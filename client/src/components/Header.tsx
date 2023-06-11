@@ -73,6 +73,18 @@ export const Header = ({
         getCartProducts(cartId).then((response) => state.cartContents = response)
     }, [])
 
+    useEffect(() => {
+        const checkForSubmit = (evt:any) => {
+            if (evt.key !== "Enter") return
+            if (document.activeElement !== inputRef.current) return
+            handleSearchClick()
+        }
+
+        document.addEventListener('keydown', checkForSubmit)
+
+        return () => document.addEventListener('keydown', checkForSubmit)
+    })
+
     return (
         <>
             <header className={`z-50 sticky top-0 px-6 bg-gray-100 text-gray-900`}>
@@ -116,7 +128,7 @@ export const Header = ({
                         </div>
                     </div>
                 </div>
-                {searchBarVisible && <MobileSearch closeSearch={hideMobileSearch}/>}
+                {searchBarVisible && <MobileSearch closeSearch={hideMobileSearch} />} 
             </header>
             <AnimatePresence>
                 {showNavSidebar &&

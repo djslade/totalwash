@@ -3,7 +3,8 @@ import { state } from "@/store"
 import { useEffect, useRef } from "react"
 import { AiOutlineSearch } from "react-icons/ai"
 import { useSnapshot } from "valtio"
-import { useOutsideClick } from "@/hooks"
+import { useOutsideClick, useSearchProducts } from "@/hooks"
+import { motion } from "framer-motion"
 
 export const MobileSearch = ({
     closeSearch,
@@ -17,6 +18,15 @@ export const MobileSearch = ({
     const inputRef = useRef<HTMLInputElement>(null)
 
     const buttonRef = useRef<HTMLButtonElement>(null)
+
+    const search = useSearchProducts()
+
+    const handleSearchClick = () => {
+        if (!inputRef.current) return
+        if (!inputRef.current.value) return
+        search(inputRef.current.value)
+        closeSearch()
+    }
 
     useEffect(() => {
         if (!inputRef.current) return
@@ -45,9 +55,22 @@ export const MobileSearch = ({
             })
         }
     }, [])
+
+    useEffect(() => {
+        const checkForSubmit = (evt:any) => {
+            if (evt.key !== "Enter") return
+            if (document.activeElement !== inputRef.current) return
+            handleSearchClick()
+        }
+
+        document.addEventListener('keydown', checkForSubmit)
+
+        return () => document.addEventListener('keydown', checkForSubmit)
+    })
     
     return (
-        <div className={`absolute left-0 right-0 md:!hidden px-6 py-3 bg-inherit`} ref={searchRef}>
+        <div
+        className={`absolute left-0 right-0 md:!hidden px-6 py-3 bg-inherit`} ref={searchRef}>
             <div
             id="mobileSearchBar"
             className={`border-2 justify-end  border-black rounded-sm h-9 focus-within:border-blue-500 flex`}>
@@ -58,6 +81,7 @@ export const MobileSearch = ({
                     placeholder="Search"
                     autoFocus/>
                     <button
+                    onClick={handleSearchClick}
                     ref={buttonRef}
                     className={snap.darkTheme ? 'header-search-btn-dark' : 'header-search-btn'}>
                         <AiOutlineSearch />
