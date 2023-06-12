@@ -19,6 +19,15 @@
         background-size: cover;
     }
 
+    .full-width-cta {
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+    }
+
     .header-dark {
         background-color: #333333;
         color: #F5F5F5;

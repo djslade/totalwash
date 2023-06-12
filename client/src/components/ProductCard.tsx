@@ -15,7 +15,7 @@ export const ProductCard = ({
     navigate(`/catalog/products/${product.slug}`)
   }
   return (
-      <div className="p-3 hover:border border-gray-500 rounded-md flex flex-col justify-between">
+      <div className="p-3 border border-transparent hover:border-gray-500 rounded-md flex flex-col justify-between">
         <button onClick={handleMoreDetailsClick}>
           <img className="w-full aspect-square object-cover"src={product.photos[0]}/>
           <div className="w-full text-ellipsis line-clamp-3">

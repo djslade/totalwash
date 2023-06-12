@@ -95,7 +95,7 @@ export const Header = ({
                         </button>
                         <button className="text-xl hidden md:flex outline-offset-8" role="link" onClick={() => navigate("/catalog")}>
                             <span>Total</span>
-                            <span className="text-blue-400">Wash</span>
+                            <span className="text-blue-300">Wash</span>
                         </button>
                     </div>
                     <div className="hidden md:flex flex-[2] border-2 justify-end border-black rounded-sm h-9 focus-within:border-blue-500">
