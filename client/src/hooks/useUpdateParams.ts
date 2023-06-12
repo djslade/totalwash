@@ -1,4 +1,3 @@
-'use client'
 import { useCallback, useEffect } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
@@ -20,19 +19,21 @@ export const useUpdateParams = () => {
     // here to make we don't delete scrollY before routing
     if (Number(persistentScroll) === window.scrollY)
       localStorage.removeItem('persistentScroll')
+
+      return () => localStorage.removeItem('persistentScroll')
   }, [searchParams])
 
   const setSearchParam = useCallback(
-    (key: string, value: string) => {
+    (key: string, value: string, scrollCoordinate?: number) => {
       const currentParams = searchParams.toString()
       const params = new URLSearchParams(currentParams)
-
+      const targetCoordinate = scrollCoordinate || window.scrollY
       params.set(key, value)
       // If search params are still the same there's no need to do anything
       if (currentParams === params.toString()) return
 
       // Save current scrollY value to localStorage before pushing the new route
-      localStorage.setItem('persistentScroll', window.scrollY.toString())
+      localStorage.setItem('persistentScroll', targetCoordinate.toString())
       router.push(`${pathname}?${params.toString()}`)
     },
     [searchParams, pathname, router],

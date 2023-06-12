@@ -13,30 +13,48 @@ const getSubcategories = async (id:string) => {
   return data?.ranges as Subcategory[]
 }
 
-const getProducts = async (id:string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?range=${id}`)
+const getProducts = async (id:string, searchParams:string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?range=${id}${searchParams}`, { next: { revalidate: 0 }})
   const data = await res.json()
-  return data?.products as Product[]
+  const products = data?.products as Product[]
+  const total = data?.total as number
+  return { products, total }
 }
 
 const page = async ({
   params,
+  searchParams,
 }: {
   params:{ id: string },
+  searchParams: {page:string, limit:string, sortby: string }
 }) => {
+  const { page, limit, sortby } = searchParams
+
+  let searchParamsString = ''
+
+  if (page) searchParamsString += `&page=${page}`
+
+  if (limit) {
+      searchParamsString += `&limit=${limit}`
+  } else {
+      searchParamsString += `&limit=6`
+  }
+  
+  if (sortby) searchParamsString += `&sortby=${sortby}`
+
   const { id } = params
 
   const category = await getCategory(id)
 
   const subcategories = category.parents.length === 0 ? await getSubcategories(category._id) : null
 
-  const products = await getProducts(category._id)
+  const {products, total} = await getProducts(category._id, searchParamsString)
 
   return (
     <main className="max-w-screen-lg mx-auto p-3">
       <CategoryInfo category={category} />
       {subcategories && <CategoryPreview categories={subcategories} heading="Subcategories"/>}
-      <SearchedProducts products={products} />
+      <SearchedProducts products={products} total={total}/>
     </main>
   )
 }

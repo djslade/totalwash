@@ -2,30 +2,44 @@ import { Product } from "@/types"
 import { redirect } from "next/navigation"
 import { SearchedProducts } from "@/components"
 
-const getProducts = async (query:string) => {
+const getProducts = async (query:string, searchParams:string) => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?q=${query}`)
-    const data = await res.json()
-    return data?.products as Product[]
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?q=${query}${searchParams}`,{ next: { revalidate: 0 }})
+      const data = await res.json()
+      const products = data?.products as Product[]
+      const total = data?.total as number
+      return { products, total }
   }
 
 const page = async ({
     searchParams,
 }: {
-    searchParams: { text: string },
+    searchParams: { text: string, page:string, limit:string, sortby: string },
 }) => {
-    const { text } = searchParams
+    const { text, page, limit, sortby } = searchParams
+
+    let searchParamsString = ''
+
+    if (page) searchParamsString += `&page=${page}`
+  
+    if (limit) {
+        searchParamsString += `&limit=${limit}`
+    } else {
+        searchParamsString += `&limit=6`
+    }
+    
+    if (sortby) searchParamsString += `&sortby=${sortby}`
 
     if (!text) redirect('/catalog')
 
-    const products = await getProducts(text)
+    const {products, total} = await getProducts(text, searchParamsString)
 
     return (
         <main className="max-w-screen-lg mx-auto py-3">
             <div className="w-full my-3">
                 <h1 className="text-xl">{`Showing search results for: "${decodeURI(text)}"`}</h1>
             </div>
-            <SearchedProducts products={products} relevance={true}/>
+            <SearchedProducts products={products} relevance={true} total={total}/>
         </main>
     )
 }

@@ -55,6 +55,11 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
         }
         const sortby = getSortMethod(req.query)
         if (textToSearch) {
+            const total = await Product
+            .countDocuments(
+                { $text: { $search: decodeURI(textToSearch as string) } },
+                { score: { $meta: 'textScore' } }
+            )
             const products = await Product
             .find(
                 { $text: { $search: decodeURI(textToSearch as string) } },
@@ -65,14 +70,18 @@ const getAllProducts = async (req: Request, res: Response, next: NextFunction) =
             .limit(limit)
             .populate('ranges')
             .exec()
-            return res.status(200).send({ products })
+            return res.status(200).send({ products, total })
         } else {
+            const total = await Product
+            .countDocuments(query)
             const products = await Product
             .find(query)
             .sort(sortby)
+            .skip(offset)
+            .limit(limit)
             .populate('ranges')
             .exec()
-            return res.status(200).send({ products })
+            return res.status(200).send({ products, total })
         }
     } catch (err) {
         return next(err)

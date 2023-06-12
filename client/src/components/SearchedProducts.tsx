@@ -3,13 +3,16 @@ import { Product } from '@/types'
 import { ProductsView } from './ProductsView'
 import { useState, useRef } from 'react'
 import { sortProductsArrayAlphabetically } from '@/utilities'
+import { useUpdateParams } from '@/hooks'
 
 export const SearchedProducts = ({
     products,
     relevance,
+    total,
 }: {
     products: Product[],
     relevance?: boolean;
+    total?: number;
 }) => {
     const [sortingMethod, setSortingMethod] = useState<string>(relevance ? "relevance" : "name")
 
@@ -19,26 +22,24 @@ export const SearchedProducts = ({
 
     const sectionRef = useRef<HTMLElement>(null)
 
+    const setSearchParams = useUpdateParams()
+
     const handleProductsScroll = () => {
         if (!sectionRef.current) return
         const headeroffset = 140
         const elementPosition = sectionRef.current.getBoundingClientRect().top
         const offsetPosition = elementPosition + window.scrollY - headeroffset
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth"
-        })
+        return offsetPosition
     }
 
     const handleSortingMethodChange = (evt:any) => {
         setSortingMethod(evt.target.value)
-        handleProductsScroll()
+        setSearchParams('sortby', evt.target.value, handleProductsScroll())
     }
 
     const handlePageLimitChange = (evt:any) => {
-        setPage(1)
         setLimit(parseInt(evt.target.value))
-        handleProductsScroll()
+        setSearchParams('limit', evt.target.value, handleProductsScroll())
     }
 
 
@@ -66,7 +67,7 @@ export const SearchedProducts = ({
     }
 
     const getPageButtonsArray = () => {
-        const pageCount = Math.ceil(products.length / limit)
+        const pageCount = Math.ceil((total || products.length) / limit)
         const array:number[] = []
         for (let i = 0; i < pageCount; i += 1) {
             array.push(i + 1)
@@ -86,7 +87,7 @@ export const SearchedProducts = ({
 
     const handlePageChange = (newPage:number) => {
         setPage(newPage)
-        handleProductsScroll()
+        setSearchParams('page', `${newPage}`, handleProductsScroll())
     }
 
     if (products.length === 0) {
@@ -100,7 +101,7 @@ export const SearchedProducts = ({
     return (
         <section className="w-full py-6" ref={sectionRef}>
             <div className="w-full xs:flex justify-between">
-                <h1 className="font-bold my-6">{`Showing ${(page * limit) - (limit - 1)}-${page * limit < products.length ? page * limit : products.length} of ${products.length} items`}</h1>
+                <h1 className="font-bold my-6">{`Showing ${(page * limit) - (limit - 1)}-${page * limit < (total || products.length) ? page * limit :(total || products.length)} of ${(total || products.length)} items`}</h1>
                 <div className="flex items-center gap-3">
                     <label>Sort By</label>
                     <select className="border py-1 px-3 rounded border-black" onChange={handleSortingMethodChange}>
@@ -111,7 +112,7 @@ export const SearchedProducts = ({
                     </select>
                 </div>
             </div>
-            <ProductsView products={getProductsSlice()} />
+            <ProductsView products={products} />
             <div className="w-full xs:flex justify-between items-center my-6">
                 <div className="flex items-center gap-3">
                     <label>Items per page</label>

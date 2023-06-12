@@ -64,6 +64,8 @@ const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         };
         const sortby = getSortMethod(req.query);
         if (textToSearch) {
+            const total = yield models_1.Product
+                .countDocuments({ $text: { $search: decodeURI(textToSearch) } }, { score: { $meta: 'textScore' } });
             const products = yield models_1.Product
                 .find({ $text: { $search: decodeURI(textToSearch) } }, { score: { $meta: 'textScore' } })
                 .sort({ score: { $meta: 'textScore' } })
@@ -71,15 +73,19 @@ const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
                 .limit(limit)
                 .populate('ranges')
                 .exec();
-            return res.status(200).send({ products });
+            return res.status(200).send({ products, total });
         }
         else {
+            const total = yield models_1.Product
+                .countDocuments(query);
             const products = yield models_1.Product
                 .find(query)
                 .sort(sortby)
+                .skip(offset)
+                .limit(limit)
                 .populate('ranges')
                 .exec();
-            return res.status(200).send({ products });
+            return res.status(200).send({ products, total });
         }
     }
     catch (err) {
