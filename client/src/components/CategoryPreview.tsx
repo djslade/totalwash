@@ -18,7 +18,9 @@ export const CategoryPreview = ({
 
     return (
         <section className="w-full flex flex-col py-6">
-            <h1 className="font-bold text-xl my-6">{heading}</h1>
+            <div className="bg-blue-500 text-gray-50 font-bold text-xl my-6 w-full py-1 px-3">
+                <h2>{heading}</h2>
+            </div>  
             <div className="grid grid-cols-1 xxs:grid-cols-2 md:grid-cols-3 gap-y-9 w-full gap-6">
                 {categories.map((category) =>
                 <div key={category._id} className="relative flex flex-col items-center rounded border aspect-square">

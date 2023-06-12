@@ -25,6 +25,7 @@ export const Navbar = ({
                     <div className="relative group flex justify-center flex-col items-center" key={category._id}>
                         <button
                         role="link"
+                        className="outline-offset-8"
                         onClick={() => navigate(`/catalog/categories/${category.slug}`)}
                         onBlur={() => setDropdownVisible(true)}
                         onMouseLeave={() => setDropdownVisible(true)}
