@@ -26,6 +26,11 @@
         margin-right: -50vw;
     }
 
+    .form-input {
+        box-shadow: 0 0 1.5pt 1.5pt #93c5fd;
+        outline-width: 0px;
+    }
+
     .modal {
         width: clamp(50%, 700px, 90%);
         height: min(50%, 300px);

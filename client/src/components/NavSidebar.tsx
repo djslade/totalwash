@@ -3,7 +3,7 @@ import { state } from "@/store"
 import { useSnapshot } from "valtio"
 import { useOutsideClick } from "@/hooks"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { SidebarSubcategories } from "./SidebarSubcategories"
 import { SidebarCategories } from "./SidebarCategories"
 import { Category } from "@/types"
@@ -17,7 +17,6 @@ export const NavSidebar = ({
     categories,
     subcategories,
     closeModal,
-    isVisible,
 }: {
     categories: Category[],
     subcategories: Category[],
@@ -34,6 +33,18 @@ export const NavSidebar = ({
             closeModal()
         }
     }
+
+    useEffect(() => {
+        const handleEscape = (evt:any) => {
+            if (evt.key === "Escape") {
+                closeModal()
+            }
+        }
+
+        document.addEventListener('keydown', handleEscape)
+
+        return () => document.removeEventListener('keydown', handleEscape)
+    }, [])
 
     return (
         <ModalPortal>
@@ -55,6 +66,7 @@ export const NavSidebar = ({
                         navigate={navigate}/>
                         :
                         <SidebarCategories
+                        closeModal={closeModal}
                         categories={categories}
                         setSelectedCategory={setSelectedCategory}/>
                         }

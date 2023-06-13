@@ -1,21 +1,17 @@
 "use client"
-import { useNavigate } from '@/hooks'
-import { state } from '@/store'
-import { getNumberWithCommas } from '@/utilities'
-import React from 'react'
-import { useSnapshot } from 'valtio'
+import { state } from "@/store"
+import { getNumberWithCommas } from "@/utilities"
+import { useSnapshot } from "valtio"
 
-export const OrderSummary = () => {
+export const CheckoutOrderSummary = () => {
     const snap = useSnapshot(state)
 
     const getTotalCartPrice = () => {
         const priceArray = snap.cartContents.map((product) => product.currentPrice)
         const totalInPence = priceArray.reduce((total, price) => total + price, 0)
         return +parseFloat(`${totalInPence}`).toFixed(2)
-      }
-
-    const navigate = useNavigate()
-
+    }
+    
     return (
         <div className="w-full max-w-[300px] h-max shadow-md bg-gray-100 rounded-md mt-6">
             <div className="w-full pb-3 border-b p-5">
@@ -34,11 +30,6 @@ export const OrderSummary = () => {
                     <h2>Order Total</h2>
                     <h2 className="font-medium">£{getNumberWithCommas(getTotalCartPrice())}</h2>
                 </div>
-            </div>
-            <div className="w-full flex justify-center py-5 px-2">
-                <button
-                onClick={() => navigate('/checkout/shipping')}
-                className="w-full border py-3 uppercase bg-blue-500 rounded-md text-white font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90 text-sm">Proceed to checkout</button>
             </div>
         </div>
     )
