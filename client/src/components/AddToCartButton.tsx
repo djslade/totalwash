@@ -6,6 +6,7 @@ import { AddToCartModal } from "./AddedToCartModal"
 import { useState } from "react"
 import axios from "axios"
 import { cookies } from "next/dist/client/components/headers"
+import { AnimatePresence } from "framer-motion"
 
 export const AddToCartButton = ({
     product,
@@ -72,7 +73,9 @@ export const AddToCartButton = ({
             onClick={handleAddToCart}
             className="flex-1 border py-2.5 uppercase bg-blue-500 rounded-md text-white font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">Add to Cart</button>
             }
-            {showModal && <AddToCartModal product={product} closeModal={handleCloseModal}/>}
+            <AnimatePresence>  
+                {showModal && <AddToCartModal product={product} closeModal={handleCloseModal}/>}
+            </AnimatePresence>
         </>
 
     )

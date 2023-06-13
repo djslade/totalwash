@@ -3,7 +3,6 @@ import { useNavigate } from "@/hooks"
 import { state } from "@/store"
 import { Category } from "@/types"
 import { useState } from "react"
-import { useSnapshot } from "valtio"
 
 export const Navbar = ({
     categories,
@@ -12,9 +11,13 @@ export const Navbar = ({
     categories: Category[],
     subcategories: Category[],
 }) => {
-    const snap = useSnapshot(state)
-
     const navigate = useNavigate()
+
+    const handleNavigate = (path:string) => {
+        navigate(path)
+        if (path === '/catalog') return
+        setDropdownVisible(false)
+    }
 
     const [dropdownVisible, setDropdownVisible] = useState<boolean>(true)
 
@@ -26,7 +29,7 @@ export const Navbar = ({
                         <button
                         role="link"
                         className="outline-offset-8"
-                        onClick={() => navigate(`/catalog/categories/${category.slug}`)}
+                        onClick={() => handleNavigate(`/catalog/categories/${category.slug}`)}
                         onBlur={() => setDropdownVisible(true)}
                         onMouseLeave={() => setDropdownVisible(true)}
                         onFocus={() => setDropdownVisible(true)}>
@@ -40,7 +43,7 @@ export const Navbar = ({
                                         <button
                                         className={`py-3 px-6 w-full brightness-100 whitespace-nowrap bg-gray-100 flex items-center justify-start hover:bg-gray-200`}
                                         role="link"
-                                        onClick={() => navigate(`/catalog/categories/${subcategory.slug}`)}
+                                        onClick={() => handleNavigate(`/catalog/categories/${subcategory.slug}`)}
                                         onBlur={() => setDropdownVisible(true)}>
                                             <span>{subcategory.name}</span>
                                         </button>

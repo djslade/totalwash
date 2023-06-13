@@ -11,7 +11,7 @@ import { MobileSearch } from "./MobileSearch"
 import { useSearchProducts } from "@/hooks"
 import { NavSidebar } from "./NavSidebar"
 import axios from "axios"
-import { AnimatePresence } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 
 export const Header = ({
     categories,
@@ -87,6 +87,7 @@ export const Header = ({
 
     return (
         <>
+        <div className="relative">
             <header className={`z-50 sticky top-0 px-6 bg-gray-100 text-gray-900`}>
                 <div className="flex h-20 items-center max-w-screen-lg mx-auto p-3 md:justify-start justify-between">
                     <div className="flex md:flex-1 gap-6 items-center h-full">
@@ -127,9 +128,12 @@ export const Header = ({
                             </button>
                         </div>
                     </div>
-                </div>
-                {searchBarVisible && <MobileSearch closeSearch={hideMobileSearch} />} 
+                </div>   
             </header>
+            <AnimatePresence>
+                {searchBarVisible && <MobileSearch closeSearch={hideMobileSearch} />} 
+            </AnimatePresence>    
+        </div>
             <AnimatePresence>
                 {showNavSidebar &&
                 <NavSidebar

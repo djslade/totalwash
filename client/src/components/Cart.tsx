@@ -5,6 +5,7 @@ import { MobileRenderedCartContents } from "./MobileRenderedCartContents"
 import { RenderedCartContents } from "./RenderedCartContents"
 import { useNavigate } from "@/hooks"
 import axios from "axios"
+import { clearFocus } from "@/utilities"
 
 export const Cart = () => {
     const snap = useSnapshot(state)
@@ -39,6 +40,7 @@ export const Cart = () => {
         state.cartId = ''
         state.cartContents = []
         localStorage.removeItem('cartId')
+        clearFocus()
     }
 
     if (cartItems.length === 0 || !cartItems) {

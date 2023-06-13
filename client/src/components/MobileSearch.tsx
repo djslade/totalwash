@@ -69,11 +69,16 @@ export const MobileSearch = ({
     })
     
     return (
-        <div
-        className={`absolute left-0 right-0 md:!hidden px-6 py-3 bg-inherit`} ref={searchRef}>
+        <motion.div
+        initial={{y: "-10vh" }}
+        animate={{ y: 0 }}
+        exit={{ y: "-10vh" }}
+        transition={{ bounce: 0 }}
+        className={`absolute left-0 right-0 md:!hidden px-6 py-3 bg-gray-100`}
+        ref={searchRef}>
             <div
             id="mobileSearchBar"
-            className={`border-2 justify-end  border-black rounded-sm h-9 focus-within:border-blue-500 flex`}>
+            className={`border-2 justify-end  border-black rounded-sm h-9 focus-within:border-blue-500 flex z-[-1]`}>
                     <input
                     ref={inputRef}
                     type="text"
@@ -87,6 +92,6 @@ export const MobileSearch = ({
                         <AiOutlineSearch />
                     </button>
             </div>
-        </div>
+        </motion.div>
     )
 }

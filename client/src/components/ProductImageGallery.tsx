@@ -6,6 +6,7 @@ import { AiTwotoneCheckCircle } from 'react-icons/ai'
 import { useSnapshot } from 'valtio'
 import { state } from '@/store'
 import { ImageGalleryModal } from './ImageGalleryModal'
+import { AnimatePresence } from 'framer-motion'
 
 export const ProductImageGallery = ({
     product,
@@ -52,7 +53,9 @@ export const ProductImageGallery = ({
                 </div>
                 </div>
             </div>
-            {snap.showImageGallery && <ImageGalleryModal />}
+            <AnimatePresence>
+                {snap.showImageGallery && <ImageGalleryModal />}
+            </AnimatePresence> 
         </>
 
     )

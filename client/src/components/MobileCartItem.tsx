@@ -24,11 +24,11 @@ export const MobileCartItem = ({
     const handleQuantityChange = (evt:any) => {
         if (loading) return
         const value = evt.target.value
-        if (!value) return setQuantity(1)
+        if (!value) return setQuantity(0)
         if (isNaN(value)) return
         const number = parseInt(value)
         if (number > 99) return setQuantity(99)
-        if (number < 1) return setQuantity(1)
+        if (number < 0) return setQuantity(0)
         setQuantity(number)
     }
 

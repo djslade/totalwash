@@ -14,15 +14,13 @@ export const SearchedProducts = ({
     relevance?: boolean;
     total?: number;
 }) => {
+
+
     const [sortingMethod, setSortingMethod] = useState<string>(relevance ? "relevance" : "name")
 
     const [limit, setLimit] = useState<number>(6)
 
-    const [page, setPage] = useState<number>(1)
-
     const sectionRef = useRef<HTMLElement>(null)
-
-    const setSearchParams = useUpdateParams()
 
     const handleProductsScroll = () => {
         if (!sectionRef.current) return
@@ -32,14 +30,18 @@ export const SearchedProducts = ({
         return offsetPosition
     }
 
+    const { setSearchParams, searchParams } = useUpdateParams()
+
+    const [page, setPage] = useState<number>(Number(searchParams.get('page')) || 1)
+
     const handleSortingMethodChange = (evt:any) => {
         setSortingMethod(evt.target.value)
-        setSearchParams('sortby', evt.target.value, handleProductsScroll())
+        setSearchParams('sortby', evt.target.value)
     }
 
     const handlePageLimitChange = (evt:any) => {
         setLimit(parseInt(evt.target.value))
-        setSearchParams('limit', evt.target.value, handleProductsScroll())
+        setSearchParams('limit', evt.target.value)
     }
 
 
@@ -87,7 +89,7 @@ export const SearchedProducts = ({
 
     const handlePageChange = (newPage:number) => {
         setPage(newPage)
-        setSearchParams('page', `${newPage}`, handleProductsScroll())
+        setSearchParams('page', `${newPage}`)
     }
 
     if (products.length === 0) {

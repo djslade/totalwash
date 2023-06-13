@@ -4,6 +4,8 @@ import { useSnapshot } from "valtio"
 import { AiOutlineLeft, AiOutlineRight,AiOutlineClose } from "react-icons/ai"
 import { ModalPortal } from "./ModalPortal"
 import { useOutsideClick } from "@/hooks"
+import { ModalBackdrop } from "./ModalBackdrop"
+import { motion } from "framer-motion"
 
 export const ImageGalleryModal = () => {
     const snap = useSnapshot(state)
@@ -32,8 +34,12 @@ export const ImageGalleryModal = () => {
 
     return (
         <ModalPortal>
-            <div className={`z-[100] top-0 left-0 right-0 bottom-0 bg-black opacity-90 fixed`}></div>
-            <div className={`z-[100] top-0 left-0 right-0 bottom-0 flex justify-center items-center fixed`}>
+            <ModalBackdrop onClick={() => state.showImageGallery = false} />
+            <motion.div
+            initial={{ opacity: 0 }}
+            animate={{opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={`z-[100] top-0 left-0 right-0 bottom-0 flex justify-center items-center fixed`}>
                 <div className="flex flex-col p-6 h-full items-center gap-3 justify-center" ref={modalRef}>
                     <button className="absolute text-gray-50 top-5 right-5 text-4xl" onClick={handleCloseGallery}><AiOutlineClose /></button>
                     <div className="max-w-xl flex justify-center">
@@ -58,7 +64,7 @@ export const ImageGalleryModal = () => {
                         </button>)}
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </ModalPortal>
     )
 }
