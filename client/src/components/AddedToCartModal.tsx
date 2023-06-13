@@ -37,7 +37,7 @@ export const AddToCartModal = ({
           exit={{ y: "100vh", opacity: 0 }}
           transition={{ opacity: { bounce: 0 }}}
           onClick={(evt) => evt.stopPropagation()}
-          className="rounded-md bg-gray-50 modal flex flex-col md:flex-row">
+          className="bg-gray-50 modal flex flex-col md:flex-row">
             <button onClick={closeModal} className="-top-3 -right-3 text-black bg-white rounded-full border border-black absolute text-3xl"><AiFillCloseCircle /></button>
             <div className="sm:flex-1 max-w-screen-xl sm:border-r border-gray-900 border-b md:border-b-0">
               <div className="w-full flex flex-col items-center p-6">
@@ -79,7 +79,7 @@ export const AddToCartModal = ({
                 </div>
                 <div className="flex gap-3 flex-col w-full">
                   <button onClick={closeModal} className="line-clamp-1 flex-1 border py-2.5 bg-white text-gray-900 rounded-md border-gray-500 font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">Continue Shopping</button>
-                  <button onClick={() => navigate('/checkout/cart')} className={"flex-1 border py-2.5 uppercase bg-blue-500 rounded-md text-white font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90"}>Go to Checkout</button>
+                  <button onClick={() => navigate('/checkout/cart')} className={"flex-1 border py-2.5 uppercase bg-blue-500 rounded-md text-white font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90"}>Go to Cart</button>
                 </div>
               </div>
             </div>

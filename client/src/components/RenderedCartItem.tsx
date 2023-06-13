@@ -97,14 +97,14 @@ export const RenderedCartItem = ({
                     <RenderedProductButtons handleRemove={removeItemFromCart} handleUpdate={updateQuantityInCart}/>
                 </div>
             </td>
-            <td className="p-3">£{numberWithCommas(cartItem.product.currentPrice)}</td>
-            <td className="p-3">
+            <td className="px-3 py-3 align-top text-lg font-medium">£{numberWithCommas(cartItem.product.currentPrice)}</td>
+            <td className="p-1 align-top">
                 <input
                 className="w-10 p-2 text-center border"
                 value={quantity}
                 onChange={handleQuantityChange}/>
             </td>
-            <td className="p-3">£{numberWithCommas(cartItem.subtotal)}</td>
+            <td className="px-3 py-3 align-top text-lg font-medium">£{numberWithCommas(cartItem.subtotal)}</td>
         </tr>
     )
 }
