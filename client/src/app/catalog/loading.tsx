@@ -1,5 +1,12 @@
+import { CatalogHeroSkeleton, PreviewSkeleton } from "@/components"
+
 const CatalogLoading = () => {
-    return <h1>Loading!</h1>
+    return (
+        <main className="pt-3">
+            <CatalogHeroSkeleton />
+            <PreviewSkeleton />
+        </main>
+    )
 }
 
 export default CatalogLoading

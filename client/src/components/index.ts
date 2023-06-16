@@ -19,6 +19,10 @@ import { Navbar } from "./Navbar"
 import { RenderedCartContents } from "./RenderedCartContents"
 import { RenderedCartItem } from "./RenderedCartItem"
 import { MobileCartItem } from "./MobileCartItem"
+import { CatalogHeroSkeleton } from "./skeletons/CatalogHeroSkeleton"
+import { PreviewSkeleton } from "./skeletons/PreviewSkeleton"
+import { CategoryInfoSkeleton } from "./skeletons/CategoryInfoSkeleton"
+import { ProductViewSkeleton } from "./skeletons/ProductViewSkeleton"
 
 export {
     NavSidebar,
@@ -42,4 +46,7 @@ export {
     RenderedCartContents,
     RenderedCartItem,
     MobileCartItem,
+    CatalogHeroSkeleton,
+    PreviewSkeleton,
+    CategoryInfoSkeleton,
 }
