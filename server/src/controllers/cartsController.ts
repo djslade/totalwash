@@ -6,7 +6,7 @@ import { validateArrayOfObjectIds } from "../utilities"
 const getCart = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { cartId } =  req.params
-        const cart = await Cart.findById(cartId).populate('products').exec()
+        const cart = await Cart.findById(cartId).populate('products').populate('shippingInfo').exec()
         return res.status(200).send({ cart })
     } catch (err) {
         return next(err)
@@ -68,8 +68,8 @@ const updateCart = [
 const deleteCart = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { cartId } =  req.params
-        await Cart.findByIdAndDelete(cartId)
-        return res.status(200).send({ message: 'Cart was deleted' })
+        const cart = await Cart.findByIdAndDelete(cartId).populate('products').populate('shippingInfo').exec()
+        return res.status(200).send({ cart })
     } catch (err) {
         return next(err)
     }

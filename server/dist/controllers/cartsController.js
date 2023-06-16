@@ -16,7 +16,7 @@ const utilities_1 = require("../utilities");
 const getCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { cartId } = req.params;
-        const cart = yield models_1.Cart.findById(cartId).populate('products').exec();
+        const cart = yield models_1.Cart.findById(cartId).populate('products').populate('shippingInfo').exec();
         return res.status(200).send({ cart });
     }
     catch (err) {
@@ -73,8 +73,8 @@ const updateCart = [
 const deleteCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { cartId } = req.params;
-        yield models_1.Cart.findByIdAndDelete(cartId);
-        return res.status(200).send({ message: 'Cart was deleted' });
+        const cart = yield models_1.Cart.findByIdAndDelete(cartId).populate('products').populate('shippingInfo').exec();
+        return res.status(200).send({ cart });
     }
     catch (err) {
         return next(err);

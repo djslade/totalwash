@@ -11,8 +11,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className="bg-gray-100">
+    <html lang="en" className="h-full">
+      <body className="bg-gray-100 h-full flex flex-col">
         <div id="modal-root"/>
         {children}
       </body>

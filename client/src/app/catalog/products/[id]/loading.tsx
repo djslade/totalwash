@@ -4,8 +4,8 @@ import React from 'react'
 
 const loading = () => {
     return (
-        <main className="max-w-screen-lg mx-auto py-3">
-            <div className="flex w-full my-3 sm:flex-row flex-col">
+        <main className="max-w-screen-lg mx-auto py-3 w-screen">
+            <div className="flex w-full my-3 sm:flex-row flex-col gap-3">
                 <div className={`p-3 sm:hidden`}>
                     <div className="h-5 bg-gray-300 animate-pulse" />
                 </div>

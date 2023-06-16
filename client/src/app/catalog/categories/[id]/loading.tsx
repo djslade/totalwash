@@ -4,7 +4,7 @@ import React from 'react'
 
 const CategoriesLoading = () => {
     return (
-        <main className="max-w-screen-lg mx-auto p-3">
+        <main className="max-w-screen-lg mx-auto p-3 w-screen">
             <CategoryInfoSkeleton />
             <PreviewSkeleton />
             <ProductViewSkeleton />

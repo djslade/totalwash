@@ -3,6 +3,7 @@ import { subcategoriesController } from "./subcategoriesController"
 import { rangesController } from "./rangesController"
 import { productsController } from "./productsController"
 import { cartsController } from "./cartsController"
+import { checkoutController } from "./checkoutController"
 
 export {
     categoriesController,
@@ -10,4 +11,5 @@ export {
     rangesController,
     productsController,
     cartsController,
+    checkoutController,
 }

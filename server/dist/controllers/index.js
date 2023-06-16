@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cartsController = exports.productsController = exports.rangesController = exports.subcategoriesController = exports.categoriesController = void 0;
+exports.checkoutController = exports.cartsController = exports.productsController = exports.rangesController = exports.subcategoriesController = exports.categoriesController = void 0;
 const categoriesController_1 = require("./categoriesController");
 Object.defineProperty(exports, "categoriesController", { enumerable: true, get: function () { return categoriesController_1.categoriesController; } });
 const subcategoriesController_1 = require("./subcategoriesController");
@@ -11,3 +11,5 @@ const productsController_1 = require("./productsController");
 Object.defineProperty(exports, "productsController", { enumerable: true, get: function () { return productsController_1.productsController; } });
 const cartsController_1 = require("./cartsController");
 Object.defineProperty(exports, "cartsController", { enumerable: true, get: function () { return cartsController_1.cartsController; } });
+const checkoutController_1 = require("./checkoutController");
+Object.defineProperty(exports, "checkoutController", { enumerable: true, get: function () { return checkoutController_1.checkoutController; } });

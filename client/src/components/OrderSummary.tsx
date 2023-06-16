@@ -38,7 +38,7 @@ export const OrderSummary = () => {
             </div>
             <div className="w-full flex justify-center py-5 px-2">
                 <button
-                onClick={() => navigate('/checkout/shipping')}
+                onClick={() => navigate(`/checkout/shipping/${snap.cartId}`)}
                 className="w-full border py-3 uppercase bg-blue-400 rounded-md text-white font-sans font-bold hover:bg-blue-500 focus:bg-blue-500 transition-all text-sm">Proceed to checkout</button>
             </div>
         </div>

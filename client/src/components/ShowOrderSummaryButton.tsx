@@ -1,15 +1,17 @@
 "use client"
-
-import { state } from "@/store"
 import { formatPrice } from "@/utilities"
 import { useState } from "react"
-import { useSnapshot } from "valtio"
 import { CartSidebar } from "./CartSidebar"
 import { AnimatePresence } from "framer-motion"
+import { Product } from "@/types"
 
-export const ShowOrderSummaryButton = () => {
-    const snap = useSnapshot(state)
-
+export const ShowOrderSummaryButton = ({
+    products,
+    discount
+}: {
+    products: Product[],
+    discount: number,
+}) => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
     const handleShowSidebar = () => {
@@ -21,7 +23,7 @@ export const ShowOrderSummaryButton = () => {
     }
 
     const getTotalCartPrice = () => {
-        const priceArray = snap.cartContents.map((product) => product.currentPrice)
+        const priceArray = products.map((product) => product.currentPrice)
         const totalInPence = priceArray.reduce((total, price) => total + price, 0)
         return formatPrice(totalInPence)
     }
@@ -35,7 +37,7 @@ export const ShowOrderSummaryButton = () => {
                 <span>Click to review your order</span>            
             </button>
             <AnimatePresence>
-                {showSidebar && <CartSidebar closeModal={handleHideSidebar} />}
+                {showSidebar && <CartSidebar closeModal={handleHideSidebar} products={products} discount={discount}/>}
             </AnimatePresence>     
         </>
     )

@@ -1,4 +1,5 @@
 import { Header, Navbar } from "@/components"
+import { Footer } from "@/components/Footer"
 import { Category } from "@/types"
 
 const getCategories = async () => {
@@ -31,6 +32,7 @@ const Layout = async ({
             <Header categories={categories} subcategories={subcategories} />
             <Navbar categories={categories} subcategories={subcategories} />
             {children}
+            <Footer />
         </>
     )
 }

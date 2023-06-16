@@ -11,7 +11,7 @@ import { MobileSearch } from "./MobileSearch"
 import { useSearchProducts } from "@/hooks"
 import { NavSidebar } from "./NavSidebar"
 import axios from "axios"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence } from "framer-motion"
 
 export const Header = ({
     categories,
@@ -62,6 +62,7 @@ export const Header = ({
 
     const getCartProducts = async (id:string) => {
         const cartProducts = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts/${id}`)
+        if (!cartProducts.data?.cart?.products) return [] as Product[]
         return cartProducts.data.cart.products as Product[]
     }
 
@@ -96,7 +97,7 @@ export const Header = ({
                         </button>
                         <button className="text-xl hidden md:flex outline-offset-8" role="link" onClick={() => navigate("/catalog")}>
                             <span>Total</span>
-                            <span className="text-blue-300">Wash</span>
+                            <span className="text-blue-400">Wash</span>
                         </button>
                     </div>
                     <div className="hidden md:flex flex-[2] border-2 justify-end border-gray-700 rounded-sm h-9 focus-within:border-blue-500 bg-gray-500">

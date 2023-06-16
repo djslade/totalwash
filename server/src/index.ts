@@ -5,6 +5,7 @@ import slug from 'mongoose-slug-generator'
 import { apiRouter } from './routes'
 import cors from 'cors'
 import { json, urlencoded } from 'body-parser'
+import Stripe from 'stripe'
 
 dotenv.config()
 
@@ -16,6 +17,7 @@ mongoose.set('strictQuery', false)
 mongoose.plugin(slug)
 mongoose.connect(process.env.MONGO_URI || '')
 
+const stripe = new Stripe(process.env.STRIPE_API_KEY || '', { apiVersion: '2022-11-15'})
 app.use(json())
 app.use(urlencoded({ extended: false }))
 app.use(cors())

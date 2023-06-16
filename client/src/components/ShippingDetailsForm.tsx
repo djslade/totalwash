@@ -1,30 +1,39 @@
 "use client"
 import { useNavigate } from "@/hooks"
+import { state } from "@/store"
+import axios from "axios"
 import { useState } from "react"
 import { CountryDropdown, CountryRegionData } from "react-country-region-selector"
+import { useSnapshot } from "valtio"
 
-export const ShippingDetailsForm = () => {
-    const [email, setEmail] = useState<string>("")
+export const ShippingDetailsForm = ({
+    shippingInfo,
+    cartId,
+}: {
+    shippingInfo:any,
+    cartId:string,
+}) => {
+    const [email, setEmail] = useState<string>(shippingInfo?.email || "")
 
-    const [firstName, setFirstName] = useState<string>("")
+    const [firstName, setFirstName] = useState<string>(shippingInfo?.firstName || "")
 
-    const [lastName, setLastName] = useState<string>("")
+    const [lastName, setLastName] = useState<string>(shippingInfo?.lastName || "")
 
-    const [company, setCompany] = useState<string>("")
+    const [company, setCompany] = useState<string>(shippingInfo?.company || "")
 
-    const [streetAddressOne, setStreetAddressOne] = useState<string>("")
+    const [streetAddressOne, setStreetAddressOne] = useState<string>(shippingInfo?.streetAddressOne || "")
 
-    const [streetAddressTwo, setStreetAddressTwo] = useState<string>("")
+    const [streetAddressTwo, setStreetAddressTwo] = useState<string>(shippingInfo?.streetAddressTwo || "")
 
-    const [streetAddressThree, setStreetAddressThree] = useState<string>("")
+    const [streetAddressThree, setStreetAddressThree] = useState<string>(shippingInfo?.streetAddressThree || "")
 
-    const [country, setCountry] = useState<string>("")
+    const [country, setCountry] = useState<string>(shippingInfo?.country || "")
 
-    const [city, setCity] = useState<string>("")
+    const [city, setCity] = useState<string>(shippingInfo?.city || "")
 
-    const [postcode, setPostcode] = useState<string>("")
+    const [postcode, setPostcode] = useState<string>(shippingInfo?.postcode || "")
 
-    const [phoneNumber, setPhoneNumber] = useState<string>("")
+    const [phoneNumber, setPhoneNumber] = useState<string>(shippingInfo?.phoneNumber || "")
 
     const [validationStatus, setValidationStatus] = useState({
         email: {
@@ -319,9 +328,34 @@ export const ShippingDetailsForm = () => {
         setPhoneNumber('01823 300206')
     }
 
-    const handleContinue = () => {
+    const handleContinue = async () => {
         if (validateAll() === false) return
-        navigate('/catalog')
+        console.log(process.env.NEXT_PUBLIC_STRIPE_API_KEY)
+        const res = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/checkout/session`,
+            {
+                cart: cartId,
+                email,
+                firstName,
+                lastName,
+                company,
+                streetAddressOne,
+                streetAddressTwo,
+                streetAddressThree,
+                country,
+                city,
+                postcode,
+                phoneNumber,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRIPE_API_KEY}`
+                }
+            }
+        )
+        const url = res.data.url
+        if (!url) return
+        window.location = url
     }
 
     return (

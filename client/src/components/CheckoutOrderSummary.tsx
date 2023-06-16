@@ -1,12 +1,19 @@
 "use client"
 import { useNavigate } from "@/hooks"
 import { state } from "@/store"
+import { Product } from "@/types"
 import { formatCartCount, formatPrice } from "@/utilities"
 import { useState } from "react"
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"
 import { useSnapshot } from "valtio"
 
-export const CheckoutOrderSummary = () => {
+export const CheckoutOrderSummary = ({
+    products,
+    discount,
+}: {
+    products: Product[],
+    discount: number,
+}) => {
     const snap = useSnapshot(state)
 
     const navigate = useNavigate()
@@ -22,20 +29,20 @@ export const CheckoutOrderSummary = () => {
     }
 
     const getTotalCartPrice = () => {
-        const priceArray = snap.cartContents.map((product) => product.currentPrice)
+        const priceArray = products.map((product) => product.currentPrice)
         const totalInPence = priceArray.reduce((total, price) => total + price, 0)
         return formatPrice(totalInPence)
     }
 
     const getProcessedCartContents = () => {
-        const uniqueProducts = snap.cartContents.reduce((accumulator, product) => {
+        const uniqueProducts = products.reduce((accumulator, product) => {
             if (!accumulator.find((item) => item._id === product._id)) {
               accumulator.push(product)
             }
             return accumulator
           }, [] as any[])
         const processedCartContents:any[] = uniqueProducts.map((product) => {
-            const quantity = snap.cartContents.filter((otherProduct) => product._id === otherProduct._id).length
+            const quantity = products.filter((otherProduct) => product._id === otherProduct._id).length
             const subtotal = +parseFloat(`${product.currentPrice * quantity}`).toFixed(2)
             const subtotalFull = +parseFloat(`${product.fullPrice * quantity}`).toFixed(2)
             return {
@@ -60,7 +67,7 @@ export const CheckoutOrderSummary = () => {
                 </div>
                 <div className="flex w-full justify-between">
                     <h2>Discount</h2>
-                    <h2 className="font-medium">{formatPrice(0)}</h2>
+                    <h2 className="font-medium">{formatPrice(discount)}</h2>
                 </div>
                 <div className="flex w-full justify-between mt-5">
                     <h2>Order Total</h2>
@@ -70,14 +77,14 @@ export const CheckoutOrderSummary = () => {
                     <button
                     onClick={handleHideCart}
                     className="w-full flex justify-between items-center">
-                        <span>{formatCartCount(snap.cartContents.length)}</span>
+                        <span>{formatCartCount(products.length)}</span>
                         <AiOutlineUp/>
                     </button>
                     :
                     <button
                     onClick={handleShowCart}
                     className="w-full flex justify-between items-center">
-                        <span>{formatCartCount(snap.cartContents.length)}</span>
+                        <span>{formatCartCount(products.length)}</span>
                         <AiOutlineDown/>
                     </button>
                 }
