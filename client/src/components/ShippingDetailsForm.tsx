@@ -1,7 +1,7 @@
 "use client"
 import { useNavigate } from "@/hooks"
 import { useState } from "react"
-import { CountryDropdown } from "react-country-region-selector"
+import { CountryDropdown, CountryRegionData } from "react-country-region-selector"
 
 export const ShippingDetailsForm = () => {
     const [email, setEmail] = useState<string>("")
@@ -103,6 +103,10 @@ export const ShippingDetailsForm = () => {
 
     const changeStreetAddressThree = (evt:any) => {
         setStreetAddressThree(evt.target.value)
+    }
+
+    const changeCountry = (val:string) => {
+        setCountry(val)
     }
 
     const changeCity = (evt:any) => {
@@ -303,6 +307,18 @@ export const ShippingDetailsForm = () => {
         return results.filter((result) => result === false).length === 0
     }
 
+    const handleUseDemoData = () => {
+        setEmail('example@email.com')
+        setFirstName('Bobby')
+        setLastName('Briggs')
+        setCompany('Totalwash')
+        setStreetAddressOne('64A East St')
+        setCountry('United Kingdom')
+        setCity('Taunton')
+        setPostcode('TA1 3NH')
+        setPhoneNumber('01823 300206')
+    }
+
     const handleContinue = () => {
         if (validateAll() === false) return
         navigate('/catalog')
@@ -310,7 +326,7 @@ export const ShippingDetailsForm = () => {
 
     return (
         <form onSubmit={(evt) => evt.preventDefault()} className="p-5 border-t my-3 flex flex-col gap-3 w-full items-baseline md:items-stretch text-gray-700">
-            <span className="mb-6">Fields marked with an <span className="text-red-500">*</span> are required</span>
+            <span className="mb-3">Fields marked with an <span className="text-red-500">*</span> are required</span>
             <div className="flex gap-2 md:gap-5 items-start justify-between flex-col md:flex-row w-full">
                 <label
                 htmlFor="email"
@@ -391,6 +407,8 @@ export const ShippingDetailsForm = () => {
                     className="bg-gray-50 py-0.5 px-2 border rounded-sm border-gray-900 focus:form-input outline-none w-full" type="text" />
                     <span className="text-red-500">{validationWarningMessages.streetAddressTwo}</span>
                     <input
+                    value={streetAddressThree}
+                    onChange={changeStreetAddressThree}
                     placeholder="optional"
                     className="bg-gray-50 py-0.5 px-2 border rounded-sm border-gray-900 focus:form-input outline-none w-full" type="text" />
                     <span className="text-red-500">{validationWarningMessages.streetAddressThree}</span>
@@ -405,7 +423,7 @@ export const ShippingDetailsForm = () => {
                     id="country"
                     classes="bg-gray-50 py-0.5 px-2 border rounded-sm border-gray-900 focus:form-input outline-none md:max-w-xs w-full md:w-screen"
                     value={country}
-                    onChange={(val) => setCountry(val)}
+                    onChange={(val) => changeCountry(val)}
                     onBlur={validateCountry}/>
                     <span className="text-red-500">{validationWarningMessages.country}</span>
                 </div>
@@ -456,9 +474,15 @@ export const ShippingDetailsForm = () => {
                 </div>
             </div>
             <div className="w-full flex justify-end">
+
+            </div>
+            <div className="w-full flex justify-between mt-6 gap-3 flex-col md:flex-row">
+                <button
+                onClick={handleUseDemoData}
+                className="w-full max-w-xxs border py-3 uppercase bg-green-400 rounded-md text-gray-100 font-sans font-bold hover:bg-green-500 focus:bg-green-500 transition-all text-sm">Use Demo Data</button>
                 <button
                 onClick={handleContinue}
-                className="w-full max-w-xs mt-6 border py-3 uppercase bg-blue-400 rounded-md text-gray-100 font-sans font-bold hover:bg-blue-500 focus:bg-blue-500 transition-all text-sm">Continue</button>
+                className="w-full max-w-xxs border py-3 uppercase bg-blue-400 rounded-md text-gray-100 font-sans font-bold hover:bg-blue-500 focus:bg-blue-500 transition-all text-sm">Continue</button>
             </div>
         </form>
     )

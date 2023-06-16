@@ -49,4 +49,5 @@ export {
     CatalogHeroSkeleton,
     PreviewSkeleton,
     CategoryInfoSkeleton,
+    ProductViewSkeleton,
 }
