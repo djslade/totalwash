@@ -26,11 +26,11 @@ export const ProductAddToCart = ({
 
     const handleQuantityChange = (evt:any) => {
         const value = evt.target.value
-        if (!value) return setQuantity(1)
+        if (!value) return setQuantity(0)
         if (isNaN(value)) return
         const number = parseInt(value)
         if (number > 99) return setQuantity(99)
-        if (number < 1) return setQuantity(1)
+        if (number < 1) return setQuantity(0)
         setQuantity(number)
     }
 
@@ -39,14 +39,14 @@ export const ProductAddToCart = ({
             <div className="flex items-center h-10">
                 <button
                 onClick={handleDecreaseQuantity} 
-                className="text-xl border border-gray-900 h-full aspect-square flex justify-center items-center bg-gray-50"><BiMinus /></button>
+                className="text-xl border border-gray-700 h-full aspect-square flex justify-center items-center bg-gray-200 hover:bg-gray-700 hover:text-gray-100 transition-all focus:bg-gray-700 focus:text-gray-100"><BiMinus /></button>
                 <input
                 value={quantity}
                 onChange={handleQuantityChange}
-                className="text-center max-h-full aspect-square border-black border" />
+                className="text-center max-h-full aspect-square border-gray-700 border text-gray-700 bg-gray-50" />
                 <button
                 onClick={handleIncreaseQuantity}
-                className="text-xl border border-gray-900 h-full aspect-square flex justify-center items-center bg-gray-50"><BiPlus /></button>
+                className="text-xl border border-gray-700 h-full aspect-square flex justify-center items-center bg-gray-200 hover:bg-gray-700 hover:text-gray-100 transition-all focus:bg-gray-700 focus:text-gray-100"><BiPlus /></button>
             </div>
             <AddToCartButton product={product} quantity={quantity} />
         </div>

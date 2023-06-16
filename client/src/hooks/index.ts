@@ -3,6 +3,7 @@ import { useNavigate } from "./useNavigate"
 import { useSearchProducts } from "./useSearchProducts"
 import { useModalScroll} from "./useModalScroll"
 import { useUpdateParams } from "./useUpdateParams"
+import { useEscapeModal } from "./useEscapeModal"
 
 export {
     useOutsideClick,
@@ -10,4 +11,5 @@ export {
     useSearchProducts,
     useModalScroll,
     useUpdateParams,
+    useEscapeModal,
 }

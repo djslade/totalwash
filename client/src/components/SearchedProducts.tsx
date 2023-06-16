@@ -103,10 +103,10 @@ export const SearchedProducts = ({
     return (
         <section className="w-full py-6" ref={sectionRef}>
             <div className="w-full xs:flex justify-between">
-                <h1 className="font-bold my-6">{`Showing ${(page * limit) - (limit - 1)}-${page * limit < (total || products.length) ? page * limit :(total || products.length)} of ${(total || products.length)} items`}</h1>
+                <h1 className="font-medium my-6 text-gray-700">{`Showing ${(page * limit) - (limit - 1)}-${page * limit < (total || products.length) ? page * limit :(total || products.length)} of ${(total || products.length)} items`}</h1>
                 <div className="flex items-center gap-3">
                     <label>Sort By</label>
-                    <select className="border py-1 px-3 rounded border-black" onChange={handleSortingMethodChange}>
+                    <select className="py-1 px-3 rounded border-gray-700 bg-gray-100" onChange={handleSortingMethodChange}>
                         {relevance && <option value="relevance">Relevance</option>}
                         <option value="name">Product Name</option>
                         <option value="high-low">Price High to Low</option>
@@ -118,7 +118,7 @@ export const SearchedProducts = ({
             <div className="w-full xs:flex justify-between items-center my-6">
                 <div className="flex items-center gap-3">
                     <label>Items per page</label>
-                    <select className="border py-1 px-3 rounded border-black" onChange={handlePageLimitChange}>
+                    <select className="py-1 px-3 rounded text-sm bg-gray-100" onChange={handlePageLimitChange}>
                         <option value="6">6</option>
                         <option value="12">12</option>
                     </select>
@@ -126,7 +126,7 @@ export const SearchedProducts = ({
                 <div className="flex gap-3 font-semibold">
                     <button className="p-3">{"<"}</button>
                     {getPageButtonsArray().map((pageNumber) =>
-                    <button className={`p-3 ${pageNumber === page ? "bg-gray-100 border-gray-100 rounded-lg" : ""}`} key={pageNumber} onClick={() => handlePageChange(pageNumber)}>
+                    <button className={`p-3 ${pageNumber === page ? "bg-gray-200 border-gray-200 rounded-md" : ""}`} key={pageNumber} onClick={() => handlePageChange(pageNumber)}>
                         {pageNumber}
                     </button>)}
                     <button className="p-3">{">"}</button>

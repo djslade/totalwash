@@ -1,3 +1,3 @@
 export const getNumberWithCommas = (number:number) => {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parseFloat(number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")).toFixed(2)
 }

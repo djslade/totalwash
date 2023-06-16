@@ -17,6 +17,7 @@
         background-size: cover;
     }
 
+
     .full-width-cta {
         width: 100vw;
         position: relative;
@@ -31,9 +32,12 @@
         outline-width: 0px;
     }
 
+    .sidebar {
+        width: clamp(250px, 100vw, 400px);
+    }
+
     .modal {
         width: clamp(50%, 700px, 90%);
-        height: min(50%, 300px);
     }
 
     .header-dark {
@@ -62,7 +66,7 @@
 
 @layer components {
     .header-search-input {
-        @apply py-3 pl-5 w-full outline-none bg-input-light text-base
+        @apply py-3 pl-5 w-full outline-none bg-input-light text-base bg-gray-50
     }
 
     .header-search-input-dark {

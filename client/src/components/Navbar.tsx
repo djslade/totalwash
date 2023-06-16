@@ -22,37 +22,32 @@ export const Navbar = ({
     const [dropdownVisible, setDropdownVisible] = useState<boolean>(true)
 
     return (
-        <div className="max-w-screen bg-gray-100">
-            <nav className="hidden justify-between md:flex text-base flex-nowrap py-2 max-w-screen-lg mx-auto bg-inherit px-3">
+        <div className="max-w-screen bg-gray-200 text-gray-700 font-normal shadow-md">
+            <nav className="hidden justify-between md:flex text-base flex-nowrap max-w-screen-lg mx-auto bg-inherit">
                 {categories.map((category) =>
-                    <div className="relative group flex justify-center flex-col items-center" key={category._id}>
+                    <div className="relative group flex justify-center flex-col items-center w-full" key={category._id}>
                         <button
                         role="link"
-                        className="outline-offset-8"
+                        className="px-3 py-2 hover:bg-gray-100 transition-all w-full"
                         onClick={() => handleNavigate(`/catalog/categories/${category.slug}`)}
                         onBlur={() => setDropdownVisible(true)}
                         onMouseLeave={() => setDropdownVisible(true)}
                         onFocus={() => setDropdownVisible(true)}>
                             <span>{category.name}</span>
                         </button>
-                        <div className={`top-6 ${categories.indexOf(category) === categories.length - 1 ? "right-0" : "-left-6"} absolute flex-col group-hover:flex py-3 rounded shadow-md ${dropdownVisible ? 'hidden' : '!hidden'} bg-gray-100`}>
-                            {subcategories.map((subcategory) =>
-                                subcategory.parents.map((savedCategory:any) =>
-                                    savedCategory._id === category._id &&
-                                    <div key={subcategory._id}>
-                                        <button
-                                        className={`py-3 px-6 w-full brightness-100 whitespace-nowrap bg-gray-100 flex items-center justify-start hover:bg-gray-200`}
-                                        role="link"
-                                        onClick={() => handleNavigate(`/catalog/categories/${subcategory.slug}`)}
-                                        onBlur={() => setDropdownVisible(true)}>
-                                            <span>{subcategory.name}</span>
-                                        </button>
-                                    </div>
-                                )
-                            )}
-                        </div>
                     </div>
                     )}
+                    <div className="relative group flex justify-center flex-col items-center w-full bg-red-400 font-bold text-gray-100">
+                        <button
+                        role="link"
+                        className="px-3 py-2 hover:bg-red-500 transition-all w-full bg-red-400"
+                        onClick={() => handleNavigate(`/catalog/sale`)}
+                        onBlur={() => setDropdownVisible(true)}
+                        onMouseLeave={() => setDropdownVisible(true)}
+                        onFocus={() => setDropdownVisible(true)}>
+                            <span>{"Sale"}</span>
+                        </button>
+                    </div>
             </nav>
         </div>
     )

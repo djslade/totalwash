@@ -18,7 +18,7 @@ export const SidebarSubcategories = ({
 ) => {
 return (
 <nav className="justify-between items-start flex flex-col text-base flex-nowrap w-full whitespace-nowrap">
-    <div className="font-bold text-xl bg-gray-200 w-full h-20 px-6 flex items-center justify-between">
+    <div className="font-bold text-xl bg-gray-700 text-gray-100 w-full h-20 px-6 flex items-center justify-between">
         <h2>{selectedCategory.name}</h2>
         <button onClick={() => setSelectedCategory(emptyCategoryObject)}>
             <AiOutlineLeft />

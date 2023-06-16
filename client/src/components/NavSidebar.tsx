@@ -1,7 +1,4 @@
 "use client"
-import { state } from "@/store"
-import { useSnapshot } from "valtio"
-import { useOutsideClick } from "@/hooks"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { SidebarSubcategories } from "./SidebarSubcategories"
@@ -12,6 +9,7 @@ import FocusLock from 'react-focus-lock'
 import { ModalPortal } from "./ModalPortal"
 import { ModalBackdrop } from "./ModalBackdrop"
 import { motion } from "framer-motion"
+import { useEscapeModal } from "@/hooks"
 
 export const NavSidebar = ({
     categories,
@@ -34,17 +32,7 @@ export const NavSidebar = ({
         }
     }
 
-    useEffect(() => {
-        const handleEscape = (evt:any) => {
-            if (evt.key === "Escape") {
-                closeModal()
-            }
-        }
-
-        document.addEventListener('keydown', handleEscape)
-
-        return () => document.removeEventListener('keydown', handleEscape)
-    }, [])
+    useEscapeModal(closeModal)
 
     return (
         <ModalPortal>

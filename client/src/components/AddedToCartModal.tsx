@@ -5,9 +5,9 @@ import { state } from "@/store"
 import { Product } from "@/types"
 import { AiFillCloseCircle, AiOutlineCheckCircle } from "react-icons/ai"
 import { RiShoppingCartLine } from "react-icons/ri"
-import { useNavigate } from "@/hooks"
+import { useEscapeModal, useNavigate } from "@/hooks"
 import { ModalBackdrop } from "./ModalBackdrop"
-import { getNumberWithCommas } from "@/utilities"
+import { formatCartCount, formatPrice, getNumberWithCommas } from "@/utilities"
 import { motion } from "framer-motion"
 
 export const AddToCartModal = ({
@@ -24,8 +24,10 @@ export const AddToCartModal = ({
   const getTotalCartPrice = () => {
     const priceArray = snap.cartContents.map((product) => product.currentPrice)
     const totalInPence = priceArray.reduce((total, price) => total + price, 0)
-    return +parseFloat(`${totalInPence}`).toFixed(2)
+    return formatPrice(totalInPence)
   }
+
+  useEscapeModal(closeModal)
 
   return (
     <ModalPortal>
@@ -41,8 +43,8 @@ export const AddToCartModal = ({
             <button onClick={closeModal} className="-top-3 -right-3 text-black bg-white rounded-full border border-black absolute text-3xl"><AiFillCloseCircle /></button>
             <div className="sm:flex-1 max-w-screen-xl sm:border-r border-gray-900 border-b md:border-b-0">
               <div className="w-full flex flex-col items-center p-6">
-                <div className="sm:flex w-full gap-2 items-center mb-6">
-                  <AiOutlineCheckCircle className="bg-green-500 text-white rounded-full text-xl"/>
+                <div className="w-full flex items-center gap-2 mb-6">
+                  <AiOutlineCheckCircle className="bg-green-500 text-white rounded-full text-xl min-w-fit"/>
                   <h1 className="text-xl">Item was added to your cart</h1>
                 </div>
                 <div className="w-full flex gap-3">
@@ -55,11 +57,11 @@ export const AddToCartModal = ({
                       </div>
                       <div className="my-3 text-lg">
                       {!product.isOnSale ?
-                      <span className="font-semibold">{`£${product.currentPrice}`}</span>
+                      <span className="font-semibold">{`${formatPrice(product.currentPrice)}`}</span>
                       :
                       <>
-                          <span className="line-through font-semibold">{`£${getNumberWithCommas(product.fullPrice)}`}</span>
-                          <span className="text-blue-500 font-semibold">{` £${getNumberWithCommas(product.currentPrice)}`}</span>
+                          <span className="line-through font-semibold">{`${formatPrice(product.fullPrice)}`}</span>
+                          <span className="text-blue-500 font-semibold">{` ${formatPrice(product.currentPrice)}`}</span>
                       </>  
                       }
                     </div>
@@ -71,11 +73,11 @@ export const AddToCartModal = ({
               <div className="flex flex-col p-6 gap-6">
                 <div className="flex gap-2 items-center w-full">
                   <RiShoppingCartLine className="bg-blue-500 text-white text-xl rounded-full p-1"/>
-                  <h1 className="text-xl">{snap.cartContents.length} items in cart</h1>
+                  <h1 className="text-xl">{formatCartCount(snap.cartContents.length)}</h1>
                 </div>
                 <div className="flex gap-2 items-end">
                   <span className="text-lg">Total</span>
-                  <span className="text-2xl font-semibold">{`£${getNumberWithCommas(getTotalCartPrice())}`}</span>
+                  <span className="text-2xl font-semibold">{`${getTotalCartPrice()}`}</span>
                 </div>
                 <div className="flex gap-3 flex-col w-full">
                   <button onClick={closeModal} className="line-clamp-1 flex-1 border py-2.5 bg-white text-gray-900 rounded-md border-gray-500 font-sans font-bold brightness-100 hover:brightness-90 focus:brightness-90">Continue Shopping</button>

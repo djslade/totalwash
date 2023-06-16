@@ -13,7 +13,7 @@ export const CatalogHero = () => {
                 </div>
                 <button
                 onClick={() => navigate("/catalog/sale")}
-                className="w-48 uppercase border border-gray-50 bg-blue-400 hover:bg-gray-50 hover:border-blue-400 transition-all hover:text-blue-400 px-9 py-2 rounded-md font-sans font-bold">Shop Now</button>
+                className="w-48 uppercase border border-gray-50 bg-blue-400 hover:bg-gray-50 hover:border-blue-400 transition-all hover:text-blue-400 focus:text-blue-400 focus:bg-gray-50 focus:border-blue-400 px-9 py-2 rounded-md font-sans font-bold">Shop Now</button>
             </div>
         </section>
     )

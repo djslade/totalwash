@@ -48,7 +48,7 @@ export const Cart = () => {
             <section className="w-full-my-6 py-12">
                 <h2>Your cart is empty.</h2>
                 <div className="w-full flex justify-between py-3">
-                    <button onClick={() => navigate('/catalog')} className="border py-1 bg-white text-gray-900 rounded-md border-gray-500 font-sans font-medium brightness-100 hover:brightness-90 focus:brightness-90 w-max px-3">Return to Store</button>
+                    <button onClick={() => navigate('/catalog')} className="border py-1 bg-gray-50 text-gray-700 rounded-md border-gray-700 font-sans font-medium hover:bg-gray-200 focus:bg-gray-200 transition-all w-max px-3">Return to Store</button>
                 </div>
             </section>
         )
@@ -58,9 +58,9 @@ export const Cart = () => {
         <section className="w-full my-6">
             <RenderedCartContents cartItems={cartItems}/>
             <MobileRenderedCartContents cartItems={cartItems}/>
-            <div className="w-full flex justify-between p-3 flex-col-reverse xxs:flex-row gap-3">
-                <button onClick={() => navigate('/catalog')} className="border py-1 bg-white text-gray-900 rounded-md border-gray-500 font-sans font-medium brightness-100 hover:brightness-90 focus:brightness-90 w-max px-3">Continue Shopping</button>
-                <button onClick={clearCart} className="border py-1 bg-white text-gray-900 rounded-md border-gray-500 font-sans font-medium brightness-100 hover:brightness-90 focus:brightness-90 w-max px-3">Clear Cart</button>
+            <div className="w-full flex items-center md:justify-between p-3 flex-col-reverse xxs:flex-row gap-3">
+                <button onClick={() => navigate('/catalog')} className="border py-1 bg-gray-50 text-gray-700 rounded-md border-gray-700 font-sans font-medium brightness-100 hover:bg-gray-200 focus:bg-gray-200 transition-all w-max px-3">Continue Shopping</button>
+                <button onClick={clearCart} className="border py-1 bg-gray-50 text-gray-700 rounded-md border-gray-700 font-sans font-medium brightness-100 hover:bg-gray-200 focus:bg-gray-200 transition-all w-max px-3">Clear Cart</button>
             </div>
         </section>
     )

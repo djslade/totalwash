@@ -3,7 +3,7 @@ import { state } from "@/store"
 import { useSnapshot } from "valtio"
 import { AiOutlineLeft, AiOutlineRight,AiOutlineClose } from "react-icons/ai"
 import { ModalPortal } from "./ModalPortal"
-import { useOutsideClick } from "@/hooks"
+import { useEscapeModal, useOutsideClick } from "@/hooks"
 import { ModalBackdrop } from "./ModalBackdrop"
 import { motion } from "framer-motion"
 
@@ -31,6 +31,8 @@ export const ImageGalleryModal = () => {
     }
 
     const modalRef = useOutsideClick(handleCloseGallery)
+
+    useEscapeModal(handleCloseGallery)
 
     return (
         <ModalPortal>

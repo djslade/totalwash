@@ -74,21 +74,21 @@ export const MobileSearch = ({
         animate={{ y: 0 }}
         exit={{ y: "-10vh" }}
         transition={{ bounce: 0 }}
-        className={`absolute left-0 right-0 md:!hidden px-6 py-3 bg-gray-100`}
+        className={`absolute left-0 right-0 md:!hidden px-6 py-3 bg-gray-700`}
         ref={searchRef}>
             <div
             id="mobileSearchBar"
-            className={`border-2 justify-end  border-black rounded-sm h-9 focus-within:border-blue-500 flex z-[-1]`}>
+            className="flex flex-[2] border-2 justify-end border-gray-700 rounded-sm h-9 focus-within:border-blue-500 bg-gray-500">
                     <input
                     ref={inputRef}
                     type="text"
-                    className={snap.darkTheme ? 'header-search-input-dark' : 'header-search-input'}
+                    className="py-3 pl-5 w-full outline-none text-base bg-gray-500"
                     placeholder="Search"
                     autoFocus/>
                     <button
                     onClick={handleSearchClick}
                     ref={buttonRef}
-                    className={snap.darkTheme ? 'header-search-btn-dark' : 'header-search-btn'}>
+                    className="w-12 aspect-square flex justify-center items-center hover:bg-gray-400 focus:bg-gray-400 transition-all">
                         <AiOutlineSearch />
                     </button>
             </div>

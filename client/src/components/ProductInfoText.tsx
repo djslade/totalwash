@@ -20,10 +20,10 @@ export const ProductInfoText = ({
 
     if (isList === true) {
         return (
-            <div className="border w-full my-3 text-gray-800 border-gray-100">
+            <div className="border w-full my-3 text-gray-800 border-gray-200">
                 <button
                 onClick={toggleShowText}
-                className="flex w-full justify-between items-center px-3 bg-gray-100">
+                className="flex w-full justify-between items-center px-3 bg-gray-200">
                     <h2 className="text-lg font-semibold">{heading}</h2>
                     {showText ? <AiOutlineDown /> : <AiOutlineRight />}
                 </button>
@@ -37,10 +37,10 @@ export const ProductInfoText = ({
         )
     } else {
         return (
-            <div className="border w-full my-3 text-gray-800 border-gray-100">
+            <div className="border w-full my-3 text-gray-800 border-gray-200">
                 <button
                 onClick={toggleShowText}
-                className="flex w-full justify-between items-center px-3 bg-gray-100">
+                className="flex w-full justify-between items-center px-3 bg-gray-200">
                     <h2 className="text-lg font-semibold">{heading}</h2>
                     {showText ? <AiOutlineDown /> : <AiOutlineRight />}
                 </button>

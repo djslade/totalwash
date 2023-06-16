@@ -6,7 +6,7 @@ import { useSnapshot } from 'valtio'
 import { state } from '@/store'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { clearFocus } from '@/utilities'
+import { clearFocus, formatPrice } from '@/utilities'
 
 export const MobileCartItem = ({
     cartItem,
@@ -84,19 +84,15 @@ export const MobileCartItem = ({
         }
     }
 
-    const numberWithCommas = (number:number) => {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
     return (
         <div className="flex flex-col w-full border-b py-3 gap-3" key={cartItem.product._id}>
             <RenderedCartProduct product={cartItem.product}/>
             <div className="w-full flex justify-between items-center">
-                <div className="p-3 text-lg font-medium">£{numberWithCommas(cartItem.product.currentPrice)}</div>
+                <div className="p-3 text-lg font-medium">{formatPrice(cartItem.product.currentPrice)}</div>
                 <div className="p-3">
-                    <input onChange={handleQuantityChange} className="w-10 p-2 text-center border"value={quantity}/>
+                    <input onChange={handleQuantityChange} className="w-10 p-2 text-center border bg-gray-50"value={quantity}/>
                 </div>
-                <div className="p-3 text-lg font-medium">£{numberWithCommas(cartItem.subtotal)}</div>
+                <div className="p-3 text-lg font-medium">{formatPrice(cartItem.subtotal)}</div>
             </div>
             <RenderedProductButtons handleUpdate={updateQuantityInCart} handleRemove={removeItemFromCart}/>
         </div>

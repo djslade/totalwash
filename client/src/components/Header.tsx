@@ -88,7 +88,7 @@ export const Header = ({
     return (
         <>
         <div className="relative">
-            <header className={`z-50 sticky top-0 px-6 bg-gray-100 text-gray-900`}>
+            <header className={`z-50 sticky top-0 px-6 bg-gray-700 text-gray-100`}>
                 <div className="flex h-20 items-center max-w-screen-lg mx-auto p-3 md:justify-start justify-between">
                     <div className="flex md:flex-1 gap-6 items-center h-full">
                         <button className="md:hidden flex justify-center items-center outline-offset-8" onClick={() => setShowNavSidebar(true)}>
@@ -99,9 +99,9 @@ export const Header = ({
                             <span className="text-blue-300">Wash</span>
                         </button>
                     </div>
-                    <div className="hidden md:flex flex-[2] border-2 justify-end border-black rounded-sm h-9 focus-within:border-blue-500">
-                        <input ref={inputRef} type="text" className={snap.darkTheme ? 'header-search-input-dark' : 'header-search-input'} placeholder="Search" />
-                        <button className={snap.darkTheme ? 'header-search-btn-dark' : 'header-search-btn'} onClick={handleSearchClick}>
+                    <div className="hidden md:flex flex-[2] border-2 justify-end border-gray-700 rounded-sm h-9 focus-within:border-blue-500 bg-gray-500">
+                        <input ref={inputRef} type="text" className="py-3 pl-5 w-full outline-none text-base bg-gray-500" placeholder="Search" />
+                        <button className="w-12 aspect-square flex justify-center items-center hover:bg-gray-400 focus:bg-gray-400 transition-all" onClick={handleSearchClick}>
                             <AiOutlineSearch />
                         </button>
                     </div>

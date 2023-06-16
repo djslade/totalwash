@@ -23,7 +23,7 @@ const Catalog = async () => {
       <CatalogHero />
       <CategoryPreview categories={categories} heading={"Our Product Range"}/>
       <FeaturedProducts products={featuredProducts} />
-      <section className="w-full md:h-96 md:bg-gray-200 flex justify-center items-center py-3">
+      <section className="w-full md:h-96 bg-gray-200 text-gray-700 flex justify-center items-center py-3">
         <div className="p-3 rounded-lg max-w-screen-lg md:flex-1 bg-white md:h-2/3 md:shadow-md flex flex-col md:flex-row">
           <div className="flex flex-col md:flex-1 items-center gap-2">
             <div className="w-full h-28 flex justify-center">
