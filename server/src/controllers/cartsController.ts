@@ -71,7 +71,7 @@ const deleteCart = async (req: Request, res: Response, next: NextFunction) => {
         const { cartId } =  req.params
         const cart = await Cart.findByIdAndDelete(cartId).populate('products').populate('shippingInfo').exec()
         if (cart && cart.shippingInfo) {
-            await ShippingInfo.findByIdAndDelete(cart.shippingInfo._id)
+            await ShippingInfo.findByIdAndDelete(cart.shippingInfo._id).exec()
         }
         return res.status(200).send({ cart })
     } catch (err) {

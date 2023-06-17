@@ -76,7 +76,7 @@ const deleteCart = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         const { cartId } = req.params;
         const cart = yield models_1.Cart.findByIdAndDelete(cartId).populate('products').populate('shippingInfo').exec();
         if (cart && cart.shippingInfo) {
-            yield ShippingInfo_1.ShippingInfo.findByIdAndDelete(cart.shippingInfo._id);
+            yield ShippingInfo_1.ShippingInfo.findByIdAndDelete(cart.shippingInfo._id).exec();
         }
         return res.status(200).send({ cart });
     }
