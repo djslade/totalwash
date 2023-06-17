@@ -1,15 +1,10 @@
 "use client"
 import { useNavigate } from "@/hooks"
 import axios from "axios"
-import { Metadata } from "next"
 import { useEffect } from "react"
 
 const deleteCart = async (cartId:string) => {
     await axios.delete(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts/${cartId}`)
-}
-
-export const metadata:Metadata = {
-    title: 'Payment Complete - TotalWash'
 }
 
 const OrderCompletePage = ({
