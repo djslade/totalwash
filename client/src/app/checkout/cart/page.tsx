@@ -1,5 +1,10 @@
 import { Cart } from "@/components/Cart"
 import { OrderSummary } from "@/components/OrderSummary"
+import { Metadata } from "next"
+
+export const metadata:Metadata = {
+    title: 'My Cart - TotalWash'
+}
 
 const page = () => {
     return (

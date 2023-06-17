@@ -1,5 +1,6 @@
 import { SearchedProducts } from "@/components"
 import { Product } from "@/types"
+import { Metadata } from "next"
 
 const getProducts = async (searchParams:string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?sale=true${searchParams}`, { next: { revalidate: 0 }})
@@ -7,6 +8,10 @@ const getProducts = async (searchParams:string) => {
     const products = data?.products as Product[]
     const total = data?.total as number
     return { products, total }
+}
+
+export const metadata:Metadata = {
+    title: 'Sale - TotalWash'
 }
 
 const page = async ({

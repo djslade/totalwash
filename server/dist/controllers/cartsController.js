@@ -13,6 +13,7 @@ exports.cartsController = void 0;
 const models_1 = require("../models");
 const express_validator_1 = require("express-validator");
 const utilities_1 = require("../utilities");
+const ShippingInfo_1 = require("../models/ShippingInfo");
 const getCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { cartId } = req.params;
@@ -74,6 +75,9 @@ const deleteCart = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     try {
         const { cartId } = req.params;
         const cart = yield models_1.Cart.findByIdAndDelete(cartId).populate('products').populate('shippingInfo').exec();
+        if (cart && cart.shippingInfo) {
+            yield ShippingInfo_1.ShippingInfo.findByIdAndDelete(cart.shippingInfo._id);
+        }
         return res.status(200).send({ cart });
     }
     catch (err) {

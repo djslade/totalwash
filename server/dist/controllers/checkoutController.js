@@ -27,37 +27,58 @@ const createSession = [
                 throw new Error('Validation error');
             }
             const stripe = new stripe_1.default(process.env.STRIPE_API_KEY || '', { apiVersion: '2022-11-15' });
-            const { cart, email, firstName, lastName, company, streetAddressOne, streetAddressTwo, streetAddressThree, country, city, postcode, phoneNumber, } = req.body;
-            const newShippingInfo = new ShippingInfo_1.ShippingInfo({
-                email,
-                firstName,
-                lastName,
-                company,
-                streetAddressOne,
-                streetAddressTwo,
-                streetAddressThree,
-                country,
-                city,
-                postcode,
-                phoneNumber
-            });
-            const savedInfo = yield newShippingInfo.save();
-            const checkoutCart = yield models_1.Cart.findByIdAndUpdate(cart, {
-                shippingInfo: savedInfo._id
-            })
-                .populate('products')
-                .exec();
+            const { cart, email, firstName, lastName, company, streetAddressOne, streetAddressTwo, streetAddressThree, country, city, postcode, phoneNumber, shippingInfoId, } = req.body;
+            let checkoutCart = null;
+            if (shippingInfoId) {
+                ShippingInfo_1.ShippingInfo.findByIdAndUpdate(shippingInfoId, {
+                    email,
+                    firstName,
+                    lastName,
+                    company,
+                    streetAddressOne,
+                    streetAddressTwo,
+                    streetAddressThree,
+                    country,
+                    city,
+                    postcode,
+                    phoneNumber
+                });
+                checkoutCart = yield models_1.Cart.findById(cart)
+                    .populate('products')
+                    .exec();
+            }
+            else {
+                const newShippingInfo = new ShippingInfo_1.ShippingInfo({
+                    email,
+                    firstName,
+                    lastName,
+                    company,
+                    streetAddressOne,
+                    streetAddressTwo,
+                    streetAddressThree,
+                    country,
+                    city,
+                    postcode,
+                    phoneNumber
+                });
+                const savedInfo = yield newShippingInfo.save();
+                checkoutCart = yield models_1.Cart.findByIdAndUpdate(cart, {
+                    shippingInfo: savedInfo._id
+                })
+                    .populate('products')
+                    .exec();
+            }
             if (!checkoutCart)
                 return;
-            const getProcessedCartProducts = () => {
-                const uniqueProducts = checkoutCart.products.reduce((accumulator, product) => {
+            const getProcessedCartProducts = (cartProducts) => {
+                const uniqueProducts = cartProducts.reduce((accumulator, product) => {
                     if (!accumulator.find((item) => item._id === product._id)) {
                         accumulator.push(product);
                     }
                     return accumulator;
                 }, []);
                 const processedCartContents = uniqueProducts.map((product) => {
-                    const quantity = checkoutCart.products.filter((otherProduct) => product._id === otherProduct._id).length;
+                    const quantity = cartProducts.filter((otherProduct) => product._id === otherProduct._id).length;
                     const subtotal = +parseFloat(`${product.currentPrice * quantity}`).toFixed(2);
                     const subtotalFull = +parseFloat(`${product.fullPrice * quantity}`).toFixed(2);
                     return {
@@ -69,9 +90,7 @@ const createSession = [
                 });
                 return processedCartContents.sort((a, b) => a.name - b.name);
             };
-            const lineItems = getProcessedCartProducts().map((cartItem) => {
-                console.log(cartItem);
-                console.log(cartItem.product.currentPrice * 100);
+            const lineItems = getProcessedCartProducts(checkoutCart.products).map((cartItem) => {
                 return {
                     quantity: cartItem.quantity,
                     price_data: {

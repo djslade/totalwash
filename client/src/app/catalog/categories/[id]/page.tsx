@@ -1,10 +1,16 @@
 import { Category, Product, Subcategory } from "@/types"
 import { CategoryPreview, CategoryInfo, SearchedProducts } from "@/components"
+import { Metadata } from "next"
+import { notFound, redirect } from "next/navigation"
 
 const getCategory = async (id:string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges/${id}`)
-  const data = await res.json()
-  return data?.range as Category
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges/${id}`)
+    const data = await res.json()
+    return data?.range as Category
+  } catch (err) {
+    notFound()
+  }
 }
 
 const getSubcategories = async (id:string) => {
@@ -19,6 +25,26 @@ const getProducts = async (id:string, searchParams:string) => {
   const products = data?.products as Product[]
   const total = data?.total as number
   return { products, total }
+}
+
+type Props = {
+  params:{ id: string },
+  searchParams: {page:string, limit:string, sortby: string }
+}
+
+export const generateMetadata = async (
+  { params, searchParams }: Props,
+): Promise<Metadata> => {
+  try {
+    const id = params.id
+    const category = await getCategory(id)
+    return {
+      title: `${category.name} - TotalWash`
+    }
+  } catch (err) {
+    notFound()
+  }
+
 }
 
 const page = async ({

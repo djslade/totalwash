@@ -11,7 +11,6 @@ export const OrderSummary = () => {
     const getTotalCartPrice = () => {
         const priceArray = snap.cartContents.map((product) => product.currentPrice)
         const total = priceArray.reduce((total, price) => total + price, 0)
-        console.log(total)
         return formatPrice(total)
       }
 

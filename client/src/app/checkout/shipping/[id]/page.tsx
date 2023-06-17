@@ -1,12 +1,21 @@
 import { ShippingDetailsForm } from "@/components/ShippingDetailsForm"
 import { CheckoutOrderSummary } from "@/components/CheckoutOrderSummary"
 import { ShowOrderSummaryButton } from "@/components/ShowOrderSummaryButton"
-import { redirect } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
+import { Metadata } from "next"
 
 const getCart = async (id:string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts/${id}`, { next: { revalidate: 0 }})
-    const data = await res.json()
-    return data?.cart
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts/${id}`, { cache: "no-store" })
+        const data = await res.json()
+        return data?.cart
+    } catch (err) {
+        notFound()
+    }
+}
+
+export const metadata:Metadata = {
+    title: 'Shipping Details - TotalWash'
 }
 
 const page = async ({

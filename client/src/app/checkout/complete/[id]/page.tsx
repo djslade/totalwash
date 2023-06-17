@@ -1,10 +1,15 @@
 "use client"
 import { useNavigate } from "@/hooks"
 import axios from "axios"
+import { Metadata } from "next"
 import { useEffect } from "react"
 
 const deleteCart = async (cartId:string) => {
     await axios.delete(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts/${cartId}`)
+}
+
+export const metadata:Metadata = {
+    title: 'Payment Complete - TotalWash'
 }
 
 const OrderCompletePage = ({
@@ -15,12 +20,13 @@ const OrderCompletePage = ({
     const { id } = params
 
     const navigate = useNavigate()
-    
-    deleteCart(id)
 
     useEffect(() => {
-        localStorage.removeItem('cartId')
+        deleteCart(id)
+        .then(() => localStorage.removeItem('cartId'))
+        .catch(() => navigate('/catalog'))
     }, [])
+    
     return (
         <main className="max-w-screen-lg w-screen mx-auto p-3">
             <h1 className="text-2xl font-medium mb-6">Payment Complete</h1>

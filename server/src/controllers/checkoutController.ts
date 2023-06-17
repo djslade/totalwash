@@ -27,36 +27,57 @@ const createSession = [
                 city,
                 postcode,
                 phoneNumber,
+                shippingInfoId,
             } = req.body
-            const newShippingInfo = new ShippingInfo({
-                email,
-                firstName,
-                lastName,
-                company,
-                streetAddressOne,
-                streetAddressTwo,
-                streetAddressThree,
-                country,
-                city,
-                postcode,
-                phoneNumber
-            })
-            const savedInfo = await newShippingInfo.save()
-            const checkoutCart = await Cart.findByIdAndUpdate(cart, {
-                shippingInfo: savedInfo._id
-            })
-            .populate('products')
-            .exec()
+            let checkoutCart:any = null
+            if (shippingInfoId) {
+                ShippingInfo.findByIdAndUpdate(shippingInfoId, {
+                    email,
+                    firstName,
+                    lastName,
+                    company,
+                    streetAddressOne,
+                    streetAddressTwo,
+                    streetAddressThree,
+                    country,
+                    city,
+                    postcode,
+                    phoneNumber
+                })
+                checkoutCart = await Cart.findById(cart)
+                .populate('products')
+                .exec()
+            } else {
+                const newShippingInfo = new ShippingInfo({
+                    email,
+                    firstName,
+                    lastName,
+                    company,
+                    streetAddressOne,
+                    streetAddressTwo,
+                    streetAddressThree,
+                    country,
+                    city,
+                    postcode,
+                    phoneNumber
+                })
+                const savedInfo = await newShippingInfo.save()
+                checkoutCart = await Cart.findByIdAndUpdate(cart, {
+                    shippingInfo: savedInfo._id
+                })
+                .populate('products')
+                .exec()
+            }
             if (!checkoutCart) return
-            const getProcessedCartProducts = () => {
-                const uniqueProducts = checkoutCart.products.reduce((accumulator, product) => {
-                    if (!accumulator.find((item) => item._id === product._id)) {
+            const getProcessedCartProducts = (cartProducts: any[]) => {
+                const uniqueProducts = cartProducts.reduce((accumulator, product) => {
+                    if (!accumulator.find((item: { _id: any }) => item._id === product._id)) {
                       accumulator.push(product)
                     }
                     return accumulator
                   }, [] as any[])
-                const processedCartContents:any[] = uniqueProducts.map((product) => {
-                    const quantity = checkoutCart.products.filter((otherProduct) => product._id === otherProduct._id).length
+                const processedCartContents:any[] = uniqueProducts.map((product: { _id: any; currentPrice: number; fullPrice: number }) => {
+                    const quantity = cartProducts.filter((otherProduct) => product._id === otherProduct._id).length
                     const subtotal = +parseFloat(`${product.currentPrice * quantity}`).toFixed(2)
                     const subtotalFull = +parseFloat(`${product.fullPrice * quantity}`).toFixed(2)
                     return {
@@ -69,9 +90,7 @@ const createSession = [
                 return processedCartContents.sort((a, b) => a.name - b.name)
             }
 
-            const lineItems = getProcessedCartProducts().map((cartItem) => {
-                console.log(cartItem)
-                console.log(cartItem.product.currentPrice * 100)
+            const lineItems = getProcessedCartProducts(checkoutCart.products).map((cartItem) => {
                 return {
                     quantity: cartItem.quantity,
                     price_data: {

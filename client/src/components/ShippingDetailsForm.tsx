@@ -330,7 +330,6 @@ export const ShippingDetailsForm = ({
 
     const handleContinue = async () => {
         if (validateAll() === false) return
-        console.log(process.env.NEXT_PUBLIC_STRIPE_API_KEY)
         const res = await axios.post(
             `${process.env.NEXT_PUBLIC_API_ENDPOINT}/checkout/session`,
             {

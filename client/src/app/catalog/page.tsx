@@ -14,9 +14,11 @@ const getFeaturedProducts = async () => {
 }
 
 const Catalog = async () => {
-  const categories = await getCategories()
+  const categoriesData = getCategories()
 
-  const featuredProducts = await getFeaturedProducts()
+  const featuredProductsData = getFeaturedProducts()
+
+  const [categories, featuredProducts] = await Promise.all([categoriesData, featuredProductsData])
 
   return (
     <main className="pt-3">

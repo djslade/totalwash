@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { Cart } from "../models"
 import { body, validationResult } from "express-validator"
 import { validateArrayOfObjectIds } from "../utilities"
+import { ShippingInfo } from "../models/ShippingInfo"
 
 const getCart = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -69,6 +70,9 @@ const deleteCart = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { cartId } =  req.params
         const cart = await Cart.findByIdAndDelete(cartId).populate('products').populate('shippingInfo').exec()
+        if (cart && cart.shippingInfo) {
+            await ShippingInfo.findByIdAndDelete(cart.shippingInfo._id)
+        }
         return res.status(200).send({ cart })
     } catch (err) {
         return next(err)

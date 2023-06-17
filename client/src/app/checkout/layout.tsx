@@ -9,10 +9,8 @@ const getCategories = async () => {
 }
 
 const getCart = async (cartId:string) => {
-    console.log(cartId)
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts/${cartId}`)
     const data = await res.json()
-    console.log(data?.cart)
     return data?.cart
 }
 

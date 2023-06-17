@@ -2,12 +2,19 @@ import { ProductPageInfo, RelatedProducts } from "@/components"
 import { ProductImageGallery } from "@/components/ProductImageGallery"
 import { ProductInfoName } from "@/components/ProductInfoName"
 import { Product } from "@/types"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 const getProduct = async (id:string) => {
+  try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_ENDPOINT}/products/${id}`)
     const data = await res.json()
     return data?.product as Product
+  } catch (err) {
+    notFound()
+  }
+
 }
 
 const getRelatedProducts = async (productName:string) => {
@@ -18,6 +25,25 @@ const getRelatedProducts = async (productName:string) => {
     const filteredProducts = products.filter((product) => product.name !== productName)
     return filteredProducts.slice(0, 6)
 }
+
+type Props = {
+    params: { id: string }
+}
+
+export const generateMetadata = async (
+    { params, }: Props,
+  ): Promise<Metadata> => {
+    try {
+      const id = params.id
+      const product = await getProduct(id)
+      return {
+        title: `${product.name} - TotalWash`
+      }
+    } catch (err) {
+      notFound()
+    }
+
+  }
 
 const page = async ({
     params,
