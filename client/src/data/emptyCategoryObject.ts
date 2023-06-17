@@ -5,4 +5,6 @@ export const emptyCategoryObject:Category = {
     name: '',
     description: '',
     slug: '',
+    photo: '',
+    parents: [],
 }

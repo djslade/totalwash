@@ -7,7 +7,7 @@ const deleteCart = async (cartId:string) => {
     await axios.delete(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts/${cartId}`)
 }
 
-const page = ({
+const OrderCompletePage = ({
     params,
 }: {
     params: { id: string }
@@ -32,4 +32,4 @@ const page = ({
     )
 }
 
-export default page
+export default OrderCompletePage

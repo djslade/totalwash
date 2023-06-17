@@ -109,7 +109,9 @@ export const CartSidebar = ({
                         {showCart &&
                             <div className="w-full max-h-96 overflow-y-auto">
                                 {getProcessedCartContents().map((cartItem) =>
-                                <div className="flex w-full gap-3 border-t p-5">
+                                <div
+                                key={cartItem.product._id}
+                                className="flex w-full gap-3 border-t p-5">
                                     <div className="flex-1">
                                         <img src={cartItem.product.photos[0]} alt={cartItem.product.name} />
                                     </div>

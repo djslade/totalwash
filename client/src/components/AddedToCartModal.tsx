@@ -49,7 +49,7 @@ export const AddToCartModal = ({
                 </div>
                 <div className="w-full flex gap-3">
                   <div className="flex-1">
-                    <img className="w-full aspect-square object-cover"src={product.photos[0]}/>
+                    <img className="w-full aspect-square object-cover"src={product.photos[0]} alt={product.name}/>
                   </div>
                   <div className="flex-[3] flex flex-col justify-between">
                       <div className="w-full text-ellipsis line-clamp-3">
