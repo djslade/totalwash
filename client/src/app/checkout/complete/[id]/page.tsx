@@ -2,6 +2,7 @@
 import { useNavigate } from "@/hooks"
 import axios from "axios"
 import { useEffect } from "react"
+import { state } from "@/store"
 
 const deleteCart = async (cartId:string) => {
     await axios.delete(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/carts/${cartId}`)
@@ -18,7 +19,10 @@ const OrderCompletePage = ({
 
     useEffect(() => {
         deleteCart(id)
-        .then(() => localStorage.removeItem('cartId'))
+        .then(() => {
+            state.cartId = ""
+            localStorage.removeItem('cartId')
+        })
         .catch(() => navigate('/catalog'))
     }, [])
     

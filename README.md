@@ -16,6 +16,7 @@
     3. List a few specific technical things that you learned or improved on.
     4. Share any other tips or guidance for others attempting this or something similar.
  -->
+![Totalwash catalog screenshot](./screenshots/totalwash-catalog.png?raw=true)
 [Live demo.](https://totalwash.vercel.app/)
 
 Totalwash is a full stack ecommerce app that utilises Nextjs 13's new app router. I set out to build a full stack website for a reasonable but uninteresting business venture, and after some research settled on bathroom furnishings. This app is a showcase of my ever-growing abilities as a full stack developer, and demonstrates server-side pagination, REST API structuring, third-party API integration, text index creation in MongoDB, and many other skills. 
@@ -31,7 +32,7 @@ For any new developer looking to create an app like this, keep in mind that an e
 - [Tailwind](https://tailwindcss.com/)
 - [Express](https://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/) via [Mongoose](https://mongoosejs.com/)
-- [Stripe]
+- [Stripe](https://stripe.com)
 
 ## Features
 
