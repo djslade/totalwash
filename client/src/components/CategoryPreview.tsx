@@ -24,10 +24,10 @@ export const CategoryPreview = ({
             <div className="grid grid-cols-1 xxs:grid-cols-2 md:grid-cols-3 gap-y-9 w-full gap-6">
                 {categories.map((category) =>
                 <div key={category._id} className="relative flex flex-col items-center rounded border aspect-square">
-                <img src={category.photo} alt={category.name} className="h-full w-full object-cover"/>
-                <button
-                onClick={() => navigate(`${getNavigateUrl()}${category.slug}`)}
-                className="text-sm xs:absolute bottom-10 left-3 right-3 uppercase bg-gray-100 text-gray-700 py-2 rounded-md border-gray-700 font-sans font-bold hover:bg-gray-200 focus:bg-gray-200 transition-all">{`Browse ${category.name}`}</button>
+                    <img src={category.photo} alt={category.name} className={"h-full w-full object-cover"} />
+                    <button
+                    onClick={() => navigate(`${getNavigateUrl()}${category.slug}`)}
+                    className="text-sm xs:absolute bottom-10 left-3 right-3 uppercase bg-gray-100 text-gray-700 py-2 rounded-md border-gray-700 font-sans font-bold hover:bg-gray-200 focus:bg-gray-200 transition-all">{`Browse ${category.name}`}</button>
                 </div>)}
             </div>
         </section>

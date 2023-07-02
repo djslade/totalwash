@@ -23,7 +23,7 @@ const NotFound = async () => {
         <Navbar categories={categories} subcategories={subcategories}/>
         <main className="h-full max-w-screen-lg flex justify-center items-center mx-auto gap-6 my-6">
             <section className="max-w-sm flex flex-col items-center gap-3 p-3">
-                <img src="/notfound.png" alt="Not Found" className="max-w-sm w-full mb-5" />
+                <img src="/notfound.png" alt="Not Found" className='max-w-sm w-full mb-5'/>
                 <h1 className="text-3xl font-medium">Page Not Found</h1>
                 <h2 className="text-lg text-center">The page that you&apos;re looking for may have been moved, or it may have never existed to begin with.</h2>
                 <Link

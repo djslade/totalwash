@@ -23,6 +23,7 @@ import { CatalogHeroSkeleton } from "./skeletons/CatalogHeroSkeleton"
 import { PreviewSkeleton } from "./skeletons/PreviewSkeleton"
 import { CategoryInfoSkeleton } from "./skeletons/CategoryInfoSkeleton"
 import { ProductViewSkeleton } from "./skeletons/ProductViewSkeleton"
+import { LazyImage } from "./LazyImage"
 
 export {
     NavSidebar,
@@ -50,4 +51,5 @@ export {
     PreviewSkeleton,
     CategoryInfoSkeleton,
     ProductViewSkeleton,
+    LazyImage
 }

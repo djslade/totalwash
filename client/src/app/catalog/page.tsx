@@ -1,5 +1,5 @@
 import { Category, Product } from "@/types"
-import { CatalogHero, FeaturedProducts, CategoryPreview } from "@/components"
+import { CatalogHero, FeaturedProducts, CategoryPreview, LazyImage } from "@/components"
 
 const getCategories = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/categories`)
@@ -29,7 +29,7 @@ const Catalog = async () => {
         <div className="p-3 rounded-lg max-w-screen-lg md:flex-1 bg-white md:h-2/3 md:shadow-md flex flex-col md:flex-row">
           <div className="flex flex-col md:flex-1 items-center gap-2">
             <div className="w-full h-28 flex justify-center">
-              <img src="/delivery.png" alt="" className="w-1/2" />
+              <LazyImage source={"/delivery.png"} classNames={"w-1/2"} />
             </div>
             <div className="flex flex-col items-center gap-2">
               <span className="text-xl font-semibold">Quick Delivery</span>
@@ -38,7 +38,7 @@ const Catalog = async () => {
           </div>
           <div className="flex flex-col md:flex-1 items-center gap-2">
             <div className="w-full h-28 flex justify-center">
-                <img src="/securedark.jpg" alt="" className="w-1/2" />
+              <LazyImage source={"/securedark.jpg"} classNames={"w-1/2"} />
             </div>
             <div className="flex flex-col items-center gap-2">
               <span className="text-xl font-semibold">Secure Payments</span>
@@ -47,7 +47,7 @@ const Catalog = async () => {
           </div>
           <div className="flex flex-col md:flex-1 items-center gap-2">
             <div className="w-full h-28 flex justify-center">
-                <img src="/installation.jpg" alt="" className="w-1/2" />
+              <LazyImage source={"/installation.jpg"} classNames={"w-1/2"} />
             </div>
             <div className="flex flex-col items-center gap-2">
               <span className="text-xl font-semibold">Free Installation</span>
