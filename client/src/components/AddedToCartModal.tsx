@@ -9,6 +9,7 @@ import { useEscapeModal, useNavigate } from "@/hooks"
 import { ModalBackdrop } from "./ModalBackdrop"
 import { formatCartCount, formatPrice, getNumberWithCommas } from "@/utilities"
 import { motion } from "framer-motion"
+import FocusLock from "react-focus-lock"
 
 export const AddToCartModal = ({
   product,
@@ -31,6 +32,7 @@ export const AddToCartModal = ({
 
   return (
     <ModalPortal>
+      <FocusLock>
         <ModalBackdrop onClick={closeModal} />
         <div onClick={closeModal} className="inset-0 fixed z-[100] bg-transparent flex justify-center items-center">
           <motion.div
@@ -87,6 +89,7 @@ export const AddToCartModal = ({
             </div>
           </motion.div>
         </div>
+      </FocusLock>
     </ModalPortal>
   )
 }

@@ -60,7 +60,7 @@ export const CheckoutOrderSummary = ({
             <div className="w-full pb-3 border-b p-5">
                 <h1>Summary</h1>
             </div>
-            <div className="p-5 pb-3 flex flex-col gap-3">
+            <div className="p-5 pb-3 flex flex-col gap-3 w-full">
                 <div className="flex w-full justify-between">
                     <h2>Subtotal</h2>
                     <h2 className="font-medium">{getTotalCartPrice()}</h2>
