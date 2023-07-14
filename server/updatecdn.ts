@@ -63,5 +63,3 @@ const updateRangeCollection = async () => {
   }
 
   logAllPhotos()
-
-  //dd

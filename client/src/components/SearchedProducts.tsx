@@ -22,14 +22,6 @@ export const SearchedProducts = ({
 
     const sectionRef = useRef<HTMLElement>(null)
 
-    const handleProductsScroll = () => {
-        if (!sectionRef.current) return
-        const headeroffset = 140
-        const elementPosition = sectionRef.current.getBoundingClientRect().top
-        const offsetPosition = elementPosition + window.scrollY - headeroffset
-        return offsetPosition
-    }
-
     const { setSearchParams, searchParams } = useUpdateParams()
 
     const [page, setPage] = useState<number>(Number(searchParams.get('page')) || 1)
@@ -61,13 +53,6 @@ export const SearchedProducts = ({
         }
     }
 
-    const getProductsSlice = () => {
-        const endingSlice = limit * page
-        const startingSlice = endingSlice - limit
-        const sortedProducts = sortProducts()
-        return sortedProducts.slice(startingSlice, endingSlice)
-    }
-
     const getPageButtonsArray = () => {
         const pageCount = Math.ceil((total || products.length) / limit)
         const array:number[] = []
@@ -90,6 +75,15 @@ export const SearchedProducts = ({
     const handlePageChange = (newPage:number) => {
         setPage(newPage)
         setSearchParams('page', `${newPage}`)
+    }
+
+    const goToPreviousPage = () => {
+        if (page > 0) handlePageChange(page - 1)
+    }
+
+    const goToNextPage = () => {
+        const pageCount = Math.ceil((total || products.length) / limit)
+        if (page < pageCount) handlePageChange(page + 1)
     }
 
     if (products.length === 0) {
@@ -124,12 +118,16 @@ export const SearchedProducts = ({
                     </select>
                 </div>
                 <div className="flex gap-3 font-semibold">
-                    <button className="p-3">{"<"}</button>
+                    <button
+                    onClick={goToPreviousPage}
+                    className="p-3">{"<"}</button>
                     {getPageButtonsArray().map((pageNumber) =>
                     <button className={`p-3 ${pageNumber === page ? "bg-gray-200 border-gray-200 rounded-md" : ""}`} key={pageNumber} onClick={() => handlePageChange(pageNumber)}>
                         {pageNumber}
                     </button>)}
-                    <button className="p-3">{">"}</button>
+                    <button
+                    onClick={goToNextPage}
+                    className="p-3">{">"}</button>
                 </div>
             </div>
         </section>
