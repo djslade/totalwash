@@ -2,13 +2,15 @@ import { Category, Product } from "@/types"
 import { CatalogHero, FeaturedProducts, CategoryPreview, LazyImage } from "@/components"
 
 const getCategories = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/categories`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges`, { cache: 'no-store' })
   const data = await res.json()
-  return data?.categories as Category[]
+  const categories = data?.ranges as Category[]
+  const mainCategories = categories.filter((range) => range.parents.length === 0)
+  return mainCategories
 }
 
 const getFeaturedProducts = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?featured=true`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/products?featured=true`, { cache: 'no-store' })
   const data = await res.json()
   return data?.products as Product[]
 }

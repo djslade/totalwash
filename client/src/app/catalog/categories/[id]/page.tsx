@@ -1,11 +1,11 @@
 import { Category, Product, Subcategory } from "@/types"
 import { CategoryPreview, CategoryInfo, SearchedProducts } from "@/components"
 import { Metadata } from "next"
-import { notFound, redirect } from "next/navigation"
+import { notFound } from "next/navigation"
 
 const getCategory = async (id:string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges/${id}`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges/${id}`, { cache: 'no-store' })
     const data = await res.json()
     return data?.range as Category
   } catch (err) {
@@ -14,7 +14,7 @@ const getCategory = async (id:string) => {
 }
 
 const getSubcategories = async (id:string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges?parent=${id}`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ranges?parent=${id}`, { cache: 'no-store' })
   const data = await res.json()
   return data?.ranges as Subcategory[]
 }
