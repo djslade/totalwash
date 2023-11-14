@@ -31,7 +31,7 @@ const Catalog = async () => {
         <div className="p-3 rounded-lg max-w-screen-lg md:flex-1 bg-white md:h-2/3 md:shadow-md flex flex-col md:flex-row">
           <div className="flex flex-col md:flex-1 items-center gap-2">
             <div className="w-full h-28 flex justify-center">
-              <LazyImage source={"/delivery.png"} classNames={"w-1/2"} />
+              <LazyImage source={"/delivery.webp"} classNames={"w-1/2"} />
             </div>
             <div className="flex flex-col items-center gap-2">
               <span className="text-xl font-semibold">Quick Delivery</span>
@@ -40,7 +40,7 @@ const Catalog = async () => {
           </div>
           <div className="flex flex-col md:flex-1 items-center gap-2">
             <div className="w-full h-28 flex justify-center">
-              <LazyImage source={"/securedark.jpg"} classNames={"w-1/2"} />
+              <LazyImage source={"/securedark.webp"} classNames={"w-1/2"} />
             </div>
             <div className="flex flex-col items-center gap-2">
               <span className="text-xl font-semibold">Secure Payments</span>
@@ -49,7 +49,7 @@ const Catalog = async () => {
           </div>
           <div className="flex flex-col md:flex-1 items-center gap-2">
             <div className="w-full h-28 flex justify-center">
-              <LazyImage source={"/installation.jpg"} classNames={"w-1/2"} />
+              <LazyImage source={"/installation.webp"} classNames={"w-1/2"} />
             </div>
             <div className="flex flex-col items-center gap-2">
               <span className="text-xl font-semibold">Free Installation</span>
