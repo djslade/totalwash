@@ -1,14 +1,14 @@
-import { CategoryInfoSkeleton } from '@/components'
-import { ProductViewSkeleton } from '@/components/skeletons/ProductViewSkeleton'
-import React from 'react'
+import { CategoryInfoSkeleton } from "@/components";
+import { ProductViewSkeleton } from "@/components/skeletons/ProductViewSkeleton";
+import React from "react";
 
 const SaleLoading = () => {
-    return (
-        <main className="max-w-screen-lg mx-auto p-3 w-screen">
-            <CategoryInfoSkeleton />
-            <ProductViewSkeleton />
-        </main>
-    )
-}
+  return (
+    <main className="max-w-screen-lg mx-auto p-3 w-screen">
+      <CategoryInfoSkeleton />
+      <ProductViewSkeleton />
+    </main>
+  );
+};
 
-export default SaleLoading
+export default SaleLoading;

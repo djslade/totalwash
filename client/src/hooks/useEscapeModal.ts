@@ -1,15 +1,15 @@
-import { useEffect } from "react"
+import { useEffect } from "react";
 
-export const useEscapeModal = (callback:() => void) => {
-    useEffect(() => {
-        const handleEscape = (evt:any) => {
-            if (evt.key === "Escape") {
-                callback()
-            }
-        }
+export const useEscapeModal = (callback: () => void) => {
+  useEffect(() => {
+    const handleEscape = (evt: any) => {
+      if (evt.key === "Escape") {
+        callback();
+      }
+    };
 
-        document.addEventListener('keydown', handleEscape)
+    document.addEventListener("keydown", handleEscape);
 
-        return () => document.removeEventListener('keydown', handleEscape)
-    }, [])
-}
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+};

@@ -1,10 +1,10 @@
-import { Category } from "@/types"
+import { Category } from "@/types";
 
-export const emptyCategoryObject:Category = {
-    _id: '',
-    name: '',
-    description: '',
-    slug: '',
-    photo: '',
-    parents: [],
-}
+export const emptyCategoryObject: Category = {
+  _id: "",
+  name: "",
+  description: "",
+  slug: "",
+  photo: "",
+  parents: [],
+};

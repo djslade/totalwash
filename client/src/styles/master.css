@@ -3,81 +3,80 @@
 @tailwind utilities;
 
 @layer utilities {
-    .bg-landing {
-        background-image: url('/bathroom.webp');
-        background-color: #474141;
-        background-blend-mode: multiply;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
+  .bg-landing {
+    background-image: url("/bathroom.webp");
+    background-color: #474141;
+    background-blend-mode: multiply;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 
-    .catalog-hero {
-        background-image: url('/catalog-bathroom.webp');
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
+  .catalog-hero {
+    background-image: url("/catalog-bathroom.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 
+  .full-width-cta {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
 
-    .full-width-cta {
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-    }
+  .form-input {
+    box-shadow: 0 0 1.5pt 1.5pt #93c5fd;
+    outline-width: 0px;
+  }
 
-    .form-input {
-        box-shadow: 0 0 1.5pt 1.5pt #93c5fd;
-        outline-width: 0px;
-    }
+  .sidebar {
+    width: clamp(250px, 100vw, 400px);
+  }
 
-    .sidebar {
-        width: clamp(250px, 100vw, 400px);
-    }
+  .modal {
+    width: clamp(50%, 700px, 90%);
+  }
 
-    .modal {
-        width: clamp(50%, 700px, 90%);
-    }
+  .header-dark {
+    background-color: #333333;
+    color: #f5f5f5;
+  }
 
-    .header-dark {
-        background-color: #333333;
-        color: #F5F5F5;
-    }
+  .header-light {
+    background-color: #f5f5f5;
+    color: #333333;
+  }
 
-    .header-light {
-        background-color: #F5F5F5;
-        color: #333333;
-    }
+  .bg-input-light {
+    background-color: #ffffff;
+  }
 
-    .bg-input-light {
-        background-color: #FFFFFF;
-    }
+  .bg-input-dark {
+    background-color: #666666;
+  }
 
-    .bg-input-dark {
-        background-color: #666666;
-    }
-
-    .noscroll {
-        overflow: hidden;
-        height: 100vh;
-    }
+  .noscroll {
+    overflow: hidden;
+    height: 100vh;
+  }
 }
 
 @layer components {
-    .header-search-input {
-        @apply py-3 pl-5 w-full outline-none bg-input-light text-base bg-gray-50
-    }
+  .header-search-input {
+    @apply py-3 pl-5 w-full outline-none bg-input-light text-base bg-gray-50;
+  }
 
-    .header-search-input-dark {
-        @apply py-3 pl-5 w-full outline-none bg-input-dark text-[#F5F5F5] text-base
-    }
+  .header-search-input-dark {
+    @apply py-3 pl-5 w-full outline-none bg-input-dark text-[#F5F5F5] text-base;
+  }
 
-    .header-search-btn {
-        @apply w-12 aspect-square bg-[#FFFFFF] flex justify-center items-center hover:bg-[#F5F5F5]
-    }
+  .header-search-btn {
+    @apply w-12 aspect-square bg-[#FFFFFF] flex justify-center items-center hover:bg-[#F5F5F5];
+  }
 
-    .header-search-btn-dark {
-        @apply w-12 aspect-square bg-[#666666] flex justify-center items-center hover:bg-[#333333]
-    }
+  .header-search-btn-dark {
+    @apply w-12 aspect-square bg-[#666666] flex justify-center items-center hover:bg-[#333333];
+  }
 }

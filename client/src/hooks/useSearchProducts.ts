@@ -1,11 +1,11 @@
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 
 export const useSearchProducts = () => {
-     const router = useRouter()
+  const router = useRouter();
 
-     const search = (text:string) => {
-        router.push(encodeURI(`/catalog/search?text=${text}`))
-     }
+  const search = (text: string) => {
+    router.push(encodeURI(`/catalog/search?text=${text}`));
+  };
 
-     return search
-}
+  return search;
+};

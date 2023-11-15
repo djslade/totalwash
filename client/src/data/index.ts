@@ -1,5 +1,4 @@
-import { emptyCategoryObject } from "./emptyCategoryObject"
+import { emptyCategoryObject } from "./emptyCategoryObject";
+import { shippingFormValidationSchema } from "./shippingFormValidationSchema";
 
-export {
-    emptyCategoryObject,
-}
+export { emptyCategoryObject, shippingFormValidationSchema };

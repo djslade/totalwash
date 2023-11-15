@@ -1,13 +1,13 @@
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 
 export const useNavigate = () => {
-    const router = useRouter()
+  const router = useRouter();
 
-    const navigate = (path:string) => {
-        if (router) {
-            router.push(path)
-        }
+  const navigate = (path: string) => {
+    if (router) {
+      router.push(path);
     }
+  };
 
-    return navigate
-}
+  return navigate;
+};
