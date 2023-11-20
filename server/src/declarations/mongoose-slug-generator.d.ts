@@ -1,1 +1,1 @@
-declare module 'mongoose-slug-generator'
+declare module "mongoose-slug-generator";

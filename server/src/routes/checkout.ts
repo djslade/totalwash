@@ -1,10 +1,8 @@
-import PromiseRouter from "express-promise-router"
-import { checkoutController } from "../controllers"
+import PromiseRouter from "express-promise-router";
+import { checkoutController } from "../controllers";
 
-const checkoutRouter = PromiseRouter()
+const checkoutRouter = PromiseRouter();
 
-checkoutRouter.post('/session', checkoutController.createSession)
+checkoutRouter.post("/session", checkoutController.createSession);
 
-export {
-    checkoutRouter,
-}
+export { checkoutRouter };

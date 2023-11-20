@@ -8,8 +8,8 @@ const express_promise_router_1 = __importDefault(require("express-promise-router
 const controllers_1 = require("../controllers");
 const subCategoriesRouter = (0, express_promise_router_1.default)();
 exports.subCategoriesRouter = subCategoriesRouter;
-subCategoriesRouter.get('/:subcategoryId', controllers_1.subcategoriesController.getSubcategory);
-subCategoriesRouter.get('/', controllers_1.subcategoriesController.getAllSubcategories);
-subCategoriesRouter.post('/', controllers_1.subcategoriesController.postSubcategory);
-subCategoriesRouter.put('/:subcategoryId', controllers_1.subcategoriesController.updateSubcategory);
-subCategoriesRouter.delete('/:subcategoryId', controllers_1.subcategoriesController.deleteSubcategory);
+subCategoriesRouter.get("/:subcategoryId", controllers_1.subcategoriesController.getSubcategory);
+subCategoriesRouter.get("/", controllers_1.subcategoriesController.getAllSubcategories);
+subCategoriesRouter.post("/", controllers_1.subcategoriesController.postSubcategory);
+subCategoriesRouter.put("/:subcategoryId", controllers_1.subcategoriesController.updateSubcategory);
+subCategoriesRouter.delete("/:subcategoryId", controllers_1.subcategoriesController.deleteSubcategory);

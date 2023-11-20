@@ -2,7 +2,6 @@
 import { Product } from "@/types";
 import { ProductsView } from "./ProductsView";
 import { useState, useRef } from "react";
-import { sortProductsArrayAlphabetically } from "@/utilities";
 import { useUpdateParams } from "@/hooks";
 
 export const SearchedProducts = ({
@@ -36,22 +35,6 @@ export const SearchedProducts = ({
   const handlePageLimitChange = (evt: any) => {
     setLimit(parseInt(evt.target.value));
     setSearchParams("limit", evt.target.value);
-  };
-
-  const sortProducts = () => {
-    const productsCopy = [...products];
-    switch (sortingMethod) {
-      case "name":
-        return productsCopy.sort(sortProductsArrayAlphabetically);
-      case "low-high":
-        return productsCopy.sort((a, b) => a.currentPrice - b.currentPrice);
-      case "high-low":
-        return productsCopy.sort((a, b) => b.currentPrice - a.currentPrice);
-      case "relevance":
-        return products;
-      default:
-        return products;
-    }
   };
 
   const getPageButtonsArray = () => {

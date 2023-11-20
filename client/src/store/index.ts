@@ -2,21 +2,14 @@ import { Product } from "@/types";
 import { proxy } from "valtio";
 
 interface StateObject {
-  darkTheme: boolean;
-  showNavSidebar: boolean;
-  showCartSidebar: boolean;
   showImageGallery: boolean;
   currentGalleryPhoto: string;
   currentProduct: Product;
-  showAddedToCartModel: boolean;
   cartContents: Product[];
   cartId: string;
 }
 
 export const state: StateObject = proxy({
-  darkTheme: false,
-  showNavSidebar: false,
-  showCartSidebar: false,
   showImageGallery: false,
   currentGalleryPhoto: "",
   currentProduct: {
@@ -34,7 +27,6 @@ export const state: StateObject = proxy({
     slug: "",
     photos: [],
   },
-  showAddedToCartModel: false,
   cartContents: [],
   cartId: "",
 });

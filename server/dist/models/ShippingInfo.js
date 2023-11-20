@@ -15,6 +15,6 @@ const ShippingInfoSchema = new mongoose_1.Schema({
     postcode: { type: String },
     phoneNumber: { type: String },
 }, {
-    timestamps: { createdAt: 'dateCreated', updatedAt: 'dateUpdated' }
+    timestamps: { createdAt: "dateCreated", updatedAt: "dateUpdated" },
 });
-exports.ShippingInfo = (0, mongoose_1.model)('ShippingInfo', ShippingInfoSchema);
+exports.ShippingInfo = (0, mongoose_1.model)("ShippingInfo", ShippingInfoSchema);

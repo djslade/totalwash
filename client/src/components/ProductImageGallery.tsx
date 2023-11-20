@@ -3,31 +3,32 @@ import { Product } from "@/types";
 import { useState } from "react";
 import { BiCircle } from "react-icons/bi";
 import { AiTwotoneCheckCircle } from "react-icons/ai";
-import { useSnapshot } from "valtio";
-import { state } from "@/store";
 import { ImageGalleryModal } from "./ImageGalleryModal";
 import { AnimatePresence } from "framer-motion";
+import { LazyImage } from "./LazyImage";
 
 export const ProductImageGallery = ({ product }: { product: Product }) => {
-  const snap = useSnapshot(state);
-
   const [currentPhoto, setCurrentPhoto] = useState<string>(product.photos[0]);
 
   const handleImageChange = (photoSrc: string) => {
     setCurrentPhoto(photoSrc);
   };
 
+  const [showGallery, setShowGallery] = useState<boolean>(false);
+
   const handleOpenModal = () => {
-    state.showImageGallery = true;
-    state.currentGalleryPhoto = currentPhoto;
-    state.currentProduct = product;
+    setShowGallery(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowGallery(false);
   };
 
   return (
     <>
       <div className="flex-1 p-3">
         <button className="w-full" onClick={handleOpenModal}>
-          <img className="w-full" src={currentPhoto} />
+          <LazyImage classNames="w-full" source={currentPhoto} />
         </button>
         <div className="flex w-full gap-3 text-2xl py-3">
           <div className="hidden grid-cols-6 gap-3 sm:grid">
@@ -39,9 +40,9 @@ export const ProductImageGallery = ({ product }: { product: Product }) => {
                   photo === currentPhoto ? "border-b !border-gray-900" : ""
                 }`}
               >
-                <img
-                  className="w-full aspect-square object-cover"
-                  src={photo}
+                <LazyImage
+                  classNames="w-full aspect-square object-cover"
+                  source={photo}
                   alt={product.name}
                 />
               </button>
@@ -61,7 +62,13 @@ export const ProductImageGallery = ({ product }: { product: Product }) => {
         </div>
       </div>
       <AnimatePresence>
-        {snap.showImageGallery && <ImageGalleryModal />}
+        {showGallery && (
+          <ImageGalleryModal
+            onClose={handleCloseModal}
+            currentProduct={product}
+            startingPhoto={currentPhoto}
+          />
+        )}
       </AnimatePresence>
     </>
   );

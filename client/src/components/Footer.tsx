@@ -1,5 +1,6 @@
 import React from "react";
 import { RxGithubLogo, RxLinkedinLogo } from "react-icons/rx";
+import { LazyImage } from "./LazyImage";
 
 export const Footer = () => {
   return (
@@ -9,7 +10,11 @@ export const Footer = () => {
           <RxGithubLogo />
         </a>
         <a href="https://davidslade.dev/">
-          <img src="/portfolio-logo-dark.svg" className="h-8 aspect-square" />
+          <LazyImage
+            source="/portfolio-logo-dark.svg"
+            classNames="h-8 aspect-square"
+            alt="Portfolio"
+          />
         </a>
         <a href="https://www.linkedin.com/in/david-slade-b0a90618a/">
           <RxLinkedinLogo />

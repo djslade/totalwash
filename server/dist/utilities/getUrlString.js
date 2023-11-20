@@ -8,7 +8,7 @@ const slugify_1 = __importDefault(require("slugify"));
 const getUrlString = (string) => {
     const options = {
         lower: true,
-        strict: true
+        strict: true,
     };
     return (0, slugify_1.default)(string, options);
 };

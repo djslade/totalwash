@@ -29,34 +29,11 @@ export const ShippingDetailsForm = ({
     },
     onSubmit: async (values) => {
       try {
-        const {
-          email,
-          firstName,
-          lastName,
-          company,
-          streetAddressOne,
-          streetAddressTwo,
-          streetAddressThree,
-          country,
-          city,
-          postcode,
-          phoneNumber,
-        } = values;
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_API_ENDPOINT}/checkout/session`,
           {
             cart: cartId,
-            email,
-            firstName,
-            lastName,
-            company,
-            streetAddressOne,
-            streetAddressTwo,
-            streetAddressThree,
-            country,
-            city,
-            postcode,
-            phoneNumber,
+            ...values
           },
           {
             headers: {
@@ -68,7 +45,7 @@ export const ShippingDetailsForm = ({
         if (!url) return;
         window.location = url;
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     },
   });

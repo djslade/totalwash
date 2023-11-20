@@ -7,9 +7,10 @@ import { AiFillCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { useEscapeModal, useNavigate } from "@/hooks";
 import { ModalBackdrop } from "./ModalBackdrop";
-import { formatCartCount, formatPrice, getNumberWithCommas } from "@/utilities";
+import { formatCartCount, formatPrice } from "@/utilities";
 import { motion } from "framer-motion";
 import FocusLock from "react-focus-lock";
+import { LazyImage } from "./LazyImage";
 
 export const AddToCartModal = ({
   product,
@@ -60,9 +61,9 @@ export const AddToCartModal = ({
                 </div>
                 <div className="w-full flex gap-3">
                   <div className="flex-1">
-                    <img
-                      className="w-full aspect-square object-cover"
-                      src={product.photos[0]}
+                    <LazyImage
+                      classNames="w-full aspect-square object-cover"
+                      source={product.photos[0]}
                       alt={product.name}
                     />
                   </div>

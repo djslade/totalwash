@@ -1,12 +1,9 @@
-import { state } from "@/store";
 import { Product } from "@/types";
 import { useState } from "react";
 import { BiMinus, BiPlus } from "react-icons/bi";
-import { useSnapshot } from "valtio";
 import { AddToCartButton } from "./AddToCartButton";
 
 export const ProductAddToCart = ({ product }: { product: Product }) => {
-  const snap = useSnapshot(state);
 
   const [quantity, setQuantity] = useState(1);
 

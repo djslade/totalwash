@@ -53,7 +53,7 @@ export const RenderedCartItem = ({ cartItem }: { cartItem: any }) => {
       );
       state.cartContents = cart.data.cart.products;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setLoading(false);
       clearFocus();
@@ -78,16 +78,12 @@ export const RenderedCartItem = ({ cartItem }: { cartItem: any }) => {
       );
       state.cartContents = cart.data.cart.products;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setLoading(false);
       clearFocus();
       router.refresh();
     }
-  };
-
-  const numberWithCommas = (number: number) => {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   return (

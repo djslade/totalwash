@@ -1,5 +1,5 @@
 "use client";
-import { useEscapeModal, useNavigate, useOutsideClick } from "@/hooks";
+import { useEscapeModal, useNavigate, useProcessCartContents } from "@/hooks";
 import FocusLock from "react-focus-lock";
 import { ModalPortal } from "./ModalPortal";
 import { ModalBackdrop } from "./ModalBackdrop";
@@ -8,6 +8,7 @@ import { useState } from "react";
 import { AiOutlineClose, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { Product } from "@/types";
+import { LazyImage } from "./LazyImage";
 
 export const CartSidebar = ({
   closeModal,
@@ -36,32 +37,7 @@ export const CartSidebar = ({
     return formatPrice(totalInPence);
   };
 
-  const getProcessedCartContents = () => {
-    const uniqueProducts = products.reduce((accumulator, product) => {
-      if (!accumulator.find((item) => item._id === product._id)) {
-        accumulator.push(product);
-      }
-      return accumulator;
-    }, [] as any[]);
-    const processedCartContents: any[] = uniqueProducts.map((product) => {
-      const quantity = products.filter(
-        (otherProduct) => product._id === otherProduct._id,
-      ).length;
-      const subtotal = +parseFloat(
-        `${product.currentPrice * quantity}`,
-      ).toFixed(2);
-      const subtotalFull = +parseFloat(
-        `${product.fullPrice * quantity}`,
-      ).toFixed(2);
-      return {
-        product,
-        quantity,
-        subtotal,
-        subtotalFull,
-      };
-    });
-    return processedCartContents.sort((a, b) => a.name - b.name);
-  };
+  const cartContents = useProcessCartContents(products);
 
   useEscapeModal(closeModal);
 
@@ -116,14 +92,15 @@ export const CartSidebar = ({
             </div>
             {showCart && (
               <div className="w-full max-h-96 overflow-y-auto">
-                {getProcessedCartContents().map((cartItem) => (
+                {cartContents.map((cartItem) => (
                   <div
                     key={cartItem.product._id}
                     className="flex w-full gap-3 border-t p-5"
                   >
                     <div className="flex-1">
-                      <img
-                        src={cartItem.product.photos[0]}
+                      <LazyImage
+                        classNames="max-w-full"
+                        source={cartItem.product.photos[0]}
                         alt={cartItem.product.name}
                       />
                     </div>

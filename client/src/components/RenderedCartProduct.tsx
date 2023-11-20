@@ -1,6 +1,7 @@
 "use client";
 import { useNavigate } from "@/hooks";
 import { Product } from "@/types";
+import { LazyImage } from "./LazyImage";
 
 export const RenderedCartProduct = ({ product }: { product: Product }) => {
   const navigate = useNavigate();
@@ -13,10 +14,10 @@ export const RenderedCartProduct = ({ product }: { product: Product }) => {
         onClick={() => navigate(`/catalog/products/${product.slug}`)}
       >
         <div className="flex gap-3 flex-col xs:flex-row">
-          <img
-            src={product.photos[0]}
+          <LazyImage
+            source={product.photos[0]}
             alt={product.name}
-            className="w-20 h-20 object-cover"
+            classNames="w-20 h-20 object-cover"
           />
           <div>
             <h2>{product.name}</h2>

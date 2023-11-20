@@ -8,4 +8,4 @@ const express_promise_router_1 = __importDefault(require("express-promise-router
 const controllers_1 = require("../controllers");
 const checkoutRouter = (0, express_promise_router_1.default)();
 exports.checkoutRouter = checkoutRouter;
-checkoutRouter.post('/session', controllers_1.checkoutController.createSession);
+checkoutRouter.post("/session", controllers_1.checkoutController.createSession);

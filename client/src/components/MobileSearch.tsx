@@ -1,14 +1,10 @@
 "use client";
-import { state } from "@/store";
 import { useEffect, useRef } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { useSnapshot } from "valtio";
 import { useOutsideClick, useSearchProducts } from "@/hooks";
 import { motion } from "framer-motion";
 
 export const MobileSearch = ({ closeSearch }: { closeSearch: () => void }) => {
-  const snap = useSnapshot(state);
-
   const searchRef = useOutsideClick(closeSearch);
 
   const inputRef = useRef<HTMLInputElement>(null);

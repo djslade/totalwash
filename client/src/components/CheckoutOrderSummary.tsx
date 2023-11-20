@@ -1,11 +1,10 @@
 "use client";
 import { useNavigate } from "@/hooks";
-import { state } from "@/store";
 import { Product } from "@/types";
 import { formatCartCount, formatPrice } from "@/utilities";
 import { useState } from "react";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
-import { useSnapshot } from "valtio";
+import { LazyImage } from "./LazyImage";
 
 export const CheckoutOrderSummary = ({
   products,
@@ -14,8 +13,6 @@ export const CheckoutOrderSummary = ({
   products: Product[];
   discount: number;
 }) => {
-  const snap = useSnapshot(state);
-
   const navigate = useNavigate();
 
   const [showCart, setShowCart] = useState<boolean>(true);
@@ -105,8 +102,9 @@ export const CheckoutOrderSummary = ({
               className="flex w-full gap-3 border-t p-5"
             >
               <div className="flex-1">
-                <img
-                  src={cartItem.product.photos[0]}
+                <LazyImage
+                  classNames="max-w-full"
+                  source={cartItem.product.photos[0]}
                   alt={cartItem.product.name}
                 />
               </div>

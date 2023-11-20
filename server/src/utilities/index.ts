@@ -1,7 +1,2 @@
-import { validateArrayOfObjectIds } from './validateArrayOfObjects'
-import { getUrlString } from './getUrlString'
-
-export {
-    validateArrayOfObjectIds,
-    getUrlString,
-}
+export { validateArrayOfObjectIds } from './validateArrayOfObjects'
+export { getUrlString } from './getUrlString'

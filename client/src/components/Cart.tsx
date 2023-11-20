@@ -3,41 +3,14 @@ import { state } from "@/store";
 import { useSnapshot } from "valtio";
 import { MobileRenderedCartContents } from "./MobileRenderedCartContents";
 import { RenderedCartContents } from "./RenderedCartContents";
-import { useNavigate } from "@/hooks";
+import { useNavigate, useProcessCartContents } from "@/hooks";
 import axios from "axios";
 import { clearFocus } from "@/utilities";
 
 export const Cart = () => {
   const snap = useSnapshot(state);
 
-  const getProcessedCartContents = () => {
-    const uniqueProducts = snap.cartContents.reduce((accumulator, product) => {
-      if (!accumulator.find((item) => item._id === product._id)) {
-        accumulator.push(product);
-      }
-      return accumulator;
-    }, [] as any[]);
-    const processedCartContents: any[] = uniqueProducts.map((product) => {
-      const quantity = snap.cartContents.filter(
-        (otherProduct) => product._id === otherProduct._id,
-      ).length;
-      const subtotal = +parseFloat(
-        `${product.currentPrice * quantity}`,
-      ).toFixed(2);
-      const subtotalFull = +parseFloat(
-        `${product.fullPrice * quantity}`,
-      ).toFixed(2);
-      return {
-        product,
-        quantity,
-        subtotal,
-        subtotalFull,
-      };
-    });
-    return processedCartContents.sort((a, b) => a.name - b.name);
-  };
-
-  const cartItems = getProcessedCartContents();
+  const cartItems = useProcessCartContents();
 
   const navigate = useNavigate();
 

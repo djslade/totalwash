@@ -5,7 +5,6 @@ import { useSnapshot } from "valtio";
 import { AddToCartModal } from "./AddedToCartModal";
 import { useState } from "react";
 import axios from "axios";
-import { cookies } from "next/dist/client/components/headers";
 import { AnimatePresence } from "framer-motion";
 
 export const AddToCartButton = ({
@@ -60,7 +59,7 @@ export const AddToCartButton = ({
       }
       setShowModal(true);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setLoading(false);
     }

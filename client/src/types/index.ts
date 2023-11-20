@@ -1,5 +1,3 @@
-import { Category } from "./Category";
-import { Subcategory } from "./Subcategory";
-import { Product } from "./Product";
-
-export type { Category, Subcategory, Product };
+export type { Category } from "./Category";
+export type { Subcategory } from "./Subcategory";
+export type { Product } from "./Product";

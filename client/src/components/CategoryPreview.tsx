@@ -1,6 +1,7 @@
 "use client";
 import { Category, Subcategory } from "@/types";
 import { useNavigate } from "@/hooks";
+import { LazyImage } from "./LazyImage";
 
 export const CategoryPreview = ({
   categories,
@@ -26,10 +27,10 @@ export const CategoryPreview = ({
             key={category._id}
             className="relative flex flex-col items-center rounded border aspect-square px-3"
           >
-            <img
-              src={category.photo}
+            <LazyImage
+              source={category.photo}
               alt={category.name}
-              className={"absolute inset-0 object-cover w-full h-full"}
+              classNames="absolute inset-0 object-cover w-full h-full"
             />
             <button
               onClick={() => navigate(`${getNavigateUrl()}${category.slug}`)}

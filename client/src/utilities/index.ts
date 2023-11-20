@@ -1,15 +1,6 @@
-import { sortProductsArrayAlphabetically } from "./sortProductsArrayAlphabetically";
-import { returnMutableCartArray } from "./returnMutableArray";
-import { clearFocus } from "./clearFocus";
-import { getNumberWithCommas } from "./getNumberWithCommas";
-import { formatPrice } from "./formatPrice";
-import { formatCartCount } from "./formatCartCount";
-
-export {
-  sortProductsArrayAlphabetically,
-  returnMutableCartArray,
-  clearFocus,
-  getNumberWithCommas,
-  formatPrice,
-  formatCartCount,
-};
+export  { sortProductsArrayAlphabetically } from "./sortProductsArrayAlphabetically";
+export  { returnMutableCartArray } from "./returnMutableArray";
+export  { clearFocus } from "./clearFocus";
+export  { getNumberWithCommas } from "./getNumberWithCommas";
+export  { formatPrice } from "./formatPrice";
+export  { formatCartCount } from "./formatCartCount";

@@ -1,12 +1,10 @@
 "use client";
 import { useNavigate } from "@/hooks";
-import { state } from "@/store";
 import { Category } from "@/types";
 import { useState } from "react";
 
 export const Navbar = ({
   categories,
-  subcategories,
 }: {
   categories: Category[];
   subcategories: Category[];

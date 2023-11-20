@@ -6,15 +6,14 @@ const utilities_1 = require("../utilities");
 const SubcategorySchema = new mongoose_1.Schema({
     name: { type: String, unique: true },
     description: { type: String },
-    categories: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Category' }],
-    slug: { type: String, slug: 'name', unique: true },
+    categories: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Category" }],
+    slug: { type: String, slug: "name", unique: true },
     photo: { type: String, required: false },
 });
-SubcategorySchema
-    .pre('validate', function (next) {
+SubcategorySchema.pre("validate", function (next) {
     if (this.name) {
         this.slug = (0, utilities_1.getUrlString)(this.name);
     }
     next();
 });
-exports.Subcategory = (0, mongoose_1.model)('Subcategory', SubcategorySchema);
+exports.Subcategory = (0, mongoose_1.model)("Subcategory", SubcategorySchema);

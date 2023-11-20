@@ -17,7 +17,10 @@ const ShippingInfo_1 = require("../models/ShippingInfo");
 const getCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { cartId } = req.params;
-        const cart = yield models_1.Cart.findById(cartId).populate('products').populate('shippingInfo').exec();
+        const cart = yield models_1.Cart.findById(cartId)
+            .populate("products")
+            .populate("shippingInfo")
+            .exec();
         return res.status(200).send({ cart });
     }
     catch (err) {
@@ -25,12 +28,14 @@ const getCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 const createCart = [
-    (0, express_validator_1.body)('products').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
+    (0, express_validator_1.body)("products")
+        .isArray()
+        .custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
     (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const errors = (0, express_validator_1.validationResult)(req);
             if (!errors.isEmpty()) {
-                throw new Error('Validation error');
+                throw new Error("Validation error");
             }
             const { products } = req.body;
             const cart = new models_1.Cart({
@@ -38,22 +43,24 @@ const createCart = [
                 discount: 0,
             });
             const newCart = yield cart.save();
-            yield newCart.populate('products');
+            yield newCart.populate("products");
             return res.status(200).send({ cart: newCart });
         }
         catch (err) {
             return next(err);
         }
-    })
+    }),
 ];
 const updateCart = [
-    (0, express_validator_1.body)('discount').isNumeric(),
-    (0, express_validator_1.body)('products').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
+    (0, express_validator_1.body)("discount").isNumeric(),
+    (0, express_validator_1.body)("products")
+        .isArray()
+        .custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
     (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const errors = (0, express_validator_1.validationResult)(req);
             if (!errors.isEmpty()) {
-                throw new Error('Validation error');
+                throw new Error("Validation error");
             }
             const { cartId } = req.params;
             const { products, discount } = req.body;
@@ -61,20 +68,23 @@ const updateCart = [
                 products,
                 discount,
             }, {
-                new: true
+                new: true,
             }).exec();
-            yield (cart === null || cart === void 0 ? void 0 : cart.populate('products'));
+            yield (cart === null || cart === void 0 ? void 0 : cart.populate("products"));
             return res.status(200).send({ cart });
         }
         catch (err) {
             return next(err);
         }
-    })
+    }),
 ];
 const deleteCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { cartId } = req.params;
-        const cart = yield models_1.Cart.findByIdAndDelete(cartId).populate('products').populate('shippingInfo').exec();
+        const cart = yield models_1.Cart.findByIdAndDelete(cartId)
+            .populate("products")
+            .populate("shippingInfo")
+            .exec();
         if (cart && cart.shippingInfo) {
             yield ShippingInfo_1.ShippingInfo.findByIdAndDelete(cart.shippingInfo._id).exec();
         }

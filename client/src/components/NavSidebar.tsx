@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SidebarSubcategories } from "./SidebarSubcategories";
 import { SidebarCategories } from "./SidebarCategories";
 import { Category } from "@/types";

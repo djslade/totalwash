@@ -4,6 +4,7 @@ import { Product } from "@/types";
 import React from "react";
 import { AddToCartButton } from "./AddToCartButton";
 import { formatPrice } from "@/utilities";
+import { LazyImage } from "./LazyImage";
 
 export const ProductCard = ({ product }: { product: Product }) => {
   const navigate = useNavigate();
@@ -14,9 +15,10 @@ export const ProductCard = ({ product }: { product: Product }) => {
   return (
     <div className="p-3 border border-transparent hover:border-gray-500 rounded-md flex flex-col justify-between">
       <button onClick={handleMoreDetailsClick}>
-        <img
-          className="w-full aspect-square object-cover"
-          src={product.photos[0]}
+        <LazyImage
+          classNames="w-full aspect-square object-cover"
+          source={product.photos[0]}
+          alt={product.name}
         />
         <div className="w-full text-ellipsis line-clamp-3 mb-3">
           <h2 className="font-bold my-3">{product.name}</h2>

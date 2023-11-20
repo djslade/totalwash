@@ -47,7 +47,7 @@ export const generateMetadata = async ({
   }
 };
 
-const page = async ({ params }: { params: { id: string } }) => {
+const Products = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const product = await getProduct(id);
   const relatedProducts = await getRelatedProducts(product.name);
@@ -63,4 +63,4 @@ const page = async ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default page;
+export default Products;

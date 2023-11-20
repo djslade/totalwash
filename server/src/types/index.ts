@@ -1,13 +1,5 @@
-import { ParsedQs } from "./ParsedQs"
-import { SubcategoryQuery } from "./SubcategoryQuery"
-import { SubcategoryBody } from "./SubcategoryBody"
-import { ProductQuery } from "./ProductQuery"
-import { ProductBody } from "./ProductBody"
-
-export type {
-    ParsedQs,
-    SubcategoryQuery,
-    SubcategoryBody,
-    ProductQuery,
-    ProductBody,
-}
+export type { ParsedQs } from "./ParsedQs"
+export type { SubcategoryQuery } from "./SubcategoryQuery"
+export type { SubcategoryBody } from "./SubcategoryBody"
+export type { ProductQuery } from "./ProductQuery"
+export type { ProductBody } from "./ProductBody"

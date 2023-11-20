@@ -16,7 +16,9 @@ const utilities_1 = require("../utilities");
 const getRange = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { rangeId } = req.params;
-        const range = yield models_1.Range.findOne({ slug: rangeId }).populate('parents').exec();
+        const range = yield models_1.Range.findOne({ slug: rangeId })
+            .populate("parents")
+            .exec();
         return res.status(200).send({ range });
     }
     catch (err) {
@@ -30,7 +32,7 @@ const getAllRanges = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         if (parent) {
             query.parents = parent;
         }
-        const ranges = yield models_1.Range.find(query).populate('parents').exec();
+        const ranges = yield models_1.Range.find(query).populate("parents").exec();
         return res.status(200).send({ ranges });
     }
     catch (err) {
@@ -38,20 +40,22 @@ const getAllRanges = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 const postRange = [
-    (0, express_validator_1.body)('name').isString().notEmpty().trim(),
-    (0, express_validator_1.body)('description').isString().notEmpty().trim(),
-    (0, express_validator_1.body)('parents').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
+    (0, express_validator_1.body)("name").isString().notEmpty().trim(),
+    (0, express_validator_1.body)("description").isString().notEmpty().trim(),
+    (0, express_validator_1.body)("parents")
+        .isArray()
+        .custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
     (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const errors = (0, express_validator_1.validationResult)(req);
             if (!errors.isEmpty()) {
-                throw new Error('Validation error');
+                throw new Error("Validation error");
             }
-            const { name, description, parents } = req.body;
+            const { name, description, parents, } = req.body;
             parents.forEach((parent) => __awaiter(void 0, void 0, void 0, function* () {
                 const parentInDatabase = yield models_1.Range.findById(parent);
                 if (!parentInDatabase) {
-                    throw new Error('Specified category was not in database');
+                    throw new Error("Specified category was not in database");
                 }
             }));
             const range = new models_1.Range({
@@ -65,23 +69,25 @@ const postRange = [
         catch (err) {
             return next(err);
         }
-    })
+    }),
 ];
 const updateRange = [
-    (0, express_validator_1.body)('name').isString().notEmpty().trim(),
-    (0, express_validator_1.body)('description').isString().notEmpty().trim(),
-    (0, express_validator_1.body)('parents').isArray().custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
+    (0, express_validator_1.body)("name").isString().notEmpty().trim(),
+    (0, express_validator_1.body)("description").isString().notEmpty().trim(),
+    (0, express_validator_1.body)("parents")
+        .isArray()
+        .custom((value) => (0, utilities_1.validateArrayOfObjectIds)(value)),
     (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const errors = (0, express_validator_1.validationResult)(req);
             if (!errors.isEmpty()) {
-                throw new Error('Validation error');
+                throw new Error("Validation error");
             }
-            const { name, description, parents } = req.body;
+            const { name, description, parents, } = req.body;
             parents.forEach((parent) => __awaiter(void 0, void 0, void 0, function* () {
                 const parentInDatabase = yield models_1.Range.findById(parent);
                 if (!parentInDatabase) {
-                    throw new Error('Specified category was not in database');
+                    throw new Error("Specified category was not in database");
                 }
             }));
             const { rangeId } = req.params;
@@ -92,20 +98,20 @@ const updateRange = [
                 description,
                 parents,
             }, {
-                new: true
+                new: true,
             }).exec();
             return res.status(200).send({ range });
         }
         catch (err) {
             return next(err);
         }
-    })
+    }),
 ];
 const deleteRange = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { RangeId } = req.params;
         yield models_1.Range.findOneAndDelete({ slug: RangeId });
-        return res.status(200).send({ message: 'Range was deleted' });
+        return res.status(200).send({ message: "Range was deleted" });
     }
     catch (err) {
         return next(err);

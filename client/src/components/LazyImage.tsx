@@ -17,12 +17,6 @@ export const LazyImage = ({ source, classNames, alt }: Props) => {
     if (imageSrc === "" && inView) {
       setImageSrc(source);
     }
-  }, []);
-
-  useEffect(() => {
-    if (imageSrc === "" && inView) {
-      setImageSrc(source);
-    }
   }, [inView]);
 
   return (

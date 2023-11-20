@@ -1,17 +1,15 @@
-import PromiseRouter from "express-promise-router"
-import { categoriesController } from "../controllers"
+import PromiseRouter from "express-promise-router";
+import { categoriesController } from "../controllers";
 
-const categoriesRouter = PromiseRouter()
+const categoriesRouter = PromiseRouter();
 
-categoriesRouter.get('/:categoryId', categoriesController.getCategory)
-categoriesRouter.get('/', categoriesController.getAllCategories)
+categoriesRouter.get("/:categoryId", categoriesController.getCategory);
+categoriesRouter.get("/", categoriesController.getAllCategories);
 
-categoriesRouter.post('/', categoriesController.postCategory)
+categoriesRouter.post("/", categoriesController.postCategory);
 
-categoriesRouter.put('/:categoryId', categoriesController.updateCategory)
+categoriesRouter.put("/:categoryId", categoriesController.updateCategory);
 
-categoriesRouter.delete('/:categoryId', categoriesController.deleteCategory)
+categoriesRouter.delete("/:categoryId", categoriesController.deleteCategory);
 
-export {
-    categoriesRouter,
-}
+export { categoriesRouter };

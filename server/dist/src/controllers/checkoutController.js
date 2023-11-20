@@ -19,14 +19,16 @@ const models_1 = require("../models");
 const stripe_1 = __importDefault(require("stripe"));
 const ShippingInfo_1 = require("../models/ShippingInfo");
 const createSession = [
-    (0, express_validator_1.body)('cart').custom((value) => (0, mongoose_1.isValidObjectId)(value)),
+    (0, express_validator_1.body)("cart").custom((value) => (0, mongoose_1.isValidObjectId)(value)),
     (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const errors = (0, express_validator_1.validationResult)(req);
             if (!errors.isEmpty()) {
-                throw new Error('Validation error');
+                throw new Error("Validation error");
             }
-            const stripe = new stripe_1.default(process.env.STRIPE_API_KEY || '', { apiVersion: '2022-11-15' });
+            const stripe = new stripe_1.default(process.env.STRIPE_API_KEY || "", {
+                apiVersion: "2022-11-15",
+            });
             const { cart, email, firstName, lastName, company, streetAddressOne, streetAddressTwo, streetAddressThree, country, city, postcode, phoneNumber, shippingInfoId, } = req.body;
             let checkoutCart = null;
             if (shippingInfoId) {
@@ -41,11 +43,9 @@ const createSession = [
                     country,
                     city,
                     postcode,
-                    phoneNumber
+                    phoneNumber,
                 });
-                checkoutCart = yield models_1.Cart.findById(cart)
-                    .populate('products')
-                    .exec();
+                checkoutCart = yield models_1.Cart.findById(cart).populate("products").exec();
             }
             else {
                 const newShippingInfo = new ShippingInfo_1.ShippingInfo({
@@ -59,13 +59,13 @@ const createSession = [
                     country,
                     city,
                     postcode,
-                    phoneNumber
+                    phoneNumber,
                 });
                 const savedInfo = yield newShippingInfo.save();
                 checkoutCart = yield models_1.Cart.findByIdAndUpdate(cart, {
-                    shippingInfo: savedInfo._id
+                    shippingInfo: savedInfo._id,
                 })
-                    .populate('products')
+                    .populate("products")
                     .exec();
             }
             if (!checkoutCart)
@@ -94,29 +94,29 @@ const createSession = [
                 return {
                     quantity: cartItem.quantity,
                     price_data: {
-                        currency: 'gbp',
+                        currency: "gbp",
                         unit_amount: cartItem.product.currentPrice * 100,
                         product_data: {
                             name: cartItem.product.name,
                             images: [cartItem.product.photos[0]],
-                        }
+                        },
                     },
                 };
             });
             const session = yield stripe.checkout.sessions.create({
-                payment_method_types: ['card'],
+                payment_method_types: ["card"],
                 success_url: process.env.CLIENT_PATHNAME + `/checkout/complete/${cart}`,
                 cancel_url: process.env.CLIENT_PATHNAME + `/checkout/cancelled/${cart}`,
                 line_items: lineItems,
-                mode: 'payment'
+                mode: "payment",
             });
             return res.json({ url: session.url });
         }
         catch (err) {
             return next(err);
         }
-    })
+    }),
 ];
 exports.checkoutController = {
-    createSession
+    createSession,
 };

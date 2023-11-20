@@ -1,7 +1,7 @@
 "use client";
 import { useNavigate } from "@/hooks";
 import { state } from "@/store";
-import { formatPrice, getNumberWithCommas } from "@/utilities";
+import { formatPrice } from "@/utilities";
 import React from "react";
 import { useSnapshot } from "valtio";
 

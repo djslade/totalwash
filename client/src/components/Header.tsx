@@ -10,15 +10,8 @@ import { Category, Product } from "@/types";
 import { useSearchProducts } from "@/hooks";
 import axios from "axios";
 import { AnimatePresence } from "framer-motion";
-import dynamic from "next/dynamic";
-
-// Client Components
-const MobileSearch: any = dynamic(() =>
-  import("./MobileSearch").then((mod) => mod.MobileSearch),
-);
-const NavSidebar: any = dynamic(() =>
-  import("./NavSidebar").then((mod) => mod.NavSidebar),
-);
+import { MobileSearch } from "./MobileSearch";
+import { NavSidebar } from "./NavSidebar";
 
 export const Header = ({
   categories,
@@ -28,8 +21,6 @@ export const Header = ({
   subcategories: Category[];
 }) => {
   const snap = useSnapshot(state);
-
-  const [dropdownVisible, setDropdownVisible] = useState<boolean>(true);
 
   const [searchBarVisible, setSearchBarVisible] = useState<boolean>(false);
 
@@ -44,11 +35,6 @@ export const Header = ({
   const navigate = (path: string) => {
     if (router) {
       router.push(path);
-      state.showCartSidebar = false;
-      state.showNavSidebar = false;
-      // This prevents a bug that prevents the dropdown menus in nav from appearing sometimes
-      if (path === "/catalog") return;
-      setDropdownVisible(false);
     }
   };
 
@@ -83,7 +69,7 @@ export const Header = ({
   }, []);
 
   useEffect(() => {
-    const checkForSubmit = (evt: any) => {
+    const checkForSubmit = (evt: KeyboardEvent) => {
       if (evt.key !== "Enter") return;
       if (document.activeElement !== inputRef.current) return;
       handleSearchClick();

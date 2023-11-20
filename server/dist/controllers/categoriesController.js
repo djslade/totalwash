@@ -32,13 +32,13 @@ const getAllCategories = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
 });
 const postCategory = [
-    (0, express_validator_1.body)('name').isString().notEmpty().trim(),
-    (0, express_validator_1.body)('description').isString().notEmpty().trim(),
+    (0, express_validator_1.body)("name").isString().notEmpty().trim(),
+    (0, express_validator_1.body)("description").isString().notEmpty().trim(),
     (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const errors = (0, express_validator_1.validationResult)(req);
             if (!errors.isEmpty()) {
-                throw new Error('Validation error');
+                throw new Error("Validation error");
             }
             const { name, description } = req.body;
             const category = new models_1.Category({
@@ -51,16 +51,16 @@ const postCategory = [
         catch (err) {
             return next(err);
         }
-    })
+    }),
 ];
 const updateCategory = [
-    (0, express_validator_1.body)('name').isString().notEmpty().trim(),
-    (0, express_validator_1.body)('description').isString().notEmpty().trim(),
+    (0, express_validator_1.body)("name").isString().notEmpty().trim(),
+    (0, express_validator_1.body)("description").isString().notEmpty().trim(),
     (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const errors = (0, express_validator_1.validationResult)(req);
             if (!errors.isEmpty()) {
-                throw new Error('Validation error');
+                throw new Error("Validation error");
             }
             const { name, description } = req.body;
             const { categoryId } = req.params;
@@ -70,18 +70,18 @@ const updateCategory = [
                 name,
                 description,
             }).exec();
-            return res.status(201).send({ message: 'Category was updated' });
+            return res.status(201).send({ message: "Category was updated" });
         }
         catch (err) {
             return next(err);
         }
-    })
+    }),
 ];
 const deleteCategory = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { categoryId } = req.params;
         yield models_1.Category.findOneAndDelete({ slug: categoryId });
-        return res.status(200).send({ message: 'Category was deleted' });
+        return res.status(200).send({ message: "Category was deleted" });
     }
     catch (err) {
         return next(err);

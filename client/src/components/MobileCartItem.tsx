@@ -53,7 +53,7 @@ export const MobileCartItem = ({ cartItem }: { cartItem: any }) => {
       );
       state.cartContents = cart.data.cart.products;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setLoading(false);
       clearFocus();
@@ -78,7 +78,7 @@ export const MobileCartItem = ({ cartItem }: { cartItem: any }) => {
       );
       state.cartContents = cart.data.cart.products;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setLoading(false);
       clearFocus();

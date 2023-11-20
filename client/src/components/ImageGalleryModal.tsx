@@ -1,44 +1,47 @@
 "use client";
-import { state } from "@/store";
-import { useSnapshot } from "valtio";
 import { AiOutlineLeft, AiOutlineRight, AiOutlineClose } from "react-icons/ai";
 import { ModalPortal } from "./ModalPortal";
 import { useEscapeModal, useOutsideClick } from "@/hooks";
 import { ModalBackdrop } from "./ModalBackdrop";
 import { motion } from "framer-motion";
 import FocusLock from "react-focus-lock";
+import { Product } from "@/types";
+import { useState } from "react";
+import { LazyImage } from "./LazyImage";
 
-export const ImageGalleryModal = () => {
-  const snap = useSnapshot(state);
+interface ImageGalleryModalProps {
+  onClose: () => void;
+  currentProduct: Product;
+  startingPhoto: string;
+}
+export const ImageGalleryModal = ({
+  onClose,
+  currentProduct,
+  startingPhoto,
+}: ImageGalleryModalProps) => {
+  const [currentGalleryPhoto, setCurrentGalleryPhoto] =
+    useState<string>(startingPhoto);
 
   const handleImageChange = (photo: string) => {
-    state.currentGalleryPhoto = photo;
+    setCurrentGalleryPhoto(photo);
   };
 
   const handlePreviousPhotoClick = () => {
-    const currentIndex = snap.currentProduct.photos.indexOf(
-      snap.currentGalleryPhoto,
-    );
+    const currentIndex = currentProduct.photos.indexOf(currentGalleryPhoto);
     const targetIndex =
-      currentIndex === 0
-        ? snap.currentProduct.photos.length - 1
-        : currentIndex - 1;
-    state.currentGalleryPhoto = snap.currentProduct.photos[targetIndex];
+      currentIndex === 0 ? currentProduct.photos.length - 1 : currentIndex - 1;
+    setCurrentGalleryPhoto(currentProduct.photos[targetIndex]);
   };
 
   const handleNextPhotoClick = () => {
-    const currentIndex = snap.currentProduct.photos.indexOf(
-      snap.currentGalleryPhoto,
-    );
+    const currentIndex = currentProduct.photos.indexOf(currentGalleryPhoto);
     const targetIndex =
-      currentIndex === snap.currentProduct.photos.length - 1
-        ? 0
-        : currentIndex + 1;
-    state.currentGalleryPhoto = snap.currentProduct.photos[targetIndex];
+      currentIndex === currentProduct.photos.length - 1 ? 0 : currentIndex + 1;
+    setCurrentGalleryPhoto(currentProduct.photos[targetIndex]);
   };
 
   const handleCloseGallery = () => {
-    state.showImageGallery = false;
+    onClose();
   };
 
   const modalRef = useOutsideClick(handleCloseGallery);
@@ -48,7 +51,7 @@ export const ImageGalleryModal = () => {
   return (
     <ModalPortal>
       <FocusLock>
-        <ModalBackdrop onClick={() => (state.showImageGallery = false)} />
+        <ModalBackdrop onClick={onClose} />
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -72,7 +75,7 @@ export const ImageGalleryModal = () => {
               >
                 <AiOutlineLeft />
               </button>
-              <img src={snap.currentGalleryPhoto} className="w-full" />
+              <LazyImage source={currentGalleryPhoto} classNames="w-full" />
               <button
                 onClick={handleNextPhotoClick}
                 className="text-gray-50 text-4xl absolute right-3 top-1/2 -translate-y-1/2"
@@ -81,23 +84,23 @@ export const ImageGalleryModal = () => {
               </button>
             </div>
             <div className="text-gray-50">
-              <h2>{snap.currentProduct.name}</h2>
+              <h2>{currentProduct.name}</h2>
             </div>
             <div className="grid-cols-6 gap-3 grid max-w-xl">
-              {snap.currentProduct.photos.map((photo) => (
+              {currentProduct.photos.map((photo) => (
                 <button
                   onClick={() => handleImageChange(photo)}
                   key={photo}
                   className={`w-full pb-3 hover:border-b border-gray-300  ${
-                    photo === snap.currentGalleryPhoto
+                    photo === currentGalleryPhoto
                       ? "border-b !border-gray-50"
                       : ""
                   }`}
                 >
-                  <img
-                    className="w-full aspect-square object-cover"
-                    src={photo}
-                    alt={snap.currentProduct.name}
+                  <LazyImage
+                    classNames="w-full aspect-square object-cover"
+                    source={photo}
+                    alt={currentProduct.name}
                   />
                 </button>
               ))}

@@ -1,5 +1,5 @@
 import { emptyCategoryObject } from "@/data";
-import { Category, Subcategory } from "@/types";
+import { Category } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
 

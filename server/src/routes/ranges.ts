@@ -1,17 +1,15 @@
-import PromiseRouter from "express-promise-router"
-import { rangesController } from "../controllers"
+import PromiseRouter from "express-promise-router";
+import { rangesController } from "../controllers";
 
-const rangesRouter = PromiseRouter()
+const rangesRouter = PromiseRouter();
 
-rangesRouter.get('/:rangeId', rangesController.getRange)
-rangesRouter.get('/', rangesController.getAllRanges)
+rangesRouter.get("/:rangeId", rangesController.getRange);
+rangesRouter.get("/", rangesController.getAllRanges);
 
-rangesRouter.post('/', rangesController.postRange)
+rangesRouter.post("/", rangesController.postRange);
 
-rangesRouter.put('/:rangeId', rangesController.updateRange)
+rangesRouter.put("/:rangeId", rangesController.updateRange);
 
-rangesRouter.delete('/:rangeId', rangesController.deleteRange)
+rangesRouter.delete("/:rangeId", rangesController.deleteRange);
 
-export {
-    rangesRouter,
-}
+export { rangesRouter };
