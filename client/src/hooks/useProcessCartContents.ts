@@ -8,7 +8,8 @@ import { useSnapshot } from "valtio";
 // Custom React hook to process the contents of the shopping cart
 export const useProcessCartContents = (products?: Product[]) => {
   // Get a snapshot of the current state using 'useSnapshot'
-  const array = products ? products : useSnapshot(state).cartContents;
+  const snap = useSnapshot(state);
+  const array = products ? products : snap.cartContents;
 
   // Find unique products in the cart based on '_id' property
   const uniqueProducts = array.reduce((accumulator, product) => {
