@@ -79,4 +79,8 @@
   .header-search-btn-dark {
     @apply w-12 aspect-square bg-[#666666] flex justify-center items-center hover:bg-[#333333];
   }
+
+  .nav-button {
+    @apply border py-1 bg-gray-50 text-gray-700 rounded-md border-gray-700 font-sans font-medium hover:bg-gray-200 focus:bg-gray-200 transition-all w-max px-3
+  }
 }

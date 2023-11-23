@@ -1,13 +1,13 @@
-import { CategoryInfoSkeleton } from "@/components";
+import { CategoryInfoSkeleton, PageWrapper } from "@/components";
 import { ProductViewSkeleton } from "@/components/skeletons/ProductViewSkeleton";
 import React from "react";
 
 const SaleLoading = () => {
   return (
-    <main className="max-w-screen-lg mx-auto p-3 w-screen">
+    <PageWrapper>
       <CategoryInfoSkeleton />
       <ProductViewSkeleton />
-    </main>
+    </PageWrapper>
   );
 };
 

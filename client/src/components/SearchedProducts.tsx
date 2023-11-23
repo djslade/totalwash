@@ -3,6 +3,7 @@ import { Product } from "@/types";
 import { ProductsView } from "./ProductsView";
 import { useState, useRef } from "react";
 import { useUpdateParams } from "@/hooks";
+import { SectionWrapper } from "./SectionWrapper";
 
 export const SearchedProducts = ({
   products,
@@ -13,13 +14,7 @@ export const SearchedProducts = ({
   relevance?: boolean;
   total?: number;
 }) => {
-  const [sortingMethod, setSortingMethod] = useState<string>(
-    relevance ? "relevance" : "name",
-  );
-
   const [limit, setLimit] = useState<number>(6);
-
-  const sectionRef = useRef<HTMLElement>(null);
 
   const { setSearchParams, searchParams } = useUpdateParams();
 
@@ -28,7 +23,6 @@ export const SearchedProducts = ({
   );
 
   const handleSortingMethodChange = (evt: any) => {
-    setSortingMethod(evt.target.value);
     setSearchParams("sortby", evt.target.value);
   };
 
@@ -72,14 +66,14 @@ export const SearchedProducts = ({
 
   if (products.length === 0) {
     return (
-      <section className="w-full py-6" ref={sectionRef}>
+      <SectionWrapper>
         <h2>Your search returned no results.</h2>
-      </section>
+      </SectionWrapper>
     );
   }
 
   return (
-    <section className="w-full py-6" ref={sectionRef}>
+    <SectionWrapper>
       <div className="w-full xs:flex justify-between">
         <h1 className="font-medium my-6 text-gray-700">{`Showing ${
           page * limit - (limit - 1)
@@ -135,6 +129,6 @@ export const SearchedProducts = ({
           </button>
         </div>
       </div>
-    </section>
+    </SectionWrapper>
   );
 };

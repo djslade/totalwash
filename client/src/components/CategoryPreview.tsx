@@ -2,6 +2,8 @@
 import { Category, Subcategory } from "@/types";
 import { useNavigate } from "@/hooks";
 import { LazyImage } from "./LazyImage";
+import { HeadingBanner } from "./HeadingBanner";
+import { SectionWrapper } from "./SectionWrapper";
 
 export const CategoryPreview = ({
   categories,
@@ -17,10 +19,8 @@ export const CategoryPreview = ({
   };
 
   return (
-    <section className="max-w-screen-lg mx-auto flex flex-col py-6">
-      <div className="bg-gray-700 text-gray-50 font-bold text-xl my-6 w-full py-1 px-3">
-        <h2>{heading}</h2>
-      </div>
+    <SectionWrapper>
+      <HeadingBanner heading={heading} />
       <div className="grid grid-cols-1 xxs:grid-cols-2 md:grid-cols-3 gap-y-9 w-full gap-6">
         {categories.map((category) => (
           <div
@@ -39,6 +39,6 @@ export const CategoryPreview = ({
           </div>
         ))}
       </div>
-    </section>
+    </SectionWrapper>
   );
 };

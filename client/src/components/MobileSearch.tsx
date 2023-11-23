@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
 import { useOutsideClick, useSearchProducts } from "@/hooks";
 import { motion } from "framer-motion";
 
@@ -61,7 +60,7 @@ export const MobileSearch = ({ closeSearch }: { closeSearch: () => void }) => {
     document.addEventListener("keydown", checkForSubmit);
 
     return () => document.addEventListener("keydown", checkForSubmit);
-  });
+  }, []);
 
   return (
     <motion.div
@@ -79,17 +78,10 @@ export const MobileSearch = ({ closeSearch }: { closeSearch: () => void }) => {
         <input
           ref={inputRef}
           type="text"
-          className="py-3 pl-5 w-full outline-none text-base bg-gray-500"
+          className="py-3 pl-5 w-full outline-none text-base bg-gray-500 text-gray-100"
           placeholder="Search"
           autoFocus
         />
-        <button
-          onClick={handleSearchClick}
-          ref={buttonRef}
-          className="w-12 aspect-square flex justify-center items-center hover:bg-gray-400 focus:bg-gray-400 transition-all"
-        >
-          <AiOutlineSearch />
-        </button>
       </div>
     </motion.div>
   );

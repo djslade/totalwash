@@ -28,7 +28,7 @@ export const ProductImageGallery = ({ product }: { product: Product }) => {
     <>
       <div className="flex-1 p-3">
         <button className="w-full" onClick={handleOpenModal}>
-          <LazyImage classNames="w-full" source={currentPhoto} />
+          <LazyImage classNames="w-full" source={currentPhoto} alt={product.name} />
         </button>
         <div className="flex w-full gap-3 text-2xl py-3">
           <div className="hidden grid-cols-6 gap-3 sm:grid">

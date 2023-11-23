@@ -1,21 +1,22 @@
-import { Cart } from "@/components/Cart";
-import { OrderSummary } from "@/components/OrderSummary";
+import { Cart, OrderSummary, PageWrapper, SectionWrapper } from "@/components";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "My Cart - TotalWash",
 };
 
-const page = () => {
+const CartPage = () => {
   return (
-    <main className="max-w-screen-lg w-screen mx-auto p-3">
-      <h1 className="text-2xl font-medium">Your cart</h1>
-      <div className="flex gap-6 flex-col-reverse md:flex-row items-center md:items-start">
+    <PageWrapper>
+      <SectionWrapper>
+        <h1 className="text-2xl font-medium">Your cart</h1>
+      </SectionWrapper>
+      <SectionWrapper flex>
         <Cart />
         <OrderSummary />
-      </div>
-    </main>
+      </SectionWrapper>
+    </PageWrapper>
   );
 };
 
-export default page;
+export default CartPage;

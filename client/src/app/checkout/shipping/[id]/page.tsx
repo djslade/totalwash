@@ -1,6 +1,10 @@
-import { ShippingDetailsForm } from "@/components/ShippingDetailsForm";
-import { CheckoutOrderSummary } from "@/components/CheckoutOrderSummary";
-import { ShowOrderSummaryButton } from "@/components/ShowOrderSummaryButton";
+import {
+  ShippingDetailsForm,
+  CheckoutOrderSummary,
+  ShowOrderSummaryButton,
+  PageWrapper,
+  SectionWrapper,
+} from "@/components";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 
@@ -21,7 +25,7 @@ export const metadata: Metadata = {
   title: "Shipping Details - TotalWash",
 };
 
-const page = async ({ params }: { params: { id: string } }) => {
+const Shipping = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
   const cart = await getCart(id);
@@ -31,15 +35,17 @@ const page = async ({ params }: { params: { id: string } }) => {
   const { products, shippingInfo, discount, _id } = cart;
 
   return (
-    <main className="max-w-screen-lg w-full mx-auto p-3">
-      <h1 className="text-2xl font-medium">Shipping Details</h1>
-      <div className="flex gap-6 flex-col-reverse md:flex-row items-center md:items-start justify-between w-full">
+    <PageWrapper>
+      <SectionWrapper>
+        <h1 className="text-2xl font-medium">Shipping Details</h1>
+      </SectionWrapper>
+      <SectionWrapper flex>
         <ShippingDetailsForm shippingInfo={shippingInfo} cartId={_id} />
         <CheckoutOrderSummary products={products} discount={discount} />
         <ShowOrderSummaryButton products={products} discount={discount} />
-      </div>
-    </main>
+      </SectionWrapper>
+    </PageWrapper>
   );
 };
 
-export default page;
+export default Shipping;

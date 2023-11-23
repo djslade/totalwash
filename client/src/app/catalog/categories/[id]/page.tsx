@@ -1,7 +1,13 @@
 import { Category, Product, Subcategory } from "@/types";
-import { CategoryPreview, CategoryInfo, SearchedProducts } from "@/components";
+import {
+  CategoryPreview,
+  CategoryInfo,
+  SearchedProducts,
+  PageWrapper,
+} from "@/components";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getSearchParamsString } from "@/utilities";
 
 const getCategory = async (id: string) => {
   try {
@@ -43,7 +49,6 @@ type Props = {
 
 export const generateMetadata = async ({
   params,
-  searchParams,
 }: Props): Promise<Metadata> => {
   try {
     const id = params.id;
@@ -63,19 +68,7 @@ const page = async ({
   params: { id: string };
   searchParams: { page: string; limit: string; sortby: string };
 }) => {
-  const { page, limit, sortby } = searchParams;
-
-  let searchParamsString = "";
-
-  if (page) searchParamsString += `&page=${page}`;
-
-  if (limit) {
-    searchParamsString += `&limit=${limit}`;
-  } else {
-    searchParamsString += `&limit=6`;
-  }
-
-  if (sortby) searchParamsString += `&sortby=${sortby}`;
+  const searchParamsString = getSearchParamsString(searchParams);
 
   const { id } = params;
 
@@ -90,13 +83,13 @@ const page = async ({
   );
 
   return (
-    <main className="max-w-screen-lg mx-auto p-3">
+    <PageWrapper>
       <CategoryInfo category={category} />
       {subcategories && (
         <CategoryPreview categories={subcategories} heading="Subcategories" />
       )}
       <SearchedProducts products={products} total={total} />
-    </main>
+    </PageWrapper>
   );
 };
 

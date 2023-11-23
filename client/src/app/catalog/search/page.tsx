@@ -1,6 +1,6 @@
 import { Product } from "@/types";
 import { redirect } from "next/navigation";
-import { SearchedProducts } from "@/components";
+import { SearchedProducts, PageWrapper, SectionWrapper } from "@/components";
 import { Metadata } from "next";
 
 const getProducts = async (query: string, searchParams: string) => {
@@ -42,14 +42,14 @@ const page = async ({
   const { products, total } = await getProducts(text, searchParamsString);
 
   return (
-    <main className="max-w-screen-lg mx-auto py-3 w-screen">
-      <div className="w-full my-3">
+    <PageWrapper>
+      <SectionWrapper>
         <h1 className="text-xl">{`Showing search results for: "${decodeURI(
           text,
         )}"`}</h1>
-      </div>
+      </SectionWrapper>
       <SearchedProducts products={products} relevance={true} total={total} />
-    </main>
+    </PageWrapper>
   );
 };
 

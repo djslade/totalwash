@@ -1,11 +1,11 @@
-import { CatalogHeroSkeleton, PreviewSkeleton } from "@/components";
+import { CatalogHeroSkeleton, PageWrapper, PreviewSkeleton } from "@/components";
 
 const CatalogLoading = () => {
   return (
-    <main className="pt-3">
+    <PageWrapper>
       <CatalogHeroSkeleton />
       <PreviewSkeleton />
-    </main>
+    </PageWrapper>
   );
 };
 

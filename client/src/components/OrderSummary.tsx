@@ -4,6 +4,7 @@ import { state } from "@/store";
 import { formatPrice } from "@/utilities";
 import React from "react";
 import { useSnapshot } from "valtio";
+import { PrimaryButton } from "./PrimaryButton";
 
 export const OrderSummary = () => {
   const snap = useSnapshot(state);
@@ -40,12 +41,10 @@ export const OrderSummary = () => {
         </div>
       </div>
       <div className="w-full flex justify-center py-5 px-2">
-        <button
-          onClick={() => navigate(`/checkout/shipping/${snap.cartId}`)}
-          className="w-full border py-3 uppercase bg-blue-400 rounded-md text-white font-sans font-bold hover:bg-blue-500 focus:bg-blue-500 transition-all text-sm"
-        >
-          Proceed to checkout
-        </button>
+        <PrimaryButton
+          action={() => navigate(`/checkout/shipping/${snap.cartId}`)}
+          text="Proceed to checkout"
+        />
       </div>
     </div>
   );

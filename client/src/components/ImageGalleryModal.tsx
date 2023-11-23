@@ -75,7 +75,11 @@ export const ImageGalleryModal = ({
               >
                 <AiOutlineLeft />
               </button>
-              <LazyImage source={currentGalleryPhoto} classNames="w-full" />
+              <LazyImage
+                source={currentGalleryPhoto}
+                classNames="w-full"
+                alt={currentProduct.name}
+              />
               <button
                 onClick={handleNextPhotoClick}
                 className="text-gray-50 text-4xl absolute right-3 top-1/2 -translate-y-1/2"

@@ -15,7 +15,7 @@ const CancelledOrderPage = () => {
       </h2>
       <button
         onClick={() => navigate("/catalog")}
-        className="border py-1 bg-gray-50 text-gray-700 rounded-md border-gray-700 font-sans font-medium hover:bg-gray-200 focus:bg-gray-200 transition-all w-max px-3"
+        className="nav-button"
       >
         Return to Store
       </button>

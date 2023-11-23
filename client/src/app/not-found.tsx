@@ -1,4 +1,10 @@
-import { Header, LazyImage, Navbar } from "@/components";
+import {
+  Header,
+  LazyImage,
+  Navbar,
+  PageWrapper,
+  SectionWrapper,
+} from "@/components";
 import { Footer } from "@/components/Footer";
 import { Category } from "@/types";
 import Link from "next/link";
@@ -21,26 +27,28 @@ const NotFound = async () => {
     <>
       <Header categories={categories} subcategories={subcategories} />
       <Navbar categories={categories} subcategories={subcategories} />
-      <main className="h-full max-w-screen-lg flex justify-center items-center mx-auto gap-6 my-6">
-        <section className="max-w-sm flex flex-col items-center gap-3 p-3">
-          <LazyImage
-            source="/notfound.webp"
-            alt="Not Found"
-            classNames="max-w-sm w-full mb-5"
-          />
-          <h1 className="text-3xl font-medium">Page Not Found</h1>
-          <h2 className="text-lg text-center">
-            The page that you&apos;re looking for may have been moved, or it may
-            have never existed to begin with.
-          </h2>
-          <Link
-            href="/catalog"
-            className="border py-1 bg-gray-50 text-gray-700 rounded-md border-gray-700 font-sans font-medium hover:bg-gray-200 focus:bg-gray-200 transition-all w-max px-3"
-          >
-            Return to Store
-          </Link>
-        </section>
-      </main>
+      <PageWrapper>
+        <SectionWrapper>
+          <div className="flex flex-col items-center gap-3">
+            <LazyImage
+              source="/notfound.webp"
+              alt="Not Found"
+              classNames="max-w-sm w-full mb-5"
+            />
+            <h1 className="text-3xl font-medium">Page Not Found</h1>
+            <h2 className="text-lg text-center">
+              The page that you&apos;re looking for may have been moved, or it
+              may have never existed to begin with.
+            </h2>
+            <Link
+              href="/catalog"
+              className="nav-button"
+            >
+              Return to Store
+            </Link>
+          </div>
+        </SectionWrapper>
+      </PageWrapper>
       <Footer />
     </>
   );

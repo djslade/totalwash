@@ -1,6 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
 
 type Props = {
   source: string;
@@ -9,17 +7,12 @@ type Props = {
 };
 
 export const LazyImage = ({ source, classNames, alt }: Props) => {
-  const [imageSrc, setImageSrc] = useState<string>("");
-
-  const { ref, inView } = useInView();
-
-  useEffect(() => {
-    if (imageSrc === "" && inView) {
-      setImageSrc(source);
-    }
-  }, [inView]);
-
   return (
-    <img ref={ref} className={classNames} src={imageSrc} alt={alt || "Image"} />
+    <img
+      className={classNames}
+      loading="lazy"
+      src={source}
+      alt={alt || "Image"}
+    />
   );
 };

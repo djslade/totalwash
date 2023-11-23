@@ -1,6 +1,11 @@
-import { ProductPageInfo, RelatedProducts } from "@/components";
-import { ProductImageGallery } from "@/components/ProductImageGallery";
-import { ProductInfoName } from "@/components/ProductInfoName";
+import {
+  ProductPageInfo,
+  RelatedProducts,
+  ProductImageGallery,
+  ProductInfoName,
+  PageWrapper,
+  SectionWrapper,
+} from "@/components";
 import { Product } from "@/types";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -52,14 +57,14 @@ const Products = async ({ params }: { params: { id: string } }) => {
   const product = await getProduct(id);
   const relatedProducts = await getRelatedProducts(product.name);
   return (
-    <main className="max-w-screen-lg mx-auto py-3">
-      <div className="flex w-full my-3 sm:flex-row flex-col">
+    <PageWrapper>
+      <SectionWrapper flex>
         <ProductInfoName productName={product.name} mobile />
         <ProductImageGallery product={product} />
         <ProductPageInfo product={product} />
-      </div>
+      </SectionWrapper>
       <RelatedProducts products={relatedProducts} />
-    </main>
+    </PageWrapper>
   );
 };
 
