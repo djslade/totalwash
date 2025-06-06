@@ -1,0 +1,36 @@
+services:
+  db:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    volumes:
+      - totalwash:/data/db
+  server:
+    image: fenroe/totalwash-server:latest
+    env_file: .env
+    pull_policy: always
+    depends_on:
+      db:
+        condition: service_started
+  web:
+    image: fenroe/totalwash-web:latest
+    env_file: .env
+    pull_policy: always
+    depends_on:
+      server:
+        condition: service_started
+  proxy:
+    image: nginx:alpine
+    ports:
+      - 1000:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      web:
+        condition: service_started
+      server:
+        condition: service_started
+
+volumes:
+  totalwash:
